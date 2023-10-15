@@ -1,4 +1,8 @@
-
+stages:          # List of stages for jobs and their order of execution
+  - build
+  - frontend
+  - backend
+  - deploy
 
 
 build-job:
@@ -8,18 +12,19 @@ build-job:
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - python test.py
 
-test-job1:
-  stage: test
+frontend-job:
+  stage: frontend
+  # image: openjdk:8-jdk-alpine
   script:
-    - echo "This job tests something"
+    - echo "Frontend Image"
 
-test-job2:
-  stage: test
+
+backend-job:
+  stage: backend
+  image: openjdk:8-jdk-alpine
   script:
-    - echo "This job tests something, but takes more time than test-job1."
-    - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
-    - echo "which simulates a test that runs 20 seconds longer than test-job1"
-    - sleep 20
+    - echo "Backend Image"
+
 
 deploy-prod:
   stage: deploy
