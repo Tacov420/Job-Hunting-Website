@@ -14,7 +14,7 @@ build-job:
 
 frontend-job:
   stage: frontend
-  # image: openjdk:8-jdk-alpine
+  image: node:latest
   script:
     - echo "Frontend Image"
 
