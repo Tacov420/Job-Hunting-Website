@@ -21,7 +21,7 @@ frontend-job:
 
 backend-job:
   stage: backend
-  image: openjdk:latest
+  image: openjdk:21-jdk
   script:
     - echo "Backend Image"
 
