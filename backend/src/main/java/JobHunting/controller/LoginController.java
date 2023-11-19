@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import JobHunting.service.*;
 
 import java.util.Map;
-
+@CrossOrigin(origins = "http://localhost:3000") // 允许来自前端的请求
 @RestController
 @RequestMapping("/api/login")
 public class LoginController {
