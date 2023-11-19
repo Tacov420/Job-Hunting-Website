@@ -48,9 +48,6 @@ const LoginForm = ({ onCreateAccount, onPreferncce, onVerify }) => {
             onVerify()//跳到驗證信
           }
           else if (error.response.data == "Hasn't filled in preference"){
-            //if (Username){
-            //  onPreferncce();//跳到填preference
-            //}
             onPreferncce();//跳到填preference
           }
         }
