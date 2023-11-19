@@ -1,10 +1,18 @@
-import React, { useState, useRef } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
+import { UsernameContext } from '../context/UsernameContext';
+
 import axios from 'axios';
 
 const LoginForm = ({ onCreateAccount, onPreferncce, onVerify }) => {
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
   const [error, setError] = useState(null);
+
+  const { Username, updateUsername } = useContext(UsernameContext);
+
+  useEffect(() => {
+    console.log('Username changed:', Username);
+  }, [Username]);
 
   const handleLogin = async () => {
     const username = usernameRef.current.value;
@@ -14,6 +22,7 @@ const LoginForm = ({ onCreateAccount, onPreferncce, onVerify }) => {
         userName: username,
         password: password,
       };
+      updateUsername(username);
       const response = await axios.post('http://localhost:8000/api/login', data, {
         headers: {
           'Content-Type': 'application/json',
@@ -22,6 +31,9 @@ const LoginForm = ({ onCreateAccount, onPreferncce, onVerify }) => {
       
       if (response.status === 201) {
         console.log(response.data);
+        //console.log('username: ', username)
+        
+        
       } 
       setError(null);
     } catch (error) {
@@ -36,6 +48,9 @@ const LoginForm = ({ onCreateAccount, onPreferncce, onVerify }) => {
             onVerify()//跳到驗證信
           }
           else if (error.response.data == "Hasn't filled in preference"){
+            //if (Username){
+            //  onPreferncce();//跳到填preference
+            //}
             onPreferncce();//跳到填preference
           }
         }
