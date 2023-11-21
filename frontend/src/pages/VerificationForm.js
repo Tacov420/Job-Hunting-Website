@@ -5,22 +5,19 @@ import { UsernameContext } from '../context/UsernameContext';
 const VerificationForm = ({ onContinue }) => {
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
-  
+  const backendApiUrl = process.env.REACT_APP_BACKEND_API_URL;
   const { Username } = useContext(UsernameContext);
 
   const handleContinue = async () => {
     try {
-      console.log('username: ', Username)
       if (email !== '' && verificationCode !== '') {
         const data = {
           userName: Username,
           verificationCode: verificationCode,
         };
-  
-        const response = await axios.post('http://localhost:8000/api/register/verify', data);
+        const response = await axios.post(backendApiUrl+'/register/verify', data);
         console.log(response.data);
         onContinue();
-        
       } else {
         alert('Please fill in all fields correctly.');
       }
@@ -36,18 +33,15 @@ const VerificationForm = ({ onContinue }) => {
         userName: Username,
         email: email,
       };
-      //console.log('username: ', Username)
-      const response = await axios.post('http://localhost:8000/api/register/sendVerification', data);
+      const response = await axios.post(backendApiUrl+'/register/sendVerification', data);
       console.log(response.data);
       alert('Sent verification code successfully.');
     } catch (error) {
       if (error.response) {
-        if (error.response.status == 403){ 
+        if (error.response.status === 403){ 
           alert(`failed: ${error.response.data}`);
         }
       }
-      //console.error('Sending verification code failed:', error.response ? error.response.data : error.message);
-      //alert('Sending verification code failed. Please try again.');
     }
 
 

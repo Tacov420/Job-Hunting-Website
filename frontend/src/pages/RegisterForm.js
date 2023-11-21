@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import { UsernameContext, useUsername } from '../context/UsernameContext';
+import { UsernameContext } from '../context/UsernameContext';
 
 
 const RegisterForm = ({ onVerify }) => {
@@ -8,6 +8,12 @@ const RegisterForm = ({ onVerify }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [checkColor, setCheckColor] = useState('black');
+  const backendApiUrl = process.env.REACT_APP_BACKEND_API_URL;
+  const { Username, updateUsername } = useContext(UsernameContext);
+  
+  useEffect(() => {
+    console.log('Username changed:', Username);
+  }, [Username]);
 
   const handleConfirmPasswordChange = (event) => {
     const newPassword = event.target.value;
@@ -23,23 +29,15 @@ const RegisterForm = ({ onVerify }) => {
     setConfirmPassword(newPassword);
   };
 
-  
-  const { Username, updateUsername } = useContext(UsernameContext);
-  
-  useEffect(() => {
-    console.log('Username changed:', Username);
-  }, [Username]);
 
   const handleContinue = async () => {
-
     try {
       if (username !== '' && password !== '' && confirmPassword !== '' && confirmPassword === password) {
         const data = {
           userName: username,
           password: password,
         };
-
-        const response = await axios.post('http://localhost:8000/api/register/personalInfo', data);
+        const response = await axios.post(backendApiUrl+'/register/personalInfo', data);
         console.log(response.data);
         if (response.status === 201) {
           updateUsername(username);
@@ -53,7 +51,7 @@ const RegisterForm = ({ onVerify }) => {
       }
     } catch (error) {
       if (error.response) {
-        if (error.response.status == 403){ //Username has already been registered
+        if (error.response.status === 403){ //Username has already been registered
           alert(`failed: ${error.response.data}`);
         }
       }
@@ -61,7 +59,6 @@ const RegisterForm = ({ onVerify }) => {
   };
 
   return (
-    
 
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h2>Account</h2>
@@ -104,3 +101,4 @@ const RegisterForm = ({ onVerify }) => {
 };
 
 export default RegisterForm;
+

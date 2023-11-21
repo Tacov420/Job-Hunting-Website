@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
-import LoginForm from './components/LoginForm';
-import RegisterForm from './components/RegisterForm';
-import VerificationForm from './components/VerificationForm';
-import PreferenceForm from './components/PreferenceForm';
+import LoginForm from './pages/LoginForm';
+import RegisterForm from './pages/RegisterForm';
+import VerificationForm from './pages/VerificationForm';
+import PreferenceForm from './pages/PreferenceForm';
+import HomePage from './pages/HomePage';
+
 const App = () => {
   const [currentPage, setCurrentPage] = useState('login'); 
 
@@ -19,12 +21,17 @@ const App = () => {
     setCurrentPage('preference'); 
   };
 
+  const gotoHome = () => {
+    setCurrentPage('home')
+  }
+
   return (
     <div>
-      {currentPage === 'login' && <LoginForm onCreateAccount={handleCreateAccount} onVerify={gotoVerify} onPreferncce={gotoPreference} />}
+      {currentPage === 'login' && <LoginForm onLogin={gotoHome} onCreateAccount={handleCreateAccount} onVerify={gotoVerify} onPreferncce={gotoPreference} />}
       {currentPage === 'register' && <RegisterForm onVerify={gotoVerify} />}
       {currentPage === 'verification' && <VerificationForm onContinue={gotoPreference} />}
-      {currentPage === 'preference' && <PreferenceForm />}
+      {currentPage === 'preference' && <PreferenceForm onContinue={gotoHome} />}
+      {currentPage === 'home' && <HomePage/>}
     </div>
   );
 };

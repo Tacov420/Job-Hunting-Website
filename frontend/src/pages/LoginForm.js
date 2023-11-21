@@ -3,11 +3,10 @@ import { UsernameContext } from '../context/UsernameContext';
 
 import axios from 'axios';
 
-const LoginForm = ({ onCreateAccount, onPreferncce, onVerify }) => {
+const LoginForm = ({ onCreateAccount, onPreferncce, onVerify, onLogin }) => {
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
-  const [error, setError] = useState(null);
-
+  const backendApiUrl = process.env.REACT_APP_BACKEND_API_URL;
   const { Username, updateUsername } = useContext(UsernameContext);
 
   useEffect(() => {
@@ -17,13 +16,17 @@ const LoginForm = ({ onCreateAccount, onPreferncce, onVerify }) => {
   const handleLogin = async () => {
     const username = usernameRef.current.value;
     const password = passwordRef.current.value;
+    if (username ==='' || password === ''){
+      alert('Please fill in all fields correctly.');
+      return;
+    }
     try {
       const data = {
         userName: username,
         password: password,
       };
       updateUsername(username);
-      const response = await axios.post('http://localhost:8000/api/login', data, {
+      const response = await axios.post(backendApiUrl+'/login', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -31,38 +34,28 @@ const LoginForm = ({ onCreateAccount, onPreferncce, onVerify }) => {
       
       if (response.status === 201) {
         console.log(response.data);
-        //console.log('username: ', username)
-        
-        
+        onLogin();
       } 
-      setError(null);
+      
     } catch (error) {
       if (error.response) {
         console.error('Login error:', error.response.data);
         console.error('Status code:', error.response.status);
-        if (error.response.status == 403){
+        if (error.response.status === 403){
           alert(`Login failed: ${error.response.data}`);
         }
-        else if (error.response.status == 400){
-          if (error.response.data == "Hasn't verified"){
+        else if (error.response.status === 400){
+          if (error.response.data === "Hasn't verified"){
             onVerify()//跳到驗證信
           }
-          else if (error.response.data == "Hasn't filled in preference"){
+          else if (error.response.data === "Hasn't filled in preference"){
             onPreferncce();//跳到填preference
           }
         }
         else{
-
+          //error.response.status === 500
         }
-        
-      } else if (error.request) {
-        console.error('No response received:', error.request);
-        alert('Login failed: No response received.');
-      } else {
-        console.error('Error setting up the request:', error.message);
-        alert(`Login failed: ${error.message}`);
-      }
-    
+      } 
     }
   
   };
@@ -93,9 +86,6 @@ const LoginForm = ({ onCreateAccount, onPreferncce, onVerify }) => {
         <button type="button" onClick={onCreateAccount}>
           Create an account
         </button>
-
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-
 
       </form>
     </div>

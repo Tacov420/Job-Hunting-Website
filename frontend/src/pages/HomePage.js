@@ -2,14 +2,15 @@ import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { UsernameContext } from '../context/UsernameContext';
 
-const PreferenceForm = () => {
+const HomePage = () => {
 
     return (
       <div>
-        <h1>PreferenceForm</h1>
+        <h1>Home Page</h1>
       </div>
     );
   };
   
 
-export default PreferenceForm;
+export default HomePage;
+
