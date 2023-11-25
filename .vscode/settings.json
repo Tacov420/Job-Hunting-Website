@@ -1,0 +1,7 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.debugTestMethod": [
+        "mvn"
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
+}
