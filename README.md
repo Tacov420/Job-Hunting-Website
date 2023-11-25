@@ -1,6 +1,17 @@
 # job hunting
 
 
+## Backend
+Install jdk-21 then
+```
+./mvnw spring-boot:run
+```
+or install maven and
+```
+mvn spring-boot:run
+```
+
+
 
 ## Getting started
 
