@@ -4,11 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { UsernameProvider } from './context/UsernameContext';
+import { BrowserRouter } from "react-router-dom";
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <UsernameProvider>
-    <App/>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </UsernameProvider>
 
 );

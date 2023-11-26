@@ -5,6 +5,8 @@ import RegisterForm from './pages/RegisterForm';
 import VerificationForm from './pages/VerificationForm';
 import PreferenceForm from './pages/PreferenceForm';
 import HomePage from './pages/HomePage';
+import {Routes , Route} from "react-router-dom";
+
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('login'); 
@@ -26,13 +28,23 @@ const App = () => {
   }
 
   return (
-    <div>
+    <>
+    <Routes>
+        <Route strict path="/" element={<LoginForm onLogin={gotoHome} onCreateAccount={handleCreateAccount} onVerify={gotoVerify} onPreferncce={gotoPreference} />}/>
+        <Route path="/register" element={<RegisterForm onVerify={gotoVerify} />} />
+        <Route path="/verification" element={<VerificationForm onContinue={gotoPreference} />} />
+        <Route path="/preference" element={<PreferenceForm onContinue={gotoHome} />} />
+        <Route path="/home" element={<HomePage/>} />
+    </Routes>
+    
+    {/*<div>
       {currentPage === 'login' && <LoginForm onLogin={gotoHome} onCreateAccount={handleCreateAccount} onVerify={gotoVerify} onPreferncce={gotoPreference} />}
       {currentPage === 'register' && <RegisterForm onVerify={gotoVerify} />}
       {currentPage === 'verification' && <VerificationForm onContinue={gotoPreference} />}
       {currentPage === 'preference' && <PreferenceForm onContinue={gotoHome} />}
       {currentPage === 'home' && <HomePage/>}
-    </div>
+    </div>*/}
+    </>
   );
 };
 
