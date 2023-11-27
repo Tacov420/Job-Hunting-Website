@@ -1,23 +1,9 @@
 import React, { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import PersonalInfoPage from "./PersonalInfoPage";
-import PreferencePage from "./PreferencePage";
+import PersonalInfo from "./PersonalInfo";
+import Preference from "./Preference";
  
 const ProfilePage = () => {
-    const [editMode, setEditMode] = useState(false);
-    
-    const startEditing = () => {
-        setEditMode(true);
-    }
-
-    const saveEditing = () => {
-        setEditMode(false);
-    }
-
-    const cancelEditing = () => {
-        setEditMode(false);
-    }
-
     return (
         <>
             <h2>Profile</h2>
@@ -33,15 +19,10 @@ const ProfilePage = () => {
             </div>
             <div className="tab-content">
                 <Routes>
-                    <Route path="/" element={<PersonalInfoPage />} />
-                    <Route path="/personal_info" element={<PersonalInfoPage />} />
-                    <Route path="/preference" element={<PreferencePage />} />
+                    <Route path="/" element={<PersonalInfo />} />
+                    <Route path="/personal_info" element={<PersonalInfo />} />
+                    <Route path="/preference" element={<Preference />} />
                 </Routes>
-            </div>
-            <div className="Buttons">
-                <button id="edit-button" onClick={() => startEditing()} style={{display: editMode ? "none" : "inline-block" }}>Edit</button>
-                <button id="save-button" onClick={() => saveEditing()} style={{display: editMode ? "inline-block" : "none" }}>Save</button>
-                <button id="cancel-button" onClick={() => cancelEditing()} style={{display: editMode ? "inline-block" : "none" }}>Cancel</button>
             </div>
         </>
     );
