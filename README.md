@@ -13,6 +13,19 @@ mvn spring-boot:run
 
 
 
+## Pre-commit hook
+
+```bash
+pip3 install pre-commit
+pre-commit install
+```
+
+The only thing you need to configure is `.pre-commit-config.yaml`
+
+
+
+
+
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
