@@ -6,7 +6,7 @@ import CompanyTracking from "./components/CompanyTracking";
 import ProgressTracking from "./components/ProgressTracking";
 import Notifications from "./components/Notifications";
 import DiscussForum from "./components/DiscussForum";
-import ProfileTabList from "./components/ProfileTabList";
+import ProfilePage from "./components/ProfilePage";
  
 const App = () => {
     // const tabData = [
@@ -21,7 +21,7 @@ const App = () => {
             <Routes>
                 <Route path="*" element={<JobsPage />} />
                 <Route path="/jobs" element={<JobsPage />} />
-                <Route path="/profile/*" element={<ProfileTabList />} />
+                <Route path="/profile/*" element={<ProfilePage />} />
                 <Route path="/company_tracking" element={<CompanyTracking />} />
                 <Route path="/progress_tracking" element={<ProgressTracking />} />
                 <Route path="/discuss_forum" element={<DiscussForum />} />
