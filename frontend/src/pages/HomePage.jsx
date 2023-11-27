@@ -2,8 +2,9 @@ import React, { useContext, useState, useRef, useEffect } from 'react';
 import { UsernameContext } from '../context/UsernameContext';
 import { getUser } from "../utils/client";
 import { Link , useNavigate } from "react-router-dom";
-import  ButtonAppBar  from '../components/Navbar';
+import  TitleBar  from '../components/TitleBar';
 import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
+import { FaRegBookmark } from "react-icons/fa";
 
 const HomePage = () => {
     const { Username, updateUsername } = useContext(UsernameContext);
@@ -17,7 +18,7 @@ const HomePage = () => {
 
     return (
         <>
-        <ButtonAppBar />
+        <TitleBar />
         <div class="max-w-screen-lg mx-auto">
             <form class="md:col-span-8 pt-5">
                 <div class="flex flex-wrap -mx-3 mb-5">
@@ -31,10 +32,6 @@ const HomePage = () => {
                             <input type="search" id="default-search" 
                                 class="block w-full p-3 ps-10 text-lg text-gray-900 rounded-lg bg-gray-200" 
                                 placeholder="Search Job's Title..."/>
-                            <button type="submit" 
-                                class="text-white absolute end-1.5 bottom-2 bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-3 py-2"
-                                
-                            >Search</button>
                         </div>
                     </div>
 
@@ -48,14 +45,11 @@ const HomePage = () => {
                             <input type="search" id="default-search" 
                                 class="block w-full p-3 ps-10 text-lg text-gray-900 rounded-lg bg-gray-200" 
                                 placeholder="Location..."/>
-                            <button type="submit" 
-                                class="text-white absolute end-1.5 bottom-2 bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-3 py-2"
-                                
-                            >Search</button>
+                           
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-wrap -mx-3 mb-5">
+                <div class="flex flex-wrap -mx-3 mb-2">
                     <div class="w-full md:w-3/5 px-3 mb-6 md:mb-0">
                         <div class="relative">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -66,10 +60,7 @@ const HomePage = () => {
                             <input type="search" id="default-search" 
                                 class="block w-full p-3 ps-10 text-lg text-gray-900 rounded-lg bg-gray-200" 
                                 placeholder="Search Related Skills..."/>
-                            <button type="submit" 
-                                class="text-white absolute end-1.5 bottom-2 bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-3 py-2"
-                                
-                            >Search</button>
+                          
                         </div>
                     </div>
 
@@ -83,13 +74,13 @@ const HomePage = () => {
                             <input type="search" id="default-search" 
                                 class="block w-full p-3 ps-10 text-lg text-gray-900 rounded-lg bg-gray-200" 
                                 placeholder="Company..."/>
-                            <button type="submit" 
-                                class="text-white absolute end-1.5 bottom-2 bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-3 py-2"
-                                
-                            >Search</button>
+        
                         </div>
                     </div>
                 </div>
+                <button type="submit" 
+                    class="text-white bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-3 py-2 mb-2"
+                >Search</button>
 
                 <div class="w-full">
                     <p class="text-gray-700 text-2xl font-bold mb-3">
@@ -108,9 +99,9 @@ const HomePage = () => {
                             </svg>
                         </a>
                         <button type="submit" 
-                                class="text-white absolute end-3 bottom-12 bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-3 py-2"
+                                class="text-gray-600 absolute end-3 bottom-12 hover:text-gray-900 font-medium rounded-lg text-sm px-3 py-2"
                                 
-                        >track</button>
+                        ><FaRegBookmark size={25}/></button>
                         
                     </div>
     

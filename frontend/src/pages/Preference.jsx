@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 import { UsernameContext } from '../context/UsernameContext';
 import { createPreferences } from "../utils/client";
 import { Link , useNavigate } from "react-router-dom";
-
+import { IoMdAddCircle } from "react-icons/io";
 
 const Preference = () => {
 	const { Username } = useContext(UsernameContext);
@@ -10,58 +10,50 @@ const Preference = () => {
 	const [desiredJobsLocation, setDesiredJobsLocation] = useState([]);
 	const [companies, setCompanies] = useState([]);
 	const [skills, setSkills] = useState([]);
-	const [isDialogOpen, setIsDialogOpen] = useState(false);
-	const [tempInput, setTempInput] = useState('');
-	const [selectedBox, setSelectedBox] = useState(null);
-	const inputRef = useRef(null);
-	const navigate = useNavigate();
-
-
-	const handleOpenDialog = (box) => {
-		setIsDialogOpen(true);
-		setSelectedBox(box);
-	};
-
-	useEffect(() => {
-		if (isDialogOpen && inputRef.current) {
-			inputRef.current.focus();
-		}
-	}, [isDialogOpen]); 
-
-	const handleCloseDialog = () => {
-		setIsDialogOpen(false);
-		setTempInput('');
-	};
-
-	const handleDialogInputChange = (e) => {
-		setTempInput(e.target.value);
-	};  
 	
-	const handleDialogConfirm = () => {
+	const jobTitleRef = useRef(null);
+	const LocationRef = useRef(null);
+	const CompanyRef = useRef(null);
+	const SkillRef = useRef(null);
+	const navigate = useNavigate();
+	console.log(Username);
+
+	const handleDialogConfirm = (selectedBox) => {
 		let updatedList = [];
 
 		switch (selectedBox) {
 		case 'desiredJobsTitle':
-			updatedList = [...desiredJobsTitle, tempInput];
+			const title = jobTitleRef.current?.value ?? "";
+			if(title == '') return;
+			updatedList = [...desiredJobsTitle, title];
 			setDesiredJobsTitle(updatedList);
+			jobTitleRef.current.value = '';
 			break;
 		case 'desiredJobsLocation':
-			updatedList = [...desiredJobsLocation, tempInput];
+			const Location = LocationRef.current?.value ?? "";
+			if(Location == '') return;
+			updatedList = [...desiredJobsLocation, Location];
 			setDesiredJobsLocation(updatedList);
+			LocationRef.current.value = '';
 			break;
 		case 'companies':
-			updatedList = [...companies, tempInput];
+			const Company = CompanyRef.current?.value ?? "";
+			if(Company == '') return;
+			updatedList = [...companies, Company];
 			setCompanies(updatedList);
+			CompanyRef.current.value = '';
 			break;
 		case 'skills':
-			updatedList = [...skills, tempInput];
+			const skill = SkillRef.current?.value ?? "";
+			if(skill == '') return;
+			updatedList = [...skills, skill];
 			setSkills(updatedList);
+			SkillRef.current.value = '';
 			break;
 		default:
 			break;
 		}
 		
-		handleCloseDialog();
 	};
 
 	const handleRemoveItem = (box, index) => {
@@ -91,13 +83,6 @@ const Preference = () => {
 	
 	const handleContinue = async () => {
 		try {
-			const data = {
-				userName: Username,
-				desiredJobsTitle: desiredJobsTitle,
-				desiredJobsLocation: desiredJobsLocation, 
-				skills: skills, 
-				companies: companies,
-			};
 			const response = await createPreferences(Username , desiredJobsTitle , desiredJobsLocation , skills , companies);
 
 			if (response.status === 201) {
@@ -132,53 +117,100 @@ const Preference = () => {
 							<div>
 								<label className="block mb-1 text-sm font-medium text-gray-900">Name</label>
 								<input name="username" 
-								className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5" />              
+								className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5" 
+								value={Username} readOnly/>              
 							</div>
 						</div>
 
 						<h1 className="text-left text-xl font-bold text-gray-900 md:text-2xl ">Preferences</h1>
 						<div className="space-y-4 md:space-y-6">
 							<div>
-								<label className="block mb-1 text-sm font-medium text-gray-900">Desired Job Title</label>								
-								<input name="username" className="inline-block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5"/>		
+								<label className="block mb-1 text-lg font-medium text-gray-900">Desired Job Title</label>	
+								<div class="relative w-full">
+									<input 
+										className="block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full py-2.5 pl-2.5 pr-8 mb-2"
+										ref = {jobTitleRef}
+									/>	
+									<button
+										className="absolute items-center top-0 end-0 p-1.5 h-full text-sm font-medium text-gray-500 rounded-e-lg" 
+										onClick={() => handleDialogConfirm('desiredJobsTitle')} >
+										<IoMdAddCircle size={23} className=''/>
+									</button>
+								</div>
+		
 								{desiredJobsTitle.map((title, index) => (
-									<div key={index} className="tag">
+									<span key={index} className="text-medium bg-blue-200 my-3 mx-1 p-0.5 rounded-md">
 										{title}
-										<button onClick={() => handleRemoveItem('desiredJobsTitle', index)}>×</button>
-									</div>
+										<button className = "ml-1" onClick={() => handleRemoveItem('desiredJobsTitle', index)}>×</button>
+									</span>
 								))}
-								<button onClick={() => handleOpenDialog('desiredJobsTitle')}>+</button>
+								
 							</div>
 							<div>
-								<label className="block mb-1 text-sm font-medium text-gray-900 ">Desired Job Location</label>
-								<input type="password" className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5"/>
+								<label className="block mb-1 text-lg font-medium text-gray-900">Desired Job Location</label>	
+								<div class="relative w-full">
+									<input 
+										className="block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full py-2.5 pl-2.5 pr-8 mb-2"
+										ref = {LocationRef}
+									/>	
+									<button
+										className="absolute items-center top-0 end-0 p-1.5 h-full text-sm font-medium text-gray-500 rounded-e-lg" 
+										onClick={() => handleDialogConfirm('desiredJobsLocation')} >
+										<IoMdAddCircle size={23} className=''/>
+									</button>
+								</div>
+		
 								{desiredJobsLocation.map((location, index) => (
-								<div key={index} className="tag">
-									{location}
-									<button onClick={() => handleRemoveItem('desiredJobsLocation', index)}>×</button>
+									<span key={index} className="text-medium bg-blue-200 my-3 mx-1 p-0.5 rounded-md">
+										{location}
+										<button className = "ml-1.5" onClick={() => handleRemoveItem('desiredJobsLocation', index)}>×</button>
+									</span>
+								))}								
+							</div>
+
+							<div>
+								<label className="block mb-1 text-lg font-medium text-gray-900">Focus Companies</label>	
+								<div class="relative w-full">
+									<input 
+										className="block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full py-2.5 pl-2.5 pr-8 mb-2"
+										ref = {CompanyRef}
+									/>	
+									<button
+										className="absolute items-center top-0 end-0 p-1.5 h-full text-sm font-medium text-gray-500 rounded-e-lg" 
+										onClick={() => handleDialogConfirm('companies')} >
+										<IoMdAddCircle size={23} className=''/>
+									</button>
 								</div>
-								))}
-								<button onClick={() => handleOpenDialog('desiredJobsLocation')}>+</button>
+		
+								{companies.map((company, index) => (
+									<span key={index} className="text-medium bg-blue-200 my-3 mx-1 p-0.5 rounded-md">
+										{company}
+										<button className = "ml-1" onClick={() => handleRemoveItem('companies', index)}>×</button>
+									</span>
+								))}									
 							</div>
 							<div>
-								<label className="block mb-1 text-sm font-medium text-gray-900 ">Skills</label>
-								<input type="password" className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5"/>
-								{companies.map((company, index) => (
-									<div key={index} className="tag">
-										{company}
-										<button onClick={() => handleRemoveItem('companies', index)}>×</button>
-									</div>
-								))}
-								<button onClick={() => handleOpenDialog('companies')}>+</button>
-							</div>
-							{isDialogOpen && (
-								<div>
-								<label>Enter Text: </label>
-								<input ref={inputRef} type="text" value={tempInput} onChange={handleDialogInputChange} />
-								<button onClick={handleDialogConfirm}>Confirm</button>
-								<button onClick={handleCloseDialog}>Cancel</button>
+								<label className="block mb-1 text-lg font-medium text-gray-900">Skills</label>	
+								<div class="relative w-full">
+									<input 
+										className="block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full py-2.5 pl-2.5 pr-8 mb-2"
+										ref = {SkillRef}
+									/>	
+									<button
+										className="absolute items-center top-0 end-0 p-1.5 h-full text-sm font-medium text-gray-500 rounded-e-lg" 
+										onClick={() => handleDialogConfirm('skills')} >
+										<IoMdAddCircle size={23} className=''/>
+									</button>
 								</div>
-							)}
+		
+								{skills.map((skill, index) => (
+									<span key={index} className="text-medium bg-blue-200 my-3 mx-1 p-0.5 rounded-md">
+										{skill}
+										<button className = "ml-1" onClick={() => handleRemoveItem('skills', index)}>×</button>
+									</span>
+								))}	
+							</div>
+							
 							<button type="submit" 
 								className="w-full text-white bg-gray-500 hover:bg-gray-700 font-medium rounded-md text-sm py-2.5"
 								onClick={handleContinue}

@@ -26,7 +26,7 @@ const Login = () => {
 		
 			if (response.status === 201) {
 				console.log(response.data);
-				navigate('/register');
+				navigate('/home');
 			} 
 		} catch (error) {
 			if (error.response) {

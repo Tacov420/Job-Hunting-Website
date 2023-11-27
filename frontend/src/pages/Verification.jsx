@@ -14,12 +14,14 @@ const Verification = () => {
 	const handleContinue = async () => {
 		const email = emailRef.current?.value ?? "";
 		const verificationCode = vericodeRef.current?.value ?? "";
+		console.log('email: ', email , 'verificationCode:' , verificationCode);  
 		if (email == '' || verificationCode == '') {
 			alert('Please fill in all fields correctly.');
 			return;
 		}
 		
 		try {	
+			console.log('username:', Username , 'verificationCode:' , verificationCode);
 			const response = await Verify(Username , verificationCode);
 			console.log(response.data);
 			navigate('/preference'); 
@@ -32,6 +34,12 @@ const Verification = () => {
 	};
   
 	const handleSendVerification = async () => {
+		const email = emailRef.current?.value ?? "";
+		console.log('email: ', email);  
+		if (email == '') {
+			alert('Please fill in all fields correctly.');
+			return;
+		}
 		try {
 			const response = await createVerify(Username , email);
 			console.log(response.data);
