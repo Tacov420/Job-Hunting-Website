@@ -5,8 +5,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 // import java.util.Optional;
-
-import JobHunting.model.*;
+import JobHunting.model.Profile;
+import JobHunting.model.ProfileDTO;
 
 @Repository
 public interface ProfileRepository extends MongoRepository<Profile, String> {
@@ -32,4 +32,8 @@ public interface ProfileRepository extends MongoRepository<Profile, String> {
     Profile findProfileByRegisterStage(int registerStage);
 
     Profile findProfileByVerificationCode(String verificationCode);
+
+    // Login
+    ProfileDTO findProfileDTOByUserName(String userName);
+
 }

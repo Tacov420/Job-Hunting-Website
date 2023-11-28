@@ -1,12 +1,14 @@
 package JobHunting.model;
 
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Document(collection = "profile")
 @Data
@@ -51,4 +53,29 @@ public class Profile {
     public void setStage(int registerStage) {
         this.registerStage = registerStage;
     }
+
+    public void setDesiredJobsTitle(List<String> desiredJobsTitle) {
+        this.desiredJobsTitle = desiredJobsTitle;
+    }
+
+    public void setDesiredJobsLocation(List<String> desiredJobsLocation) {
+        this.desiredJobsLocation = desiredJobsLocation;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public void setRegisterStage(int registerStage) {
+        this.registerStage = registerStage;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }

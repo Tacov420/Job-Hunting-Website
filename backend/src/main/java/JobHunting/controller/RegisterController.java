@@ -1,15 +1,19 @@
 package JobHunting.controller;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import java.util.Map;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import JobHunting.service.*;
+import JobHunting.service.RegisterService;
 
 @RestController
 @RequestMapping("/api/register")
@@ -18,7 +22,7 @@ public class RegisterController {
     @Autowired
     private RegisterService registerService;
 
-    @PostMapping(value = "/personalInfo", consumes = "application/json") 
+    @PostMapping(value = "/personalInfo", consumes = "application/json")
     public ResponseEntity<String> createPersonalInfo(@RequestBody Map<String, String> body) {
         String userName = body.get("userName");
         String password = body.get("password");
@@ -33,7 +37,7 @@ public class RegisterController {
         }
     }
 
-    @PostMapping(value = "/sendVerification", consumes = "application/json") 
+    @PostMapping(value = "/sendVerification", consumes = "application/json")
     public ResponseEntity<String> sendVerificationEmail(@RequestBody Map<String, String> body) {
         String userName = body.get("userName");
         String email = body.get("email");

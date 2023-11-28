@@ -5,9 +5,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 // import java.util.List;
 
-import JobHunting.repository.*;
-import JobHunting.model.*;
-
+import JobHunting.model.Profile;
+import JobHunting.repository.ProfileRepository;
 
 @Service
 public class LoginService {
@@ -31,7 +30,7 @@ public class LoginService {
             } else {
                 return "Password is incorrect";
             }
-        } 
+        }
         return "Username hasn't been registered";
     }
 }

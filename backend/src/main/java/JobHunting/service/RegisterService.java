@@ -1,16 +1,18 @@
 package JobHunting.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-
 import java.util.List;
 import java.util.Random;
 
-import JobHunting.repository.*;
-import JobHunting.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import JobHunting.model.Company;
+import JobHunting.model.Profile;
+import JobHunting.repository.CompanyRepository;
+import JobHunting.repository.ProfileRepository;
 
 @Service
 public class RegisterService {
@@ -29,9 +31,9 @@ public class RegisterService {
         if (profileRepository.findProfileByUserName(userName) != null) {
             return "Username has already been registered";
         }
-        
+
         int id;
-        if (profileRepository.findFirstByOrderByIdDesc() != null){
+        if (profileRepository.findFirstByOrderByIdDesc() != null) {
             id = profileRepository.findFirstByOrderByIdDesc().getId() + 1;
         } else {
             id = 0;
@@ -55,13 +57,15 @@ public class RegisterService {
                 return "Email address has already been registered";
             }
         }
-        
+
         String verificationCode = generateVerificationCode(6);
         profile.setVerificationCode(email, verificationCode, 0);
         profileRepository.save(profile);
 
-        String text = "Hello " + userName + ", welcome to Job Hunting Website!\n\n" + "Your 6 characters verification code is: **" + verificationCode + "**. Please go back to Job Hunting and enter the verification code.\n\nWishing you a pleasant journey with Job Hunting!";
-        
+        String text = "Hello " + userName + ", welcome to Job Hunting Website!\n\n"
+                + "Your 6 characters verification code is: **" + verificationCode
+                + "**. Please go back to Job Hunting and enter the verification code.\n\nWishing you a pleasant journey with Job Hunting!";
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("Verification Code from Job Hunting");
@@ -81,7 +85,7 @@ public class RegisterService {
         if (profileCode == null) {
             return "Email hasn't been registered";
         }
-        
+
         if (!verificationCode.equals(profileCode)) {
             return "Verification Code is incorrect";
         }
@@ -92,7 +96,8 @@ public class RegisterService {
         return "Verify successfully";
     }
 
-    public String registerPreference(String userName, List<String> desiredJobsTitle, List<String> desiredJobsLocation, List<String> skills, List<String> companies) {
+    public String registerPreference(String userName, List<String> desiredJobsTitle, List<String> desiredJobsLocation,
+            List<String> skills, List<String> companies) {
         Profile profile = profileRepository.findProfileByUserName(userName);
         if (profile != null) {
             if (profile.getRegisterStage() != 1) {
@@ -100,9 +105,9 @@ public class RegisterService {
             }
             profile.setPreference(desiredJobsTitle, desiredJobsLocation, skills, 2);
             profileRepository.save(profile);
-            
+
             int id;
-            if (companyRepository.findFirstByOrderByIdDesc() != null){
+            if (companyRepository.findFirstByOrderByIdDesc() != null) {
                 id = companyRepository.findFirstByOrderByIdDesc().getId() + 1;
             } else {
                 id = 0;
@@ -119,8 +124,6 @@ public class RegisterService {
             return "Username doesn't exist";
         }
     }
-    
-
 
     public static String generateVerificationCode(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
