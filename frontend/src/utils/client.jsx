@@ -25,6 +25,7 @@ export function Verify(username , verificationCode){
 
 export function createVerify(username , email){
 	const data = {userName: username,email: email};
+	//console.log(data);
 	return client.post("/register/sendVerification", data);
 };
 
