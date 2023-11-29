@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import TitleBar from './components/TitleBar';
 import JobsPage from "./components/JobsPage";
@@ -9,11 +9,7 @@ import DiscussForum from "./components/DiscussForum";
 import ProfilePage from "./components/ProfilePage";
  
 const App = () => {
-    // const tabData = [
-    //     { label: "Personal Information" },
-    //     { label: "Preferences" }
-    // ];
- 
+
     return (
         <div>
             <TitleBar />
