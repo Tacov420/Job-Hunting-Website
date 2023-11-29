@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import PersonalInfo from "./PersonalInfo";
-import ProfilePreference from "./ProfilePreference";
+import ProfilePreference from "./Profilepreference";
 import  TitleBar  from '../components/TitleBar';
 
  
