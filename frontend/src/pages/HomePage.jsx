@@ -18,7 +18,7 @@ const HomePage = () => {
 
     return (
         <>
-        <TitleBar />
+        <TitleBar display={true} currentPage={'home'}/>
         <div class="max-w-screen-lg mx-auto">
             <form class="md:col-span-8 pt-5">
                 <div class="flex flex-wrap -mx-3 mb-5">

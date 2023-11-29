@@ -40,6 +40,12 @@ export function createPreferences(username , desiredJobsTitle , desiredJobsLocat
 	return client.post("/register/preference", data);
 };
 
+export function getposts(username , catagory){
+	const data = {userName: username, catagory: catagory};
+	//console.log(data);
+	return client.post("/register/sendVerification", data); //change!!
+};
+
 
 
 

@@ -8,7 +8,7 @@ import  TitleBar  from '../components/TitleBar';
 const ProfilePage = () => {
     return (
         <>
-            <TitleBar />
+            <TitleBar display={true} currentPage={'profile'}/>
             <h2>Profile</h2>
 
             <aside id="logo-sidebar" class="fixed top-12 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">

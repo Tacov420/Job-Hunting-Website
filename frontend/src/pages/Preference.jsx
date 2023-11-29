@@ -115,10 +115,10 @@ const Preference = () => {
 						<h1 className="text-left text-xl font-bold text-gray-900 md:text-2xl ">Personal Information</h1>
 						<div className="space-y-4 md:space-y-6">
 							<div>
-								<label className="block mb-1 text-sm font-medium text-gray-900">Name</label>
+								<label className="block mb-1 text-lg font-medium text-gray-900">Name</label>
 								<input name="username" 
-								className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5" 
-								value={Username} readOnly/>              
+								className="bg-gray-200 text-gray-700 lg:text-lg rounded-lg w-full p-2.5" 
+								defaultValue={Username} readOnly/>              
 							</div>
 						</div>
 
