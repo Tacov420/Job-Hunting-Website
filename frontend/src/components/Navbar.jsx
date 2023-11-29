@@ -22,7 +22,7 @@ export default function ButtonAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-            Job hunting
+            Job Hunting
           </Typography>
           <Button color="inherit">profile</Button>
         </Toolbar>

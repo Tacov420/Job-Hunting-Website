@@ -108,7 +108,7 @@ const Preference = () => {
 		<section className="bg-gray-50">
 			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
 				<p className="flex items-center mb-6 text-2xl font-bold text-blue-800">
-					Job hunting
+					Job Hunting
 				</p>
 				<div className="w-full rounded-lg md:mt-0 sm:max-w-lg">
 					<div className="p-6 space-y-4 md:space-y-6 sm:p-8">
