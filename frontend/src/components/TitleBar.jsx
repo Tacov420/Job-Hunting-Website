@@ -12,14 +12,16 @@ const TitleBar = () => {
             <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                 <Link to="/profile">
                 <button type="button" class="flex text-sm bg-gray-200 rounded-full mx-3">
-                    <span class="sr-only">Open user menu</span>
+                    <span class="sr-only">Go profile page</span>
                     <IoPersonCircle size={30}/>
                 </button>
                 </Link>
+                <Link to="/notifications">
                 <button type="button" class="flex text-sm bg-gray-200 rounded-full mx-3">
-                    <span class="sr-only">Open user menu</span>
+                    <span class="sr-only">Go notification page</span>
                     <FaBell size={25}/>
                 </button>
+                </Link>
             </div>
             
             <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
