@@ -59,9 +59,12 @@ const ProfilePreference = () => {
                     </div>
 				</div>
                 <div>
-                    <span>
-                        <Link to="/company_tracking">Tracking Companies</Link>
-                    </span>
+                    <div>
+                        <label className="block mb-1 text-lg font-medium text-gray-900">Tracking Companies</label>
+                        <Link to="/company_tracking">
+                        <button className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5 mb-5" />    
+                        </Link>          
+                    </div>
                 </div>
                 <div className="Buttons">
                     <button id="save-button" 
