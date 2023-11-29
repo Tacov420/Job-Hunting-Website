@@ -16,7 +16,7 @@ const Login = () => {
 	const handleLogin = async () => {
 		const username = usernameRef.current.value;
 		const password = passwordRef.current.value;
-		if (username ==='' || password === ''){
+		if (username === '' || password === ''){
 			alert('Please fill in all fields correctly.');
 			return;
 		}
@@ -57,7 +57,7 @@ const Login = () => {
 		<section className="bg-gray-50">
 			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
 				<p className="flex items-center mb-6 text-3xl font-bold text-blue-800">
-					Job hunting
+					Job Hunting
 				</p>
 				<div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
 					<div className="p-6 space-y-4 md:space-y-6 sm:p-8">
