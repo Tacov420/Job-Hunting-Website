@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import PersonalInfo from "./PersonalInfo";
-import Profilepreference from "./Profilepreference";
+import ProfilePreference from "./ProfilePreference";
 import  TitleBar  from '../components/TitleBar';
 
  
@@ -48,7 +48,7 @@ const ProfilePage = () => {
                 <Routes>
                     <Route path="/" element={<PersonalInfo />} />
                     <Route path="/personal_info" element={<PersonalInfo />} />
-                    <Route path="/profilepreference" element={<Profilepreference />} />
+                    <Route path="/profilepreference" element={<ProfilePreference />} />
                 </Routes>
             </div>
         </>

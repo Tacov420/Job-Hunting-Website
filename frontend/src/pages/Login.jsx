@@ -16,7 +16,7 @@ const Login = () => {
 	const handleLogin = async () => {
 		const username = usernameRef.current.value;
 		const password = passwordRef.current.value;
-		if (username ==='' || password === ''){
+		if (username === '' || password === ''){
 			alert('Please fill in all fields correctly.');
 			return;
 		}

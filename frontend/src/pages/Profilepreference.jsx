@@ -9,7 +9,7 @@ class UserPreference {
     }
 }
 
-const Profilepreference = () => {
+const ProfilePreference = () => {
     const preference = new UserPreference(["fries", "hamburgers"], ["cashier", "chef"], ["Taipei", "Taichung"]);
 
     const [editMode, setEditMode] = useState(false);
@@ -84,4 +84,4 @@ const Profilepreference = () => {
     );
 };
  
-export default Profilepreference;
+export default ProfilePreference;
