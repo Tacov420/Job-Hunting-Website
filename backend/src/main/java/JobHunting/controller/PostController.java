@@ -14,7 +14,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @GetMapping(value = "/list/{userName}/{categoryId}", consumes = "application/json")
+    @GetMapping(value = "/list/{userName}/{categoryId}")
     public ResponseEntity<Object> getPostList(@PathVariable String userName, @PathVariable int categoryId) {
         if (categoryId != 0 && categoryId != 1  && categoryId != 2 && categoryId != 3) {
             return new ResponseEntity<>("CategoryId is incorrect", HttpStatus.BAD_REQUEST);
@@ -31,7 +31,7 @@ public class PostController {
         }
     }
 
-    @GetMapping(value = "/specific/{userName}/{postId}", consumes = "application/json")
+    @GetMapping(value = "/specific/{userName}/{postId}")
     public ResponseEntity<Object> getSpecificPost(@PathVariable String userName, @PathVariable int postId) {
         if (!postService.checkPostId(postId)) {
             return new ResponseEntity<>("PostId is incorrect", HttpStatus.BAD_REQUEST);
