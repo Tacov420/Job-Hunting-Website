@@ -11,19 +11,19 @@ const TitleBar = ({display , currentPage}) => {
     return (
         <>
         {display && (
-        <nav class="bg-white border-gray-200">
-            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <span class="self-center text-2xl font-bold whitespace-nowrap text-blue-700">Job Hunting</span>
-            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <nav className="bg-white border-gray-200">
+            <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                <span className="self-center text-2xl font-bold whitespace-nowrap text-blue-700">Job Hunting</span>
+            <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                 <Link to="/profile">
-                <button type="button" class="flex text-sm bg-gray-200 hover:bg-gray-300 rounded-full mx-3">
-                    <span class="sr-only">Go profile page</span>
+                <button type="button" className="flex text-sm bg-gray-200 hover:bg-gray-300 rounded-full mx-3">
+                    <span className="sr-only">Go profile page</span>
                     <IoPersonCircle size={30}/>
                 </button>
                 </Link>
                 <Link to="/notifications">
-                <button type="button" class="flex text-sm bg-gray-200 hover:bg-gray-300 rounded-full mx-3">
-                    <span class="sr-only">Go notification page</span>
+                <button type="button" className="flex text-sm bg-gray-200 hover:bg-gray-300 rounded-full mx-3">
+                    <span className="sr-only">Go notification page</span>
                     <FaBell size={25}/>
                 </button>
                 </Link>
