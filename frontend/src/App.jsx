@@ -7,6 +7,7 @@ import HomePage from './pages/Homepage';
 
 import CompanyTracking from './pages/CompanyTracking';
 import ProgressTracking from './pages/ProgressTracking';
+import ViewProgress from './pages/ViewProgress';
 import Notifications from './pages/Notifications';
 import DiscussForum from './pages/DiscussForum';
 import ProfilePage from './pages/ProfilePage';
@@ -31,7 +32,8 @@ const App = () => {
 
           <Route path="/profile/*" element={<ProfilePage />} />
           <Route path="/company_tracking" element={<CompanyTracking />} />
-          <Route path="/progress_tracking" element={<ProgressTracking />} />
+          <Route strict path="/progress_tracking" element={<ProgressTracking />} />
+          <Route path="/progress_tracking/view" element={<ViewProgress />} />
           <Route strict path="/discuss_forum" element={<DiscussForum />} />
           <Route path="/discuss_forum/add" element={<AddPost />} />
           <Route path="/discuss_forum/edit" element={<EditPost />} />
