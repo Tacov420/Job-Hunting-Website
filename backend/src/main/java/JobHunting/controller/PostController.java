@@ -48,7 +48,7 @@ public class PostController {
         }
     }
 
-    @PostMapping(value = "/add", consumes = "application/json")
+    @PostMapping(value = "/add")
     public ResponseEntity<Object> addPost(@RequestBody Map<String, String> body) {
         String userName = body.get("userName");
         int categoryId = Integer.parseInt(body.get("categoryId"));
@@ -69,7 +69,7 @@ public class PostController {
         }
     }
 
-    @PutMapping(value = "/{postId}", consumes = "application/json")
+    @PutMapping(value = "/{postId}")
     public ResponseEntity<Object> editPost(@PathVariable int postId, @RequestBody Map<String, String> body) {
         String userName = body.get("userName");
         String postTitle = body.get("postTitle");
@@ -92,7 +92,7 @@ public class PostController {
         }
     }
 
-    @DeleteMapping(value = "/{postId}", consumes = "application/json")
+    @DeleteMapping(value = "/{postId}")
     public ResponseEntity<Object> deletePost(@PathVariable int postId, @RequestBody Map<String, String> body) {
         String userName = body.get("userName");
         if (!postService.checkPostId(postId)) {
