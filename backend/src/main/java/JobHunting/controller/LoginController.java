@@ -14,7 +14,7 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @PostMapping(value = "", consumes = "application/json")
+    @PostMapping(value = "")
     public ResponseEntity<String> checkLogin(@RequestBody Map<String, String> body) {
         String userName = body.get("userName");
         String password = body.get("password");
