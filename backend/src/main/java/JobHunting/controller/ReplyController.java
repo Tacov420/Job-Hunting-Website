@@ -15,7 +15,7 @@ public class ReplyController {
     @Autowired
     private ReplyService replyService;
 
-    @PostMapping(value = "/add", consumes = "application/json")
+    @PostMapping(value = "/add")
     public ResponseEntity<Object> addPost(@RequestBody Map<String, String> body) {
         String userName = body.get("userName");
         int postId = Integer.parseInt(body.get("postId"));
@@ -35,7 +35,7 @@ public class ReplyController {
         }
     }
 
-    @PutMapping(value = "/{replyId}", consumes = "application/json")
+    @PutMapping(value = "/{replyId}")
     public ResponseEntity<Object> editReply(@PathVariable int replyId, @RequestBody Map<String, String> body) {
         String userName = body.get("userName");
         String replyContent = body.get("replyContent");
@@ -57,7 +57,7 @@ public class ReplyController {
         }
     }
 
-    @DeleteMapping(value = "/{replyId}", consumes = "application/json")
+    @DeleteMapping(value = "/{replyId}")
     public ResponseEntity<Object> deletePost(@PathVariable int replyId, @RequestBody Map<String, String> body) {
         String userName = body.get("userName");
         if (!replyService.checkReplyId(replyId)) {
