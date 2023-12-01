@@ -1,13 +1,20 @@
-import React from "react";
+import React, {useState , useRef} from "react";
 import  TitleBar  from '../components/TitleBar';
-import { MdEmail } from "react-icons/md";
+import  CompanyItem  from '../components/Company';
 import { Routes, Route, Link , useParams} from "react-router-dom";
-import { RiDeleteBin5Fill } from "react-icons/ri";
-
 
 const CompanyTracking = () => {
-    const id='123';
-    const linkName = 'company_tracking/'+ id;
+    const [companies, setCompanies] = useState([]);
+
+    //const companyList = await getCompanies();
+    //setCompanies(companyList);
+
+
+    const deleteCompany = (id) => {
+        //api
+        //setCompanies(companies.filter((company) => company.id !== id));
+    };
+
 
     return (
         <>
@@ -31,23 +38,18 @@ const CompanyTracking = () => {
                 </div>
             </div>
             
-            <Link to={linkName}>
-                <div className="relative md:w-5/6 p-4 my-4 bg-gray-100 border border-gray-200 rounded-lg shadow hover:bg-gray-200">   
-                    <h5 className="mb-1 text-xl font-sm tracking-tight text-gray-900">company name</h5>                    
-                    <MdEmail size={30} className='absolute end-1.5 bottom-4 items-center text-medium font-medium text-center text-gray-600'/> 
-                </div>
-                <button type="button" className="inline">
-                    <RiDeleteBin5Fill size={25} className="text-red-600 hover:text-red-700"/>
-                </button>
-
-            </Link>
-            <Link to={linkName}>
-                <div className="relative md:w-5/6 p-4 my-4 bg-gray-100 border border-gray-200 rounded-lg shadow hover:bg-gray-200">   
-                    <h5 className="mb-1 text-xl font-sm tracking-tight text-gray-900">company name</h5>                    
-                    <MdEmail size={30} className='absolute end-1.5 bottom-4 items-center text-medium font-medium text-center text-green-500'/> 
-                </div>
-            </Link>
-            
+            <CompanyItem 
+                id={'123'} 
+                CompanyName={'company 1'}
+                email={true} 
+                onDelete={()=>deleteCompany('123')} 
+            />
+            <CompanyItem 
+                id={'456'} 
+                CompanyName={'company 2'} 
+                email={false} 
+                onDelete={()=>deleteCompany('456')} 
+            />     
         </div>
         </>
     );

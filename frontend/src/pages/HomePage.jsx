@@ -3,7 +3,6 @@ import { UsernameContext } from '../context/UsernameContext';
 import { getUser } from "../utils/client";
 import { Link , useNavigate } from "react-router-dom";
 import  TitleBar  from '../components/TitleBar';
-import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import { FaRegBookmark } from "react-icons/fa";
 
 const HomePage = () => {

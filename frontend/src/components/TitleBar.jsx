@@ -1,13 +1,11 @@
 import React from "react";
 import { IoPersonCircle } from "react-icons/io5";
-import { FaBell } from "react-icons/fa";
 import { Routes, Route, Link , useParams} from "react-router-dom";
 import { TbLogout2 } from "react-icons/tb";
+import NotificationIcon from "./Notification";
 
 const TitleBar = ({display , currentPage}) => {
-    //const dis
-    //const currentPage = currentPage;
-   
+    
     return (
         <>
         {display && (
@@ -17,16 +15,10 @@ const TitleBar = ({display , currentPage}) => {
             <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                 <Link to="/profile">
                 <button type="button" className="flex text-sm bg-gray-200 hover:bg-gray-300 rounded-full mx-3">
-                    <span className="sr-only">Go profile page</span>
                     <IoPersonCircle size={30}/>
                 </button>
                 </Link>
-                <Link to="/notifications">
-                <button type="button" className="flex text-sm bg-gray-200 hover:bg-gray-300 rounded-full mx-3">
-                    <span className="sr-only">Go notification page</span>
-                    <FaBell size={25}/>
-                </button>
-                </Link>
+                <NotificationIcon/>
                 <Link to="/">
                 <button type="button" className="flex text-sm bg-gray-200 hover:bg-gray-300 rounded-full mx-3">
                     <TbLogout2 size={30}/>

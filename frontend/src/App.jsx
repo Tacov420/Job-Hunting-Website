@@ -8,7 +8,6 @@ import HomePage from './pages/Homepage';
 import CompanyTracking from './pages/CompanyTracking';
 import ProgressTracking from './pages/ProgressTracking';
 import ViewProgress from './pages/ViewProgress';
-import Notifications from './pages/Notifications';
 import DiscussForum from './pages/DiscussForum';
 import ProfilePage from './pages/ProfilePage';
 import AddPost from './pages/AddPost';
@@ -38,7 +37,6 @@ const App = () => {
           <Route path="/discuss_forum/add" element={<AddPost />} />
           <Route path="/discuss_forum/edit" element={<EditPost />} />
           <Route path="/discuss_forum/view" element={<ViewPost />} />
-          <Route path="/notifications" element={<Notifications />} />
       </Routes>
       </>
     );
