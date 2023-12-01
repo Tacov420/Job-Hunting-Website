@@ -18,7 +18,7 @@ public class RegisterController {
     @Autowired
     private RegisterService registerService;
 
-    @PostMapping(value = "/personalInfo", consumes = "application/json") 
+    @PostMapping(value = "/personalInfo") 
     public ResponseEntity<String> createPersonalInfo(@RequestBody Map<String, String> body) {
         String userName = body.get("userName");
         String password = body.get("password");
@@ -33,7 +33,7 @@ public class RegisterController {
         }
     }
 
-    @PostMapping(value = "/sendVerification", consumes = "application/json") 
+    @PostMapping(value = "/sendVerification") 
     public ResponseEntity<String> sendVerificationEmail(@RequestBody Map<String, String> body) {
         String userName = body.get("userName");
         String email = body.get("email");
@@ -50,7 +50,7 @@ public class RegisterController {
         }
     }
 
-    @PostMapping(value = "/verify", consumes = "application/json")
+    @PostMapping(value = "/verify")
     public ResponseEntity<String> checkVerificationCode(@RequestBody Map<String, String> body) {
         String userName = body.get("userName");
         String verificationCode = body.get("verificationCode");
@@ -69,7 +69,7 @@ public class RegisterController {
         }
     }
 
-    @PostMapping(value = "/preference", consumes = "application/json")
+    @PostMapping(value = "/preference")
     public ResponseEntity<String> createPreference(@RequestBody Map<String, Object> body) {
         String userName = (String) body.get("userName");
         List<String> desiredJobsTitle = castToList(body.get("desiredJobsTitle"));
