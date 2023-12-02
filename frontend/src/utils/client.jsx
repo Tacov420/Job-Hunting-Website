@@ -7,29 +7,30 @@ const client = axios.create({
 });
 
 //login
-export function getUser(username , password){
-	const data = {userName: username , password: password};
-	return client.post("/login" , data );
+export function getUser(username, password){
+	const data = {userName: username, password: password};
+	return client.post("/login", data);
 };
 
+
 //register
-export function createUser(username , password){
-	const data = {userName: username , password: password};
+export function createUser(username, password){
+	const data = {userName: username, password: password};
 	return client.post("/register/personalInfo", data);
 };
 
-export function Verify(username , verificationCode){
-	const data = {userName: username,verificationCode: verificationCode};
+export function Verify(username, verificationCode){
+	const data = {userName: username, verificationCode: verificationCode};
 	return client.post("/register/verify", data);
 };
 
-export function createVerify(username , email){
-	const data = {userName: username,email: email};
+export function createVerify(username, email){
+	const data = {userName: username, email: email};
 	//console.log(data);
 	return client.post("/register/sendVerification", data);
 };
 
-export function createPreferences(username , desiredJobsTitle , desiredJobsLocation , skills , companies){
+export function createPreferences(username, desiredJobsTitle, desiredJobsLocation, skills, companies){
 	const data = {
 		userName: username,
 		desiredJobsTitle: desiredJobsTitle,
@@ -40,12 +41,19 @@ export function createPreferences(username , desiredJobsTitle , desiredJobsLocat
 	return client.post("/register/preference", data);
 };
 
-export function getposts(username , catagory){
+export function getposts(username, catagory){
 	const data = {userName: username, catagory: catagory};
 	//console.log(data);
 	return client.post("/register/sendVerification", data); //change!!
 };
 
 
+// Profile
+export function getPersonalInfo(username){
+	const data = {userName: "", email: ""};
+	return client.get(`/profile/${username}`, data);
+};
 
-
+// export function getPreference(username){
+// 	return client.get(`/profile/preference/${username}`);
+// };
