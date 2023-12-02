@@ -40,8 +40,6 @@ const App = () => {
           <Route path="/discuss_forum/view/:post_id" element={<ViewPost />} />
           <Route path="/notifications" element={<Notifications />} />
       </Routes>
-      <PostItem />
-      <ReplyItem />
 
       </>
     );
