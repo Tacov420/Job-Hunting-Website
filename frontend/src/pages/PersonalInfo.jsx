@@ -2,29 +2,22 @@ import React, { useState, useRef, useContext, useEffect } from "react";
 import { UsernameContext } from "../context/UsernameContext";
 import { getPersonalInfo } from "../utils/client";
 
-class UserInfo {
-    constructor(username, emailAddr) {
-        this.Username = username;
-        this.EmailAddr = emailAddr;
-    }
-}
 
 const PersonalInfo = () => {
     const { Username } = useContext(UsernameContext);
-    const [ info, setInfo ] = useState(null);   
+    const [ infoUsername, setInfoUsername ] = useState(null);
+    const [ infoEmailAddr, setInfoEmailAddr ] = useState(null); 
 
     const initUserInfo = async (userName) => {
         const response = await getPersonalInfo(userName);
-        const res_info = new UserInfo(response.data.userName, response.data.email);
-        setInfo(res_info);
+        setInfoUsername(response.data.userName);
+        setInfoEmailAddr(response.data.email);
+        console.log(infoUsername);
+        console.log(infoEmailAddr);
     }
-    // console.log(Username);
-    useEffect(() => {
-        console.log(Username);
-        initUserInfo(Username);
-    }, [Username]); 
 
-    // console.log(info);
+    console.log(Username);
+    initUserInfo(Username);
 
     const newPassword = useRef(null);
     const confirmPassword = useRef(null);
@@ -68,7 +61,7 @@ const PersonalInfo = () => {
                         <label className="block mb-1 text-lg font-medium text-gray-900">Username</label>
                         <input name="username" 
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5 mb-5" 
-                        value={info.Username} readOnly />              
+                        value={infoUsername} readOnly />              
                     </div>
 				</div>
                 <div className="space-y-4 md:space-y-6">
@@ -76,7 +69,7 @@ const PersonalInfo = () => {
                         <label className="block mb-1 text-lg font-medium text-gray-900">Email Address</label>
                         <input type="text" name="email" id="email"
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5 mb-5" 
-                        value={info.EmailAddr} readOnly />              
+                        value={infoEmailAddr} readOnly />              
                     </div>
 				</div>
                 <div className="space-y-4 md:space-y-6">
