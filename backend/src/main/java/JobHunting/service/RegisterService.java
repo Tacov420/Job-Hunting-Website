@@ -26,7 +26,7 @@ public class RegisterService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public String registerPersonalInfo(String userName, String password) {
-        if (profileRepository.findProfileByUserName(userName) != null) {
+        if (profileRepository.findByUserName(userName) != null) {
             return "Username has already been registered";
         }
         
@@ -44,12 +44,12 @@ public class RegisterService {
     }
 
     public String registerSendVerificationCode(String userName, String email) {
-        Profile profile = profileRepository.findProfileByUserName(userName);
+        Profile profile = profileRepository.findByUserName(userName);
         if (profile == null) {
             return "Username doesn't exist";
         }
 
-        Profile p = profileRepository.findProfileByEmail(email);
+        Profile p = profileRepository.findByEmail(email);
         if (p != null) {
             if (!p.getUserName().equals(userName)) {
                 return "Email address has already been registered";
@@ -72,7 +72,7 @@ public class RegisterService {
     }
 
     public String verifyCode(String userName, String verificationCode) {
-        Profile profile = profileRepository.findProfileByUserName(userName);
+        Profile profile = profileRepository.findByUserName(userName);
         if (profile == null) {
             return "Username doesn't exist";
         }
@@ -93,7 +93,7 @@ public class RegisterService {
     }
 
     public String registerPreference(String userName, List<String> desiredJobsTitle, List<String> desiredJobsLocation, List<String> skills, List<String> companies) {
-        Profile profile = profileRepository.findProfileByUserName(userName);
+        Profile profile = profileRepository.findByUserName(userName);
         if (profile != null) {
             if (profile.getRegisterStage() != 1) {
                 return "Stage incorrect";
@@ -120,8 +120,6 @@ public class RegisterService {
         }
     }
     
-
-
     public static String generateVerificationCode(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();

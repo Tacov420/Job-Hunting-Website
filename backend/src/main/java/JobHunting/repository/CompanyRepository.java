@@ -7,5 +7,5 @@ import JobHunting.model.*;
 
 @Repository
 public interface CompanyRepository extends MongoRepository<Company, String> {
-    Profile findFirstByOrderByIdDesc();                                             // get the largest id
+    Company findFirstByOrderByIdDesc();                                             // get the largest id
 }

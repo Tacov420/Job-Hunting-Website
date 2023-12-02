@@ -8,12 +8,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
-
 @Document(collection = "profile")
 @Data
 @AllArgsConstructor 
 @NoArgsConstructor
-
 public class Profile {
     @Id
     private ObjectId _id;
@@ -26,7 +24,6 @@ public class Profile {
     private List<String> skills;
     private int registerStage;                                          // 0: hasn't verified; 1: verify; 2: complete
     private String verificationCode;
-
 
     public void setPersonalInfo(String userName, String password, int id, int registerStage) {
         this.id = id;

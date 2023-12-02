@@ -13,6 +13,8 @@ import ProfilePage from './pages/ProfilePage';
 import AddPost from './pages/AddPost';
 import ViewPost from './pages/ViewPost';
 import EditPost from './pages/EditPost';
+import PostItem from './components/Post'; 
+import ReplyItem from './components/Reply'; 
 
 import {Routes , Route} from "react-router-dom";
 import './App.css'
@@ -32,12 +34,15 @@ const App = () => {
           <Route path="/profile/*" element={<ProfilePage />} />
           <Route path="/company_tracking" element={<CompanyTracking />} />
           <Route path="/progress_tracking" element={<ProgressTracking />} />
-          <Route strict path="/discuss_forum" element={<DiscussForum />} />
+          <Route strict path="/discuss_forum/*" element={<DiscussForum />} />
           <Route path="/discuss_forum/add" element={<AddPost />} />
-          <Route path="/discuss_forum/edit" element={<EditPost />} />
-          <Route path="/discuss_forum/view" element={<ViewPost />} />
+          <Route path="/discuss_forum/edit/:post_id" element={<EditPost />} />
+          <Route path="/discuss_forum/view/:post_id" element={<ViewPost />} />
           <Route path="/notifications" element={<Notifications />} />
       </Routes>
+      <PostItem />
+      <ReplyItem />
+
       </>
     );
 };

@@ -6,23 +6,26 @@ import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDateTime;
 
-@Document(collection = "company")
+@Document(collection = "reply")
 @Data
 @AllArgsConstructor 
 @NoArgsConstructor
-public class Company {
+public class Reply {
     @Id
     private ObjectId _id;
     private int id;
     private int userId;
-    private String name;
-    private int receiveEmail;
+    private int postId;
+    private String content;
+    private LocalDateTime timestamp;
 
-    public void setCompany(int userId, String name, int id, int receiveEmail) {
+    public void setReply(int userId, int postId, String replyContent, int id, LocalDateTime time) {
         this.id = id;
         this.userId = userId;
-        this.name = name;
-        this.receiveEmail = receiveEmail;
+        this.postId = postId;
+        this.content = replyContent;
+        this.timestamp = time;
     }
 }

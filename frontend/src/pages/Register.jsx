@@ -49,7 +49,7 @@ const Register = () => {
 			if (username !== '' && password !== '' && confirmPassword !== '' && confirmPassword === password) {
 				
 				const response = await createUser(username, password);
-				console.log(response.data);
+				//console.log(response.data);
 				if (response.status === 201) {
 					updateUsername(username);
 					navigate('/verification'); //跳到驗證信

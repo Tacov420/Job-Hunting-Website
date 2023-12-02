@@ -7,8 +7,7 @@ import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import { FaRegBookmark } from "react-icons/fa";
 
 const HomePage = () => {
-    const { Username, updateUsername } = useContext(UsernameContext);
-	const navigate = useNavigate()
+    const { Username } = useContext(UsernameContext);
 
 	useEffect(() => {
 		console.log('Username changed:', Username);
