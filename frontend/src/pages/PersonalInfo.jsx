@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { UsernameContext } from "../context/UsernameContext";
 import { getPersonalInfo } from "../utils/client";
 
@@ -11,8 +11,20 @@ class UserInfo {
 
 const PersonalInfo = () => {
     const { Username } = useContext(UsernameContext);
-    const response = getPersonalInfo(Username);
-    const info = new UserInfo(response.data);
+    const [ info, setInfo ] = useState(null);   
+
+    const initUserInfo = async (userName) => {
+        const response = await getPersonalInfo(userName);
+        const res_info = new UserInfo(response.data.userName, response.data.email);
+        setInfo(res_info);
+    }
+    // console.log(Username);
+    useEffect(() => {
+        console.log(Username);
+        initUserInfo(Username);
+    }, [Username]); 
+
+    // console.log(info);
 
     const newPassword = useRef(null);
     const confirmPassword = useRef(null);
@@ -24,14 +36,14 @@ const PersonalInfo = () => {
     }
 
     const saveEditing = async () => {
-        if (newPassword.current?.value == "") {
-            alert("Error: \"New Password\" is required");
+        if (newPassword.current?.value === "") {
+            alert("Error: Field \"New Password\" is required");
         }
-        else if (confirmPassword.current?.value == "") {
-            alert("Error: \"Confirm Password\" is required");
+        else if (confirmPassword.current?.value === "") {
+            alert("Error: Field \"Confirm Password\" is required");
         }
         else if (newPassword.current?.value !== confirmPassword.current?.value) {
-            alert("Error: \"New Password\" and \"Confirm Password\" don't match.");
+            alert("Error: Fields \"New Password\" and \"Confirm Password\" don't match.");
         }
         else {
             setEditMode(false);
