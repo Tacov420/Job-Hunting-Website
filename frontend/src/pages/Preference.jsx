@@ -126,7 +126,7 @@ const Preference = () => {
 						<div className="space-y-4 md:space-y-6">
 							<div>
 								<label className="block mb-1 text-lg font-medium text-gray-900">Desired Job Title</label>	
-								<div class="relative w-full">
+								<div className="relative w-full">
 									<input 
 										className="block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full py-2.5 pl-2.5 pr-8 mb-2"
 										ref = {jobTitleRef}
@@ -148,7 +148,7 @@ const Preference = () => {
 							</div>
 							<div>
 								<label className="block mb-1 text-lg font-medium text-gray-900">Desired Job Location</label>	
-								<div class="relative w-full">
+								<div className="relative w-full">
 									<input 
 										className="block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full py-2.5 pl-2.5 pr-8 mb-2"
 										ref = {LocationRef}
@@ -170,7 +170,7 @@ const Preference = () => {
 
 							<div>
 								<label className="block mb-1 text-lg font-medium text-gray-900">Focus Companies</label>	
-								<div class="relative w-full">
+								<div className="relative w-full">
 									<input 
 										className="block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full py-2.5 pl-2.5 pr-8 mb-2"
 										ref = {CompanyRef}
@@ -191,7 +191,7 @@ const Preference = () => {
 							</div>
 							<div>
 								<label className="block mb-1 text-lg font-medium text-gray-900">Skills</label>	
-								<div class="relative w-full">
+								<div className="relative w-full">
 									<input 
 										className="block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full py-2.5 pl-2.5 pr-8 mb-2"
 										ref = {SkillRef}
