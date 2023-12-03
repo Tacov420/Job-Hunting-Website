@@ -39,6 +39,8 @@ const PersonalInfo = () => {
         else {
             try {
                 const response = await updatePassword(Username, newPassword.current.value);
+                newPassword.current.value = "";
+                confirmPassword.current.value = "";
                 setEditMode(false);
             } catch (error) {
                 alert("Error: Failed to update password");
