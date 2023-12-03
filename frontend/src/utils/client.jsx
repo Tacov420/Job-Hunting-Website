@@ -53,6 +53,11 @@ export function getPersonalInfo(username){
 	return client.get(`/profile/${username}`);
 };
 
+export function updatePassword(username, newPassword){
+	const data = {newPassword: newPassword, confirmPassword: newPassword};
+	return client.put(`/profile/${username}`, data);
+};
+
 // export function getPreference(username){
 // 	return client.get(`/profile/preference/${username}`);
 // };

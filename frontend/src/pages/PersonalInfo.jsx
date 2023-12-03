@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { UsernameContext } from "../context/UsernameContext";
-import { getPersonalInfo } from "../utils/client";
+import { getPersonalInfo, updatePassword } from "../utils/client";
 
 
 const PersonalInfo = () => {
@@ -12,11 +12,9 @@ const PersonalInfo = () => {
         const response = await getPersonalInfo(userName);
         setInfoUsername(response.data.userName);
         setInfoEmailAddr(response.data.email);
-        console.log(infoUsername);
-        console.log(infoEmailAddr);
+        // console.log(infoUsername);
+        // console.log(infoEmailAddr);
     }
-
-    console.log(Username);
     initUserInfo(Username);
 
     const newPassword = useRef(null);
@@ -39,7 +37,12 @@ const PersonalInfo = () => {
             alert("Error: Fields \"New Password\" and \"Confirm Password\" don't match.");
         }
         else {
-            setEditMode(false);
+            try {
+                const response = await updatePassword(Username, newPassword.current.value);
+                setEditMode(false);
+            } catch (error) {
+                alert("Error: Failed to update password");
+            }
         }
     }
 
