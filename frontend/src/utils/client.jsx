@@ -50,8 +50,7 @@ export function getposts(username, catagory){
 
 // Profile
 export function getPersonalInfo(username){
-	const data = {userName: "", email: ""};
-	return client.get(`/profile/${username}`, data);
+	return client.get(`/profile/${username}`);
 };
 
 // export function getPreference(username){

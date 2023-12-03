@@ -5,8 +5,8 @@ import { getPersonalInfo } from "../utils/client";
 
 const PersonalInfo = () => {
     const { Username } = useContext(UsernameContext);
-    const [ infoUsername, setInfoUsername ] = useState(null);
-    const [ infoEmailAddr, setInfoEmailAddr ] = useState(null); 
+    const [ infoUsername, setInfoUsername ] = useState("");
+    const [ infoEmailAddr, setInfoEmailAddr ] = useState(""); 
 
     const initUserInfo = async (userName) => {
         const response = await getPersonalInfo(userName);
