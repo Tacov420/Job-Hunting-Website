@@ -1,9 +1,9 @@
-import React, { useState, useRef, useContext, useEffect } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { UsernameContext } from "../context/UsernameContext";
 import { getPersonalInfo, updatePassword } from "../utils/client";
 
 
-const PersonalInfo = () => {
+const PersonalInfo = () => {    
     const { Username } = useContext(UsernameContext);
     const [ infoUsername, setInfoUsername ] = useState("");
     const [ infoEmailAddr, setInfoEmailAddr ] = useState(""); 

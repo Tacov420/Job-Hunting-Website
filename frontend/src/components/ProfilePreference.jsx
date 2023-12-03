@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useContext } from "react";
+import { UsernameContext } from "../context/UsernameContext";
 import { Link } from "react-router-dom";
+import { getPreference } from "../utils/client";
 
-class UserPreference {
-    constructor(skills, desiredJobs, desiredLocations) {
-        this.Skills = skills;
-        this.DesiredJobs = desiredJobs;
-        this.DesiredLocations = desiredLocations;
-    }
-}
 
 const ProfilePreference = () => {
-    const preference = new UserPreference(["fries", "hamburgers"], ["cashier", "chef"], ["Taipei", "Taichung"]);
+    const { Username } = useContext(UsernameContext);
+    const [ skills, setSkills ] = useState([]);
+    const [ desiredJobs, setDesiredJobs ] = useState([]);
+    const [ desiredLocations, setDesiredLocations ] = useState([]);
+
+    const initUserPreference = async (userName) => {
+        const response = await getPreference(userName);
+        setSkills(response.data.skills);
+        setDesiredJobs(response.data.desiredJobsTitle);
+        setDesiredLocations(response.data.desiredJobsLocation);
+    }
+    initUserPreference(Username);
+
+    const inputSkills = useRef(null);
+    const inputDesiredJobs = useRef(null);
+    const inputDesiredLocations = useRef(null);
 
     const [editMode, setEditMode] = useState(false);
     
@@ -23,12 +33,15 @@ const ProfilePreference = () => {
     }
 
     const cancelEditing = () => {
+        inputSkills.current.value = skills;
+        inputDesiredJobs.current.value = desiredJobs;
+        inputDesiredLocations.current.value = desiredLocations;
         setEditMode(false);
     }
     
     return (
         <>
-            <div class="p-4 sm:ml-64">
+            <div className="p-4 sm:ml-64">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
                 <div className="w-full rounded-lg md:mt-0 sm:max-w-lg">
                 <h1 className="text-xl font-bold text-gray-900 md:text-2xl">Preference</h1>
@@ -39,7 +52,8 @@ const ProfilePreference = () => {
                         <label className="block mb-1 text-lg font-medium text-gray-900">Skills</label>
                         <input name="username" 
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5 mb-5" 
-                        defaultValue={preference.Skills} readOnly={!editMode} />              
+                        defaultValue={skills} readOnly={!editMode} 
+                        ref={inputSkills} />              
                     </div>
 				</div>
                 <div className="space-y-4 md:space-y-6">
@@ -47,7 +61,8 @@ const ProfilePreference = () => {
                         <label className="block mb-1 text-lg font-medium text-gray-900">Desired Job Titles</label>
                         <input  
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5 mb-5" 
-                        defaultValue={preference.DesiredJobs} readOnly={!editMode} />              
+                        defaultValue={desiredJobs} readOnly={!editMode} 
+                        ref={inputDesiredJobs} />              
                     </div>
 				</div>
                 <div className="space-y-4 md:space-y-6">
@@ -55,7 +70,8 @@ const ProfilePreference = () => {
                         <label className="block mb-1 text-lg font-medium text-gray-900">Desired Job Locations</label>
                         <input 
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5 mb-5" 
-                        defaultValue={preference.DesiredLocations} readOnly={!editMode} />              
+                        defaultValue={desiredLocations} readOnly={!editMode} 
+                        ref={inputDesiredLocations} />              
                     </div>
 				</div>
                 <div>
@@ -68,13 +84,13 @@ const ProfilePreference = () => {
                 </div>
                 <div className="Buttons">
                     <button 
-                    class="text-white bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-3 py-2 mb-2"
+                    className="text-white bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-3 py-2 mb-2"
                     id="edit-button" onClick={() => startEditing()} style={{display: editMode ? "none" : "inline-block" }}>Edit</button>
                     <button id="save-button" 
-                    class="text-white bg-green-500 hover:bg-green-700 font-medium rounded-lg text-sm px-3 py-2 mb-2"
+                    className="text-white bg-green-500 hover:bg-green-700 font-medium rounded-lg text-sm px-3 py-2 mb-2"
                     onClick={() => saveEditing()} style={{display: editMode ? "inline-block" : "none" }}>Save</button>
                     <button id="cancel-button" 
-                    class="text-white bg-red-500 hover:bg-red-700 font-medium rounded-lg text-sm px-3 py-2 mb-2"
+                    className="text-white bg-red-500 hover:bg-red-700 font-medium rounded-lg text-sm px-3 py-2 mb-2"
                     onClick={() => cancelEditing()} style={{display: editMode ? "inline-block" : "none" }}>Cancel</button>
                 </div>
             </form>

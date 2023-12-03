@@ -58,6 +58,6 @@ export function updatePassword(username, newPassword){
 	return client.put(`/profile/${username}`, data);
 };
 
-// export function getPreference(username){
-// 	return client.get(`/profile/preference/${username}`);
-// };
+export function getPreference(username){
+	return client.get(`/profile/preference/${username}`);
+};
