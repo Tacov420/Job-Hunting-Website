@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class Progress {
     @Id
     private ObjectId id;
+    private int progressId;
     private String userName;
     private List<String> companyName;
     private List<String> jobsTitle;
@@ -35,7 +37,25 @@ public class Progress {
     @LastModifiedDate
     private Date lastModifiedDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dateApplied;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dateFirstInterview;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dateSecondInterview;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dateOffer;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dateRejected;
+
+    // setters
+
     public String getId() {
+
         return id.toHexString();
     }
 
@@ -43,13 +63,18 @@ public class Progress {
         this.id = new ObjectId(id);
     }
 
-    public void setProgress(String userName, List<String> companyName,
+    public void setProgress(int progressId, String userName, List<String> companyName,
             List<String> jobsTitle, int progressStage) {
+        this.progressId = progressId;
         this.userName = userName;
         this.companyName = companyName;
         this.jobsTitle = jobsTitle;
         this.progressStage = progressStage;
         this.createdDate = new Date();
+    }
+
+    public void setProgressId(int progressId) {
+        this.progressId = progressId;
     }
 
     public void setUserName(String userName) {
@@ -76,6 +101,79 @@ public class Progress {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public void setDateApplied(Date dateApplied) {
+        this.dateApplied = dateApplied;
+    }
+
+    public void setDateFirstInterview(Date dateFirstInterview) {
+        this.dateFirstInterview = dateFirstInterview;
+    }
+
+    public void setDateSecondInterview(Date dateSecondInterview) {
+        this.dateSecondInterview = dateSecondInterview;
+    }
+
+    public void setDateOffer(Date dateOffer) {
+        this.dateOffer = dateOffer;
+    }
+
+    public void setDateRejected(Date dateRejected) {
+        this.dateRejected = dateRejected;
+    }
+
+    // setters
+
+    // getters
+    public void getProgressId(int progressId) {
+        this.progressId = progressId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public List<String> getCompanyName() {
+        return companyName;
+    }
+
+    public List<String> getJobsTitle() {
+        return jobsTitle;
+    }
+
+    public int getProgressStage() {
+        return progressStage;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public Date getDateApplied() {
+        return dateApplied;
+    }
+
+    public Date getDateFirstInterview() {
+        return dateFirstInterview;
+    }
+
+    public Date getDateSecondInterview() {
+        return dateSecondInterview;
+    }
+
+    public Date getDateOffer() {
+        return dateOffer;
+    }
+
+    public Date getDateRejected() {
+        return dateRejected;
+    }
+
+    // add
+
     public void addCompanyName(String companyName) {
         if (this.companyName == null) {
             this.companyName = new ArrayList<>();
@@ -90,6 +188,40 @@ public class Progress {
         this.jobsTitle.add(jobsTitle);
     }
 
+    public void addProgressStage(int progressStage) {
+        this.progressStage = progressStage;
+    }
+
+    public void addCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void addLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public void addDateApplied(Date dateApplied) {
+        this.dateApplied = dateApplied;
+    }
+
+    public void addDateFirstInterview(Date dateFirstInterview) {
+        this.dateFirstInterview = dateFirstInterview;
+    }
+
+    public void addDateSecondInterview(Date dateSecondInterview) {
+        this.dateSecondInterview = dateSecondInterview;
+    }
+
+    public void addDateOffer(Date dateOffer) {
+        this.dateOffer = dateOffer;
+    }
+
+    public void addDateRejected(Date dateRejected) {
+        this.dateRejected = dateRejected;
+    }
+
+    // remove
+
     public void removeCompanyName(String companyName) {
         if (this.companyName != null) {
             this.companyName.remove(companyName);
@@ -102,12 +234,56 @@ public class Progress {
         }
     }
 
+    public void removeProgressStage(int progressStage) {
+        this.progressStage = progressStage;
+    }
+
+    public void removeCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void removeLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public void removeDateApplied(Date dateApplied) {
+        this.dateApplied = dateApplied;
+    }
+
+    public void removeDateFirstInterview(Date dateFirstInterview) {
+        this.dateFirstInterview = dateFirstInterview;
+    }
+
+    public void removeDateSecondInterview(Date dateSecondInterview) {
+        this.dateSecondInterview = dateSecondInterview;
+    }
+
+    public void removeDateOffer(Date dateOffer) {
+        this.dateOffer = dateOffer;
+    }
+
+    public void removeDateRejected(Date dateRejected) {
+        this.dateRejected = dateRejected;
+    }
+
+    public void removeProgressId(int progressId) {
+        this.progressId = progressId;
+    }
+
+    // update
+
     public enum UpdateType {
         PROGRESS_STAGE,
         COMPANY_NAME,
         JOB_TITLE,
         CREATED_DATE,
-        LAST_MODIFIED_DATE
+        LAST_MODIFIED_DATE,
+        DATE_APPLIED,
+        DATE_FIRST_INTERVIEW,
+        DATE_SECOND_INTERVIEW,
+        DATE_OFFER,
+        DATE_REJECTED
+
     }
 
     public void updateFrom(Map<String, Object> fields) {
@@ -131,6 +307,7 @@ public class Progress {
                 }
             }
             if (fields.containsKey("progressStage")) {
+
                 this.progressStage = (int) fields.get("progressStage");
             }
             if (fields.containsKey("companyName")) {
@@ -157,7 +334,25 @@ public class Progress {
                 this.lastModifiedDate = (Date) fields.get("lastModifiedDate");
             }
 
-            // other fields...
+            if (fields.containsKey("dateApplied")) {
+                this.dateApplied = (Date) fields.get("dateApplied");
+            }
+
+            if (fields.containsKey("dateFirstInterview")) {
+                this.dateFirstInterview = (Date) fields.get("dateFirstInterview");
+            }
+
+            if (fields.containsKey("dateSecondInterview")) {
+                this.dateSecondInterview = (Date) fields.get("dateSecondInterview");
+            }
+
+            if (fields.containsKey("dateOffer")) {
+                this.dateOffer = (Date) fields.get("dateOffer");
+            }
+
+            if (fields.containsKey("dateRejected")) {
+                this.dateRejected = (Date) fields.get("dateRejected");
+            }
         }
     }
 

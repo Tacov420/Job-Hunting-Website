@@ -10,22 +10,19 @@ import JobHunting.model.*;
 
 @Repository
 public interface ProgressRepository extends MongoRepository<Progress, String> {
+    Progress findFirstByOrderByProgressIdDesc();
 
-    List<Progress> findByJobsTitle(String jobsTitle);
+    Progress findProgressByProgressId(int progressId);
 
     List<Progress> findProgressByUserName(String userName);
 
-    List<Progress> findProgressByCompanyName(String companyName);
+    List<Progress> findByUserNameAndProgressId(String userName, int progressId);
 
-    List<Progress> findProgressByJobsTitle(String jobsTitle);
-
-    List<Progress> findProgressByProgressStage(int progressStage);
-
-    List<Progress> findProgressByCreatedDate(Date createdDate);
-
-    List<Progress> findProgressByLastModifiedDate(Date lastModifiedDate);
+    void deleteProgressByUserNameAndProgressId(String userName, int progressId);
 
     void deleteProgressByUserName(String userName);
+
+    void deleteProgressByProgressId(int progressId);
 
     void deleteProgressByCompanyName(String companyName);
 

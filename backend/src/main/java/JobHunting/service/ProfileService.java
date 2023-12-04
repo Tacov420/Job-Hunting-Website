@@ -1,16 +1,11 @@
 package JobHunting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import JobHunting.model.PreferenceDTO;
+import JobHunting.dto.ProfileDTO;
 import JobHunting.model.Profile;
-import JobHunting.model.ProfileDTO;
 import JobHunting.repository.ProfileRepository;
 
 @Service
@@ -22,28 +17,30 @@ public class ProfileService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // Method to get profile
-    public ProfileDTO getProfile(String userName) {
+    public ProfileDTO getProfileByUserName(String userName) {
         Profile profile = profileRepository.findProfileByUserName(userName);
         if (profile == null) {
             throw new UserNotFoundException("User not found for username: " + userName);
         }
-        return new ProfileDTO(profile.getUserName(), profile.getEmail());
+        // Convert the Profile entity to ProfileDTO before returning
+        return new ProfileDTO(profile.get_id(), profile.getId(), profile.getUserName(), profile.getEmail(),
+                profile.getRegisterStage());
     }
 
-    // Method to get preferences
-    public PreferenceDTO getPreference(String userName) {
-        if (userName == null) {
-            throw new UserNotFoundException("Username cannot be null");
-        }
-
+    // Service method called from the controller
+    public Profile getPreferenceByUserName(String userName) {
         Profile profile = profileRepository.findProfileByUserName(userName);
-        if (profile != null) {
-            return new PreferenceDTO(profile.getDesiredJobsTitle(),
-                    profile.getDesiredJobsLocation(),
-                    profile.getSkills());
-        } else {
-            throw new UserNotFoundException("Username hasn't been registered: " + userName);
+        if (profile == null) {
+            throw new UserNotFoundException("User not found for username: " + userName);
         }
+        Profile preference = profileRepository.findPreferenceByUserName(userName);
+        if (preference == null) {
+            // Handle the case where no preference exists for the user
+            preference = new Profile();
+            preference.setUserName(userName); // Set the username for the new preference
+        }
+        return preference;
+
     }
 
     // Method to update password
@@ -60,26 +57,29 @@ public class ProfileService {
         return "Password updated successfully";
     }
 
-    public Profile updatePreference(String userName, Profile updatedProfile) {
-        // Fetch the profile from the database
+    public Profile updatePreference(String userName, Profile updatedPreference) {
         Profile profile = profileRepository.findProfileByUserName(userName);
         if (profile == null) {
             throw new UserNotFoundException("Username hasn't been registered: " + userName);
         }
 
-        // Check if the incoming profile has all preferences filled
-        if (updatedProfile.getDesiredJobsTitle() == null || updatedProfile.getDesiredJobsLocation() == null
-                || updatedProfile.getSkills() == null) {
+        Profile preference = profileRepository.findPreferenceByUserName(userName);
+        if (preference == null) {
+            // Handle the case where no preference exists for the user
+            preference = new Profile();
+            preference.setUserName(userName); // Set the username for the new preference
+        }
+        if (updatedPreference.getDesiredJobsTitle() == null || updatedPreference.getDesiredJobsLocation() == null
+                || updatedPreference.getSkills() == null || updatedPreference.getCompanies() == null) {
             throw new PreferencesNotFilledException("Preferences not filled");
         }
 
-        // Update the profile with new preferences
-        profile.setDesiredJobsTitle(updatedProfile.getDesiredJobsTitle());
-        profile.setDesiredJobsLocation(updatedProfile.getDesiredJobsLocation());
-        profile.setSkills(updatedProfile.getSkills());
+        preference.setDesiredJobsTitle(updatedPreference.getDesiredJobsTitle());
+        preference.setDesiredJobsLocation(updatedPreference.getDesiredJobsLocation());
+        preference.setSkills(updatedPreference.getSkills());
+        preference.setCompanies(updatedPreference.getCompanies());
 
-        // Save the updated profile to the database
-        return profileRepository.save(profile);
+        return profileRepository.save(preference);
     }
 
     public class UserNotFoundException extends RuntimeException {
@@ -106,31 +106,4 @@ public class ProfileService {
         }
     }
 
-    @RestControllerAdvice
-    public class GlobalExceptionHandler {
-
-        @ExceptionHandler(UserNotFoundException.class)
-        public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex) {
-            // Return a response entity with the NOT_FOUND status code
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-        }
-
-        @ExceptionHandler(PasswordMismatchException.class)
-        public ResponseEntity<String> handlePasswordMismatchException(PasswordMismatchException ex) {
-            // Return a response entity with the BAD_REQUEST status code
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        }
-
-        @ExceptionHandler(PreferencesNotFilledException.class)
-        public ResponseEntity<String> handlePreferencesNotFilledException(PreferencesNotFilledException ex) {
-            // Return a response entity with the BAD_REQUEST status code
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        }
-
-        @ExceptionHandler(PasswordCannotBeNull.class)
-        public ResponseEntity<String> handlePasswordCannotBeNull(PasswordCannotBeNull ex) {
-            // Return a response entity with the BAD_REQUEST status code
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        }
-    }
 }

@@ -4,10 +4,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import JobHunting.model.Profile;
-import JobHunting.model.ProfileDTO;
 
 @Repository
 public interface ProfileRepository extends MongoRepository<Profile, String> {
+
     // Personal Info
     Profile findProfileByUserName(String userName); // get userName
 
@@ -15,10 +15,14 @@ public interface ProfileRepository extends MongoRepository<Profile, String> {
 
     Profile findProfileByEmail(String email);
 
-    Profile findProfileById(String id);
+    Profile findProfileById(String _id);
 
-    // Personal Preference
-    Profile findPreferencProfileById(String id);
+    // Register
+    Profile findProfileByRegisterStage(int registerStage);
+
+    Profile findProfileByVerificationCode(String verificationCode);
+
+    // Preference
 
     Profile findProfileByDesiredJobsTitle(String[] desiredJobsTitle);
 
@@ -26,12 +30,8 @@ public interface ProfileRepository extends MongoRepository<Profile, String> {
 
     Profile findProfileBySkills(String[] skills);
 
-    // Register
-    Profile findProfileByRegisterStage(int registerStage);
+    Profile findProfileByCompanies(String[] companies);
 
-    Profile findProfileByVerificationCode(String verificationCode);
-
-    // Login
-    ProfileDTO findProfileDTOByUserName(String userName);
+    Profile findPreferenceByUserName(String userName);
 
 }

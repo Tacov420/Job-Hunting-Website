@@ -25,6 +25,8 @@ public class Profile {
     private List<String> desiredJobsTitle;
     private List<String> desiredJobsLocation;
     private List<String> skills;
+    private List<String> companies;
+
     private int registerStage; // 0: hasn't verified; 1: verify; 2: complete
     private String verificationCode;
 
@@ -32,15 +34,6 @@ public class Profile {
         this.id = id;
         this.userName = userName;
         this.password = password;
-        this.registerStage = registerStage;
-    }
-
-    public void setPreference(List<String> desiredJobsTitle, List<String> desiredJobsLocation, List<String> skills,
-            int registerStage) {
-        this.desiredJobsTitle = desiredJobsTitle;
-        this.desiredJobsLocation = desiredJobsLocation;
-
-        this.skills = skills;
         this.registerStage = registerStage;
     }
 
@@ -54,6 +47,59 @@ public class Profile {
         this.registerStage = registerStage;
     }
 
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public void setRegisterStage(int registerStage) {
+        this.registerStage = registerStage;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+
+    }
+
+    public void setProfileId(int id) {
+        this.id = id;
+    }
+
+    // Preference
+    public void setPreference(List<String> desiredJobsTitle, List<String> desiredJobsLocation, List<String> skills,
+            int registerStage) {
+
+        this.desiredJobsTitle = desiredJobsTitle;
+        this.desiredJobsLocation = desiredJobsLocation;
+        this.skills = skills;
+        this.registerStage = registerStage;
+    }
+
+    public List<String> getCompanies() {
+        return companies;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public List<String> getDesiredJobsTitle() {
+        return desiredJobsTitle;
+    }
+
+    public List<String> getDesiredJobsLocation() {
+        return desiredJobsLocation;
+    }
+
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    // set
+
     public void setDesiredJobsTitle(List<String> desiredJobsTitle) {
         this.desiredJobsTitle = desiredJobsTitle;
     }
@@ -66,16 +112,8 @@ public class Profile {
         this.skills = skills;
     }
 
-    public void setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
-    }
-
-    public void setRegisterStage(int registerStage) {
-        this.registerStage = registerStage;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCompanies(List<String> companies) {
+        this.companies = companies;
     }
 
 }

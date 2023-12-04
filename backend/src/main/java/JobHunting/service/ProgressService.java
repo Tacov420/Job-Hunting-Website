@@ -25,15 +25,38 @@ public class ProgressService {
     }
 
     // CREATE
+    @Transactional
     public Progress createProgress(Progress progress) {
-        validateProgress(progress);
-        return progressRepository.save(progress);
+        Progress newProgress = new Progress();
+        Progress progressId = progressRepository.findFirstByOrderByProgressIdDesc();
+        if (progressId != null) {
+            newProgress.setProgressId(progressId.getProgressId() + 1);
+        } else {
+            newProgress.setProgressId(0);
+        }
+        newProgress.setUserName(progress.getUserName());
+        newProgress.setCompanyName(progress.getCompanyName());
+        newProgress.setJobsTitle(progress.getJobsTitle());
+        newProgress.setProgressStage(progress.getProgressStage());
+        newProgress.setDateApplied(progress.getDateApplied());
+        newProgress.setDateFirstInterview(progress.getDateFirstInterview());
+        newProgress.setDateSecondInterview(progress.getDateSecondInterview());
+        newProgress.setDateOffer(progress.getDateOffer());
+        newProgress.setDateRejected(progress.getDateRejected());
+
+        newProgress.setCreatedDate(new Date());
+
+        validateProgress(newProgress);
+        progressRepository.save(newProgress);
+
+        return newProgress;
+
     }
 
     // READ by 一個一個
-    public Progress getProgressById(String Objectid) {
-        return progressRepository.findById(Objectid)
-                .orElseThrow(() -> new ProgressNotFoundException("Progress not found for ID: " + Objectid));
+    public Progress getProgressById(int progressId) {
+        return progressRepository.findById(String.valueOf(progressId))
+                .orElseThrow(() -> new ProgressNotFoundException("Progress not found for ID: " + progressId));
     }
 
     // read by 全部
@@ -46,23 +69,35 @@ public class ProgressService {
     }
 
     @Transactional
-    public Progress updateProgress(String Objectid, Progress updatedProgress) {
-        Progress existingProgress = progressRepository.findById(Objectid)
-                .orElseThrow(() -> new ProgressNotFoundException("Progress not found for ID: " + Objectid));
+    public List<Progress> updateProgress(String userName, int progressId, Progress updatedProgress) {
+        List<Progress> existingProgresses = progressRepository.findByUserNameAndProgressId(userName, progressId);
+        if (existingProgresses.isEmpty()) {
+            throw new ProgressNotFoundException(
+                    "Progress not found for userName: " + userName + " and progressId: " + progressId);
+        }
 
-        existingProgress.setCompanyName(updatedProgress.getCompanyName());
-        existingProgress.setJobsTitle(updatedProgress.getJobsTitle());
-        existingProgress.setProgressStage(updatedProgress.getProgressStage());
-        existingProgress.setLastModifiedDate(new Date());
+        for (Progress existingProgress : existingProgresses) {
+            existingProgress.setCompanyName(updatedProgress.getCompanyName());
+            existingProgress.setJobsTitle(updatedProgress.getJobsTitle());
+            existingProgress.setProgressStage(updatedProgress.getProgressStage());
+            existingProgress.setDateApplied(updatedProgress.getDateApplied());
+            existingProgress.setDateFirstInterview(updatedProgress.getDateFirstInterview());
+            existingProgress.setDateSecondInterview(updatedProgress.getDateSecondInterview());
+            existingProgress.setDateOffer(updatedProgress.getDateOffer());
+            existingProgress.setDateRejected(updatedProgress.getDateRejected());
 
-        return progressRepository.save(existingProgress);
+            existingProgress.setLastModifiedDate(new Date());
+            existingProgress.setCreatedDate(existingProgress.getCreatedDate());
+
+            validateProgress(existingProgress);
+        }
+
+        return progressRepository.saveAll(existingProgresses);
     }
 
     // Make sure to validate the updated fields
     public void validateProgress(Progress progress) {
-        if (progress.getUserName() == null || progress.getUserName().isEmpty()) {
-            throw new IllegalArgumentException("Username must not be empty");
-        }
+
         if (progress.getCompanyName() == null || progress.getCompanyName().isEmpty()) {
             throw new IllegalArgumentException("Company name must not be empty");
         }
@@ -74,35 +109,30 @@ public class ProgressService {
         }
     }
 
-    public void deleteProgress(String userName) {
-        List<Progress> existingProgressList = progressRepository.findProgressByUserName(userName);
-
+    public void deleteProgress(String userName, int progressId) {
+        List<Progress> existingProgressList = progressRepository.findByUserNameAndProgressId(userName, progressId);
+        progressRepository.deleteProgressByUserNameAndProgressId(userName, progressId);
+        if (existingProgressList.isEmpty()) {
+            throw new ProgressNotFoundException(
+                    "Progress not found for userName: " + userName + " and progressId: " + progressId);
+        }
         if (existingProgressList.isEmpty()) {
             throw new ProgressNotFoundException("Progress not found for userName: " + userName);
         }
 
-        for (Progress progress : existingProgressList) {
-            progressRepository.delete(progress);
-        }
+        return;
     }
-
-    public void deleteProgressById(String id) {
-        Progress existingProgress = progressRepository.findById(id)
-                .orElseThrow(() -> new ProgressNotFoundException("Progress not found for ID: " + id));
-        progressRepository.delete(existingProgress);
-    }
-
-    // private Date parseDate(String dateString) {
-    // try {
-    // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    // return dateFormat.parse(dateString);
-    // } catch (ParseException e) {
-    // throw new IllegalArgumentException("Invalid date format: " + dateString, e);
-    // }
-    // }
 
     public enum UpdateType {
-        COMPANY_NAME, JOB_TITLE, LAST_MODIFIED_DATE, PROGRESS_STAGE, CREATED_DATE
+        PROGRESS_STAGE,
+        COMPANY_NAME,
+        JOB_TITLE,
+        CREATED_DATE,
+        LAST_MODIFIED_DATE,
+        DATE_FIRST_INTERVIEW,
+        DATE_SECOND_INTERVIEW,
+        DATE_OFFER,
+        DATE_REJECTED;
     }
 
     // Exception to throw when Progress is not found

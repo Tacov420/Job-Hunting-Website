@@ -21,6 +21,7 @@ import JobHunting.service.ProgressService;
 import JobHunting.service.ProgressService.*;
 
 import javax.validation.Valid;
+
 import java.util.List;
 
 @RestController
@@ -31,8 +32,9 @@ public class ProgressController {
     @Autowired
     private ProgressService progressService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse> createProgress(@Valid @RequestBody Progress progress) {
+    @PostMapping("/{userName}")
+    public ResponseEntity<ApiResponse> createProgress(@PathVariable String userName,
+            @Valid @RequestBody Progress progress) {
         try {
             Progress createdProgress = progressService.createProgress(progress);
             ApiResponse response = new ApiResponse("Progress has been created successfully.", createdProgress);
@@ -41,7 +43,8 @@ public class ProgressController {
             ApiResponse response = new ApiResponse("Failed to create progress due to data integrity violation.", null);
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("An unexpected error occurred.", null);
+            e.printStackTrace(); // Log the stack trace to the console or a log file
+            ApiResponse response = new ApiResponse("An unexpected error occurred: " + e.toString(), null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -63,32 +66,35 @@ public class ProgressController {
     }
 
     // UPDATE
-    @PutMapping("/{Objectid}")
-    public ResponseEntity<ApiResponse> updateProgressById(@PathVariable String Objectid,
+    @PutMapping("{userName}/{progressId}")
+    public ResponseEntity<ApiResponse> updateProgress(@PathVariable String userName, @PathVariable int progressId,
             @Valid @RequestBody Progress progress) {
         try {
-            Progress updatedProgress = progressService.updateProgress(Objectid, progress);
-            ApiResponse response = new ApiResponse("Progress successfully updated.", updatedProgress);
+            List<Progress> updatedProgressList = progressService.updateProgress(userName, progressId, progress);
+            ApiResponse response = new ApiResponse("Progress successfully updated.", updatedProgressList);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (ProgressNotFoundException e) {
-            return new ResponseEntity<>(new ApiResponse("Progress not found for ID: " + Objectid, null),
-                    HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponse(e.getMessage(), null), HttpStatus.NOT_FOUND);
+        } catch (DataIntegrityViolationException e) {
+            return new ResponseEntity<>(
+                    new ApiResponse("Failed to update progress due to data integrity violation.", null),
+                    HttpStatus.CONFLICT);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ApiResponse("An unexpected error occurred.", null),
+            return new ResponseEntity<>(new ApiResponse("An unexpected error occurred: " + e.getMessage(), null),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     // DELETE using ID
-    @DeleteMapping("/{Objectid}")
-    public ResponseEntity<ApiResponse> deleteProgressById(
-            @PathVariable String Objectid) {
+    @DeleteMapping("{userName}/{progressId}")
+    public ResponseEntity<ApiResponse> deleteProgressByProgressId(
+            @PathVariable String userName, @PathVariable int progressId) {
         try {
-            progressService.deleteProgressById(Objectid);
+            progressService.deleteProgress(userName, progressId);
             ApiResponse response = new ApiResponse("Progress successfully deleted.", null);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (ProgressNotFoundException e) {
-            ApiResponse response = new ApiResponse("Progress not found for ID: " + Objectid, null);
+            ApiResponse response = new ApiResponse("Progress not found for ID: " + progressId, null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             ApiResponse response = new ApiResponse("An unexpected error occurred.", null);
