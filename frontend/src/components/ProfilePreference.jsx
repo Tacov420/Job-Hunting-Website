@@ -1,7 +1,7 @@
 import React, { useState, useRef, useContext } from "react";
 import { UsernameContext } from "../context/UsernameContext";
 import { Link } from "react-router-dom";
-import { getPreference } from "../utils/client";
+import { getPreference, updatePreference } from "../utils/client";
 
 
 const ProfilePreference = () => {
@@ -10,13 +10,13 @@ const ProfilePreference = () => {
     const [ desiredJobs, setDesiredJobs ] = useState([]);
     const [ desiredLocations, setDesiredLocations ] = useState([]);
 
-    const initUserPreference = async (userName) => {
-        const response = await getPreference(userName);
+    const initUserPreference = async () => {
+        const response = await getPreference(Username);
         setSkills(response.data.skills);
         setDesiredJobs(response.data.desiredJobsTitle);
         setDesiredLocations(response.data.desiredJobsLocation);
     }
-    initUserPreference(Username);
+    initUserPreference();
 
     const inputSkills = useRef(null);
     const inputDesiredJobs = useRef(null);
@@ -28,8 +28,14 @@ const ProfilePreference = () => {
         setEditMode(true);
     }
 
-    const saveEditing = () => {
-        setEditMode(false);
+    const saveEditing = async () => {
+        try {
+            console.log(inputSkills.current.value.split(','), inputDesiredJobs.current.value.split(','), inputDesiredLocations.current.value.split(','));
+            const response = await updatePreference(Username, inputSkills.current.value.split(','), inputDesiredJobs.current.value.split(','), inputDesiredLocations.current.value.split(','));
+            setEditMode(false);
+        } catch (error) {
+            alert("Error: Failed to update preference");
+        }
     }
 
     const cancelEditing = () => {

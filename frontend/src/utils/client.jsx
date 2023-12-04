@@ -61,3 +61,8 @@ export function updatePassword(username, newPassword){
 export function getPreference(username){
 	return client.get(`/profile/preference/${username}`);
 };
+
+export function updatePreference(username, skills, desiredJobs, desiredLocations){
+	const data = {userName: username, desiredJobsTitle: desiredJobs, desiredJobsLocation: desiredLocations, skills: skills};
+	return client.put(`/profile/preference/${username}`, data);
+};
