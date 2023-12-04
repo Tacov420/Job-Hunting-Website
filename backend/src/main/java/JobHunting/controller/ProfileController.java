@@ -52,7 +52,7 @@ public class ProfileController {
 
             // Call the service layer to update the password
             String passwordUpdateResponse = profileService.updatePassword(userName, newPassword, confirmPassword);
-            if (!passwordUpdateResponse.equals("Success")) {
+            if (!passwordUpdateResponse.equals("Password updated successfully")) {
                 // The password update failed, return the error message from the service
                 return new ResponseEntity<>(passwordUpdateResponse, HttpStatus.BAD_REQUEST);
             }
@@ -74,3 +74,4 @@ public class ProfileController {
     }
 
 }
+

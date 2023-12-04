@@ -21,7 +21,7 @@ public class ReplyController {
         int postId = Integer.parseInt(body.get("postId"));
         String replyContent = body.get("replyContent");
         if (!replyService.checkPostId(postId)) {
-            return new ResponseEntity<>("PostId is incorrect", HttpStatus.OK);
+            return new ResponseEntity<>("PostId is incorrect", HttpStatus.CREATED);
         }
         try {
             int userId = replyService.getUserId(userName);
@@ -29,7 +29,7 @@ public class ReplyController {
                 return new ResponseEntity<>("UserName doesn't exist", HttpStatus.BAD_REQUEST);
             }
             String res = replyService.createReply(userId, postId, replyContent);
-            return new ResponseEntity<>(res, HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

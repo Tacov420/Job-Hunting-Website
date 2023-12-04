@@ -10,4 +10,6 @@ import JobHunting.model.*;
 public interface CompanyRepository extends MongoRepository<Company, String> {
     Company findFirstByOrderByIdDesc();                                             // get the largest id
     List<Company> findByUserId(int userId);
+    Company findById(int id);
+    void deleteById(int id);
 }
