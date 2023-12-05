@@ -53,8 +53,9 @@ for job_id in job_ids:
     except:
         job_info["level"] = None
 
-    job_info["time"] = time.time()
-    job_infos.append(job_info)
+    if job_info["company"] or job_info["job-title"] or job_info["level"]:
+        job_info["time"] = time.time()
+        job_infos.append(job_info)
 
 print(job_infos)
 
