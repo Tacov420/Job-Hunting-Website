@@ -1,4 +1,5 @@
 import requests
+import time
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
 
@@ -52,6 +53,7 @@ for job_id in job_ids:
     except:
         job_info["level"] = None
 
+    job_info["time"] = time.time()
     job_infos.append(job_info)
 
 print(job_infos)
