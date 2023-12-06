@@ -7,7 +7,7 @@ from pymongo import MongoClient
 # MongoDB related
 MONGO_URI = "mongodb+srv://JobHunting:jobhunting@cluster0.fwskbmd.mongodb.net/JobHuntingTest"
 PORT = 8005
-DB = "JobHunting"
+DB = "JobHuntingTest"
 COLLECTION = "jobs"
 
 headers = {
@@ -44,16 +44,16 @@ for job_id in job_ids:
         job_info["company"] = None
 
     try:
-        job_info["job-title"] = soup.find("div",{"class":"top-card-layout__entity-info"}).find("a").text.strip()
+        job_info["jobTitle"] = soup.find("div",{"class":"top-card-layout__entity-info"}).find("a").text.strip()
     except:
-        job_info["job-title"] = None
+        job_info["jobTitle"] = None
 
     try:
         job_info["level"] = soup.find("ul",{"class":"description__job-criteria-list"}).find("li").text.replace("Seniority level","").strip()
     except:
         job_info["level"] = None
 
-    if job_info["company"] or job_info["job-title"] or job_info["level"]:
+    if job_info["company"] or job_info["jobTitle"] or job_info["level"]:
         job_info["time"] = time.time()
         job_infos.append(job_info)
 
