@@ -1,31 +1,27 @@
 package JobHunting.repository;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
-
+import java.util.Optional;
 import JobHunting.model.Notification;
 
 @Repository
 public interface NotificationRepository extends MongoRepository<Notification, String> {
-    List<Notification> findAll();
 
-    // Notification manage for Progress and Job are put in ProgressRepository and
-    // JobRepository
-
-    List<Notification> findByNotificationSentFalse();
-
-    Notification findFirstByOrderByNotificationIdDesc();
-
-    Notification findByNotificationId(int notificationId);
+    Optional<Notification> findById(ObjectId id);
 
     List<Notification> findByUserName(String userName);
 
-    Notification deleteByNotificationId(int notificationId);
+    List<Notification> findAll();
 
-    Notification deleteByUserName(String userName);
+    List<Notification> findBySentFalse();
 
-    Notification deleteByNotificationSent(boolean notificationSent);
+    void getByUserName(String userName);
+
+    void deleteByUserName(String userName); // Change return type to void if not returning the deleted entity
+
+    void deleteBySent(boolean sent); // Change return type to void if not returning the deleted entity
 
 }

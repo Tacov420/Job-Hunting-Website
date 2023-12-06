@@ -28,27 +28,4 @@ public class Subscription {
         this.auth = auth;
     }
 
-    public void librarySubscription(String userName, String endpoint, String publicKey, String auth) {
-        this.userName = userName;
-        this.endpoint = endpoint;
-        this.publicKey = publicKey;
-        this.auth = auth;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-    }
-
-    public void setPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-    }
-
-    public void setAuth(String auth) {
-        this.auth = auth;
-    }
-
 }

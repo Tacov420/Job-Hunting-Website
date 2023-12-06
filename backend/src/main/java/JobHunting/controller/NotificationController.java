@@ -37,9 +37,10 @@ public class NotificationController {
     }
 
     @DeleteMapping(value = "/delete/{userName}/{notificationId}")
-    public ResponseEntity<Object> deleteNotification(@PathVariable String userName, @PathVariable int notificationId) {
+    public ResponseEntity<Object> deleteNotification(@PathVariable String userName,
+            @PathVariable String notificationIdAsString) {
         try {
-            boolean isDeleted = notificationService.deleteNotification(userName, notificationId);
+            boolean isDeleted = notificationService.deleteNotification(userName, notificationIdAsString);
             if (isDeleted) {
                 return new ResponseEntity<>("Notification deleted successfully", HttpStatus.OK);
             } else {

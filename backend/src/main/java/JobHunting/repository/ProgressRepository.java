@@ -2,6 +2,7 @@ package JobHunting.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,11 @@ import JobHunting.model.*;
 
 @Repository
 public interface ProgressRepository extends MongoRepository<Progress, String> {
+
+    // Notification
+    @Query("{ $or: [ { 'dateFirstInterview': { $gte: ?0, $lte: ?1 } }, { 'dateSecondInterview': { $gte: ?0, $lte: ?1 } } ] }")
+    List<Progress> findProgressWithInterviewsInNextDays(Date currentDate, Date thresholdDate);
+
     Progress findFirstByOrderByProgressIdDesc();
 
     Progress findProgressByProgressId(int progressId);
@@ -33,9 +39,5 @@ public interface ProgressRepository extends MongoRepository<Progress, String> {
     void deleteProgressByCreatedDate(Date createdDate);
 
     void deleteProgressByLastModifiedDate(Date lastModifiedDate);
-
-    // Notification
-
-    List<Progress> findIsDateWithinThreshold(Date interviewDate, int days);
 
 }

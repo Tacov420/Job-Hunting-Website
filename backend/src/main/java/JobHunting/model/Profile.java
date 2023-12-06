@@ -10,11 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document(collection = "profile")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Document(collection = "profile")
 public class Profile {
     @Id
     private ObjectId _id;
@@ -43,31 +42,6 @@ public class Profile {
         this.verificationCode = verificationCode;
     }
 
-    public void setStage(int registerStage) {
-        this.registerStage = registerStage;
-    }
-
-    public void setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
-    }
-
-    public void setRegisterStage(int registerStage) {
-        this.registerStage = registerStage;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-
-    }
-
-    public void setProfileId(int id) {
-        this.id = id;
-    }
-
     // Preference
     public void setPreference(List<String> desiredJobsTitle, List<String> desiredJobsLocation, List<String> skills,
             int registerStage) {
@@ -78,46 +52,8 @@ public class Profile {
         this.registerStage = registerStage;
     }
 
-    public List<String> getCompanies() {
-        return companies;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public List<String> getDesiredJobsTitle() {
-        return desiredJobsTitle;
-    }
-
-    public List<String> getDesiredJobsLocation() {
-        return desiredJobsLocation;
-    }
-
-    public List<String> getSkills() {
-        return skills;
-    }
-
-    // set
-
-    public void setDesiredJobsTitle(List<String> desiredJobsTitle) {
-        this.desiredJobsTitle = desiredJobsTitle;
-    }
-
-    public void setDesiredJobsLocation(List<String> desiredJobsLocation) {
-        this.desiredJobsLocation = desiredJobsLocation;
-    }
-
-    public void setSkills(List<String> skills) {
-        this.skills = skills;
-    }
-
-    public void setCompanies(List<String> companies) {
-        this.companies = companies;
+    public void setStage(int registerStage) {
+        this.registerStage = registerStage;
     }
 
 }

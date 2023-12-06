@@ -9,14 +9,18 @@ import nl.martijndwars.webpush.Subscription;
 
 import JobHunting.model.*;
 import JobHunting.repository.*;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.security.Security;
+
 import java.util.Date;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.springframework.beans.factory.annotation.Value;
+import java.util.Calendar;
+import java.util.Optional;
+// import java.io.IOException;
+// import java.security.GeneralSecurityException;
+// import java.security.Security;
+// import javax.annotation.PostConstruct;
+// import org.springframework.beans.factory.annotation.Value;
+// import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bson.types.ObjectId;
 import org.springframework.scheduling.annotation.Scheduled;
 
 @Service
@@ -30,18 +34,18 @@ public class NotificationService {
     @Autowired
     private SubscriptionRepository subscriptionRepository;
 
-    @Value("${vapid.public.key}")
-    private String publicKey;
-    @Value("${vapid.private.key}")
-    private String privateKey;
+    // @Value("${vapid.public.key}")
+    // private String publicKey;
+    // @Value("${vapid.private.key}")
+    // private String privateKey;
 
     private PushService pushService;
 
-    @PostConstruct
-    public void init() throws GeneralSecurityException, IOException {
-        Security.addProvider(new BouncyCastleProvider());
-        pushService = new PushService(publicKey, privateKey);
-    }
+    // @PostConstruct
+    // public void init() throws GeneralSecurityException, IOException {
+    // Security.addProvider(new BouncyCastleProvider());
+    // pushService = new PushService(publicKey, privateKey);
+    // }
 
     private String createInterviewReminderMessageJson(Progress progress) {
         return "{\"title\": \"Interview Reminder\", \"body\": \"You have an interview with " + progress.getCompanyName()
@@ -64,17 +68,22 @@ public class NotificationService {
         }
     }
 
-    public boolean deleteNotification(String userName, int notificationId) {
-        JobHunting.model.Notification notification = notificationRepository
-                .findByNotificationId(notificationId);
-        if (notification == null || !notification.getUserName().equals(userName)) {
-            return false;
+    public boolean deleteNotification(String userName, String notificationIdAsString) {
+        ObjectId notificationId = new ObjectId(notificationIdAsString);
+        Optional<JobHunting.model.Notification> optionalNotification = notificationRepository.findById(notificationId);
+
+        if (optionalNotification.isPresent() && optionalNotification.get().getUserName().equals(userName)) {
+            notificationRepository.delete(optionalNotification.get());
+            return true;
         }
-        notificationRepository.delete(notification);
-        return true;
+        return false;
     }
 
     public List<JobHunting.model.Notification> getAllNotification(String userName) {
+        return notificationRepository.findByUserName(userName);
+    }
+
+    public List<JobHunting.model.Notification> getNotificationsForUser(String userName) {
         return notificationRepository.findByUserName(userName);
     }
 
@@ -109,27 +118,27 @@ public class NotificationService {
 
     @Scheduled(fixedRate = 1000 * 60 * 60 * 24)
     public void sendInterviewReminders() {
-        List<Progress> upcomingInterviews = progressRepository.findIsDateWithinThreshold(new Date(), 3);
+        Date now = new Date();
+        Date thresholdDate = addDaysToDate(now, 3); // Add 3 days to the current date
+        List<Progress> upcomingInterviews = progressRepository.findProgressWithInterviewsInNextDays(now, thresholdDate);
         upcomingInterviews.forEach(progress -> {
-            String messageJson = createInterviewReminderMessageJson(progress);
             String userName = progress.getUserName();
-            JobHunting.model.Subscription customSubscription = subscriptionRepository.findByUserName(userName);
-            if (customSubscription != null) {
-                sendNotification(customSubscription, messageJson);
+            Optional<JobHunting.model.Subscription> optionalCustomSubscription = subscriptionRepository
+                    .findByUserName(userName);
+
+            if (optionalCustomSubscription.isPresent()) {
+                JobHunting.model.Subscription customSubscription = optionalCustomSubscription.get();
+                String message = createInterviewReminderMessageJson(progress);
+                sendNotification(customSubscription, message);
             }
         });
     }
 
-    public void IsDateWithinThreshold(Date interviewDate, int days) {
-        List<Progress> upcomingInterviews = progressRepository.findIsDateWithinThreshold(interviewDate, days);
-        upcomingInterviews.forEach(progress -> {
-            String messageJson = createInterviewReminderMessageJson(progress);
-            String userName = progress.getUserName();
-            JobHunting.model.Subscription customSubscription = subscriptionRepository.findByUserName(userName);
-            if (customSubscription != null) {
-                sendNotification(customSubscription, messageJson);
-            }
-        });
+    private Date addDaysToDate(Date date, int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, days);
+        return calendar.getTime();
     }
 
 }

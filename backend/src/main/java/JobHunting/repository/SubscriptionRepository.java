@@ -2,24 +2,21 @@ package JobHunting.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
+import java.util.Optional;
 
 import JobHunting.model.Subscription;
 
 @Repository
 public interface SubscriptionRepository extends MongoRepository<Subscription, String> {
+
+    Optional<Subscription> findByUserName(String userName);
+
     List<Subscription> findAll();
 
-    Subscription findFirstByOrderByIdDesc(); // get the largest id
+    void deleteBySubscriptionId(int subscriptionId);
 
-    Subscription findByUserName(String userName);
-
-    Subscription findBySubscriptionId(int subscriptionId);
-
-    Subscription findForUser();
-
-    Subscription deleteBySubscriptionId(int subscriptionId);
-
-    Subscription deleteByUserName(String userName);
+    void deleteByUserName(String userName);
 
 }
