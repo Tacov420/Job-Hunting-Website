@@ -52,6 +52,12 @@ public class Progress {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateRejected;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date startDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date endDate;
+
     // setters
 
     public String getId() {
@@ -354,6 +360,23 @@ public class Progress {
                 this.dateRejected = (Date) fields.get("dateRejected");
             }
         }
+    }
+
+    // Notification
+
+    public boolean isFirstInterviewInThreeDays() {
+        return dateFirstInterview != null && isDateWithinThreshold(dateFirstInterview, 3);
+    }
+
+    public boolean isSecondInterviewInThreeDays() {
+        return dateSecondInterview != null && isDateWithinThreshold(dateSecondInterview, 3);
+    }
+
+    private boolean isDateWithinThreshold(Date interviewDate, int days) {
+        Date now = new Date();
+        long diff = interviewDate.getTime() - now.getTime();
+        long threshold = days * 24 * 60 * 60 * 1000; // days to milliseconds
+        return diff > 0 && diff <= threshold;
     }
 
 }

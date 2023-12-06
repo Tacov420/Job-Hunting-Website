@@ -1,13 +1,11 @@
 package JobHunting.model;
 
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-// import java.util.List;s
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Document(collection = "company")
 @Data
@@ -27,5 +25,4 @@ public class Company {
         this.name = name;
         this.receiveEmail = receiveEmail;
     }
-
 }

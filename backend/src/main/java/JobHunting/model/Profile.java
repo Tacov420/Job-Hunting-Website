@@ -86,6 +86,10 @@ public class Profile {
         return userName;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public List<String> getDesiredJobsTitle() {
         return desiredJobsTitle;
     }

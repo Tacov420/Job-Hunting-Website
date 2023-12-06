@@ -17,6 +17,8 @@ public interface ProfileRepository extends MongoRepository<Profile, String> {
 
     Profile findProfileById(String _id);
 
+    Profile findByUserName(String userName);
+
     // Register
     Profile findProfileByRegisterStage(int registerStage);
 

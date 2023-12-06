@@ -34,4 +34,8 @@ public interface ProgressRepository extends MongoRepository<Progress, String> {
 
     void deleteProgressByLastModifiedDate(Date lastModifiedDate);
 
+    // Notification
+
+    List<Progress> findIsDateWithinThreshold(Date interviewDate, int days);
+
 }
