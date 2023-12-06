@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import JobHunting.model.ProfileDTO;
+import JobHunting.dto.ProfileDTO;
 import JobHunting.service.ProfileService;
 import JobHunting.service.ProfileService.PasswordMismatchException;
 import JobHunting.service.ProfileService.UserNotFoundException;
@@ -37,6 +37,17 @@ public class ProfileController {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    // Get profile
+    @GetMapping("/{userName}")
+    public ResponseEntity<?> getProfile(@PathVariable("userName") String userName) {
+        ProfileDTO profileDTO = profileService.getProfileByUserName(userName);
+        if (profileDTO != null) {
+            return new ResponseEntity<>(profileDTO, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Username not found.", HttpStatus.NOT_FOUND);
+    }
+
+    // Update profile
     @PutMapping("/{userName}")
     public ResponseEntity<?> updateProfile(@PathVariable String userName,
             @RequestBody Map<String, Object> requestBody) {
@@ -52,9 +63,9 @@ public class ProfileController {
 
             // Call the service layer to update the password
             String passwordUpdateResponse = profileService.updatePassword(userName, newPassword, confirmPassword);
-            if (!passwordUpdateResponse.equals("Password updated successfully")) {
+            if (!passwordUpdateResponse.equals("Password update succesfully")) {
                 // The password update failed, return the error message from the service
-                return new ResponseEntity<>(passwordUpdateResponse, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(passwordUpdateResponse, HttpStatus.OK);
             }
         } else {
             // If newPassword or confirmPassword is null, return an appropriate message
@@ -63,15 +74,4 @@ public class ProfileController {
         return new ResponseEntity<>("Profile Personal Information updated successfully", HttpStatus.OK);
     }
 
-    // Get profile
-    @GetMapping("/{userName}")
-    public ResponseEntity<ProfileDTO> getProfile(@PathVariable("userName") String userName) {
-        ProfileDTO profileDTO = profileService.getProfile(userName);
-        if (profileDTO != null) {
-            return new ResponseEntity<>(profileDTO, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
 }
-

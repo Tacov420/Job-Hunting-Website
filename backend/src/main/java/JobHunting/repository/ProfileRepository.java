@@ -19,8 +19,6 @@ public interface ProfileRepository extends MongoRepository<Profile, String> {
     Optional<Profile> findById(String id);
 
     // Personal Preference
-    Profile findPreferencProfileById(String id);
-
     Profile findByDesiredJobsTitle(String[] desiredJobsTitle);
 
     Profile findByDesiredJobsLocation(String[] desiredJobsLocation);
@@ -31,9 +29,5 @@ public interface ProfileRepository extends MongoRepository<Profile, String> {
     Profile findByRegisterStage(int registerStage);
 
     Profile findByVerificationCode(String verificationCode);
-
-    // Login
-    ProfileDTO findDTOByUserName(String userName);
-
 }
 
