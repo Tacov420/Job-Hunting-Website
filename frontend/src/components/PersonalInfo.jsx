@@ -1,6 +1,7 @@
 import React, { useState, useRef, useContext } from "react";
 import { UsernameContext } from "../context/UsernameContext";
 import { getPersonalInfo, updatePassword } from "../utils/client";
+import { BsFillPersonVcardFill } from "react-icons/bs";
 
 
 const PersonalInfo = () => {    
@@ -12,8 +13,6 @@ const PersonalInfo = () => {
         const response = await getPersonalInfo(userName);
         setInfoUsername(response.data.userName);
         setInfoEmailAddr(response.data.email);
-        // console.log(infoUsername);
-        // console.log(infoEmailAddr);
     }
     initUserInfo(Username);
 
@@ -55,11 +54,12 @@ const PersonalInfo = () => {
     }
 
     return (
-        <div>
         <div className="p-4 sm:ml-64">
-            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
+            <div className="flex flex-col items-center justify-center mx-auto lg:py-0">
             <div className="w-full rounded-lg md:mt-0 sm:max-w-lg">
-            <h1 className="text-xl font-bold text-gray-900 md:text-2xl">Personal Information</h1>
+            <h1 className="text-xl font-bold text-gray-900 md:text-2xl py-4">
+                <BsFillPersonVcardFill className="inline mr-3" size={35}/>Personal Information
+            </h1>
             <form onSubmit={e => { e.preventDefault(); }}>
                 <div className="space-y-4 md:space-y-6">
                     <div>
@@ -98,20 +98,20 @@ const PersonalInfo = () => {
                 
                 <div className="Buttons">
                     <button id="edit-button" 
-                        className="text-white bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-3 py-2 mb-2"
+                        className="px-7 bg-gray-500 rounded-md font-sm text-white hover:bg-gray-400"
                         onClick={() => startEditing()} style={{display: editMode ? "none" : "inline-block" }}>Edit</button>
                     <button id="save-button" 
-                        className="text-white bg-green-500 hover:bg-green-700 font-medium rounded-lg text-sm px-3 py-2 mb-2"
+                        className="px-7 bg-green-300 rounded-md font-sm text-gray-800 hover:bg-green-400"
                         onClick={() => saveEditing()} style={{display: editMode ? "inline-block" : "none" }}>Save</button>
                     <button id="cancel-button" 
-                        className="text-white bg-red-500 hover:bg-red-700 font-medium rounded-lg text-sm px-3 py-2 mb-2"
+                        className="ml-1 px-7 bg-red-300 rounded-md font-sm text-gray-800 hover:bg-red-400"
                         onClick={() => cancelEditing()} style={{display: editMode ? "inline-block" : "none" }}>Cancel</button>
                 </div>
             </form>
         </div>
         </div>
         </div>
-        </div>
+       
     );
 };
  

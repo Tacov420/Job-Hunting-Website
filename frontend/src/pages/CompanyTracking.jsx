@@ -1,55 +1,168 @@
-import React, {useState , useRef} from "react";
+import React, {useState , useRef , useContext , useEffect} from "react";
+import { UsernameContext } from '../context/UsernameContext';
 import  TitleBar  from '../components/TitleBar';
 import  CompanyItem  from '../components/Company';
-import { Routes, Route, Link , useParams} from "react-router-dom";
+import { BiChevronDown } from "react-icons/bi";
+import { AiOutlineSearch } from "react-icons/ai";
+
+import {getCompanies ,  deleteCompany , addCompany , getAllCompany} from '../utils/client';
+import { useNavigate } from "react-router-dom";
 
 const CompanyTracking = () => {
     const [companies, setCompanies] = useState([]);
+    const [select , setSelect] = useState('');
+    const [companyPool, setCompanyPool] = useState(null);
+	const [inputValue, setInputValue] = useState("");
+	const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
+    const { Username } = useContext(UsernameContext);
 
-    //const companyList = await getCompanies();
-    //setCompanies(companyList);
+    useEffect(() => {    
+        getCompanyList();
+        getCompanyPool();
+    }, []); 
 
 
-    const deleteCompany = (id) => {
-        //api
-        //setCompanies(companies.filter((company) => company.id !== id));
+    const getCompanyList = async () => {
+        try{
+            //const response = await getCompanies(encodeURIComponent(Username));
+            const response = await getCompanies('test0');
+            const res = JSON.stringify(response);
+            const keys = Object.keys(response);
+            const companyList = keys.map(key => ({
+                id: key,
+                companyName: response[key][0]['companyName'],
+                isTrack: response[key][0]['receiveEmail'],
+            }));
+            setCompanies(companyList);
+        }catch (error) {
+            if (error.response) {
+                alert(`${error.response.data}`);
+            } 
+        }
+        return;
+    }
+
+    const getCompanyPool = async() => {
+		try{
+			//const response = await getAllCompany(encodeURIComponent(Username));
+			const response = await getAllCompany('test0');
+			const companies = response['companies'].map(company => ({
+                companyName: company[0],
+                isTrack: company[1],
+            }));
+			// sort by name
+			companies.sort((a, b) => {
+				const nameA = a.companyName.toUpperCase(); // ignore upper and lowercase
+				const nameB = b.companyName.toUpperCase(); // ignore upper and lowercase
+				if (nameA < nameB)	return -1;
+				if (nameA > nameB) 	return 1;
+				return 0;  // names must be equal
+			});
+			setCompanyPool(companies);
+		}catch (error) {
+			if (error.response) {
+				alert(`${error.response.data}`);
+			} 
+		}
+		return;
+	}
+
+    const handleDeleteCompany = async(id) => {
+        try {
+            const response = await deleteCompany(Username, id);
+            if (response.status === 201) {
+                setCompanies(companies.filter((company) => company.id !== id));
+            }
+            
+        } catch (error) {
+            console.error('Error deleting reply:', error);
+        }
     };
 
+    const handleAddCompany = async() =>{
+        //setSelect(companyName);
+        if(select == '')
+            return;
+        try{
+            console.log(select);
+            const response = await addCompany(Username, select);
+            if (response.status === 201){
+                //alert('add successfully');
+                navigate(0);
+            }
+        } catch (error) {
+            if (error.response) {
+                console.error('error:', error.response.data);
+                console.error('Status code:', error.response.status);
+                alert(`${error.response.data}`);
+            } 
+        }
+        setOpen(false);
+		setInputValue("");
+        return;
+    }
 
     return (
         <>
         <TitleBar display={true} currentPage={'company tracking'}/>
         <div className='items-center mx-24 px-10 mt-6'>
-            <div className="flex flex-wrap -mx-3 mb-5">
-                <div className="w-full md:w-full px-3 mb-6 md:mb-0">
-                    <div className="relative">
-                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                            </svg>
+            <div className="flex flex-row ">
+                <div className="w-1/2 bg-gray-100 rounded-xl mx-5">
+                    <div className="mx-5">
+                    <h2 className="text-xl font-bold text-gray-500 py-3">
+                        My Company Tracking List
+                    </h2>
+                    {companies.map(company => (
+                        <CompanyItem 
+                            id={company.id} 
+                            CompanyName={company.companyName}
+                            email={company.isTrack} 
+                            onDelete={()=>handleDeleteCompany(company.id)} 
+                        />
+                    ))} 
+                    </div>
+                </div>
+                <div className="w-1/2">
+                    <div className="w-full font-medium h-10">
+                        <div
+                            onClick={() => setOpen(!open)}
+                            className="bg-blue-100 w-full p-2 flex items-center justify-between rounded-xl"
+                        >
+                            Select and Add To Company Tracking 
+                            <BiChevronDown size={20} className={`${open && "rotate-180"}`} />
                         </div>
-                        <input type="search" id="default-search" 
-                            className="!outline-none block w-full p-2 ps-10 text-lg text-gray-900 rounded-lg bg-gray-200" 
-                            placeholder="Search Company..."/>
-                        <button className="absolute end-1.5 bottom-1.5 items-center px-1.5 py-1 text-medium font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-400">
-                            search
-                        </button>
+                        <ul className={`bg-gray-200 mt-3 overflow-y-auto ${open ? "max-h-80" : "max-h-0"} `}>
+                            <div className="flex items-center px-2 m-1.5 sticky top-0 bg-white rounded-lg">
+                            <AiOutlineSearch size={18} className="text-gray-700" />
+                            <input
+                                type="text"
+                                value={inputValue}
+                                placeholder="Enter company name"
+                                className="w-full placeholder:text-gray-400 p-2 outline-none"
+                                onChange={(e) => setInputValue(e.target.value.toLowerCase())}
+                            />
+                            </div>
+                            {companyPool?.map((company) => (
+                            <li
+                                key={company?.companyName}
+                                className={`p-2 text-sm bg-gray-100 text-gray-500 hover:bg-sky-600 hover:text-white
+                                ${
+                                (company.companyName.toLowerCase().match(inputValue.toLowerCase()))? 
+                                    "block": "hidden"
+                                }`}
+                                onClick={() => {
+                                    setSelect(company?.companyName);
+                                    handleAddCompany();
+                                }}
+                            >
+                                {company?.companyName}
+                            </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
             </div>
-            
-            <CompanyItem 
-                id={'123'} 
-                CompanyName={'company 1'}
-                email={true} 
-                onDelete={()=>deleteCompany('123')} 
-            />
-            <CompanyItem 
-                id={'456'} 
-                CompanyName={'company 2'} 
-                email={false} 
-                onDelete={()=>deleteCompany('456')} 
-            />     
         </div>
         </>
     );

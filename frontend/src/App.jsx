@@ -3,7 +3,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Verification from './pages/Verification';
 import Preference from './pages/Preference';
-import HomePage from './pages/Homepage';
+import HomePage from './pages/HomePage';
 
 import CompanyTracking from './pages/CompanyTracking';
 import ProgressTracking from './pages/ProgressTracking';
@@ -33,10 +33,10 @@ const App = () => {
           <Route path="/company_tracking" element={<CompanyTracking />} />
           <Route strict path="/progress_tracking" element={<ProgressTracking />} />
           <Route path="/progress_tracking/view" element={<ViewProgress />} />
-          <Route strict path="/discuss_forum" element={<DiscussForum />} />
+          <Route strict path="/discuss_forum/*" element={<DiscussForum />} />
           <Route path="/discuss_forum/add" element={<AddPost />} />
-          <Route path="/discuss_forum/edit" element={<EditPost />} />
-          <Route path="/discuss_forum/view" element={<ViewPost />} />
+          <Route path="/discuss_forum/edit/:post_id" element={<EditPost />} />
+          <Route path="/discuss_forum/view/:post_id" element={<ViewPost />} />
       </Routes>
       </>
     );

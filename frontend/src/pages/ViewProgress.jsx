@@ -10,6 +10,7 @@ import { Routes, Route, Link , useParams} from "react-router-dom";
 const ProgressTracking = () => {
     const [newStatusDialogOpen, setNewStatusDialogOpen] = useState(false);
     const [editStatusDialogOpen, setEditStatusDialogOpen] = useState(false);
+    
     const handleClick = () =>{
         setEditStatusDialogOpen(true);
     }

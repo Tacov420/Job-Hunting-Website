@@ -34,7 +34,7 @@ const TitleBar = ({display , currentPage}) => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/discuss_forum">
+                        <Link to={{ pathname: "/discuss_forum", search: `?category=${0}` }}>
                         <span className={`${currentPage=='discuss forum' && "font-extrabold"} block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0`}>Discuss Forum</span>
                         </Link>
                     </li>
