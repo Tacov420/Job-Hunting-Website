@@ -22,6 +22,10 @@ public interface ProfileRepository extends MongoRepository<Profile, String> {
 
     Profile findProfileByVerificationCode(String verificationCode);
 
+    Profile findByUserName(String userName); // get userName
+
+    Profile findByEmail(String email);
+
     // Preference
 
     Profile findProfileByDesiredJobsTitle(String[] desiredJobsTitle);

@@ -1,18 +1,16 @@
 package JobHunting.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import JobHunting.model.Company;
-import JobHunting.model.Profile;
-import JobHunting.repository.CompanyRepository;
-import JobHunting.repository.ProfileRepository;
+import JobHunting.repository.*;
+import JobHunting.model.*;
 
 @Service
 public class RegisterService {
@@ -28,7 +26,7 @@ public class RegisterService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public String registerPersonalInfo(String userName, String password) {
-        if (profileRepository.findProfileByUserName(userName) != null) {
+        if (profileRepository.findByUserName(userName) != null) {
             return "Username has already been registered";
         }
 
@@ -46,12 +44,12 @@ public class RegisterService {
     }
 
     public String registerSendVerificationCode(String userName, String email) {
-        Profile profile = profileRepository.findProfileByUserName(userName);
+        Profile profile = profileRepository.findByUserName(userName);
         if (profile == null) {
             return "Username doesn't exist";
         }
 
-        Profile p = profileRepository.findProfileByEmail(email);
+        Profile p = profileRepository.findByEmail(email);
         if (p != null) {
             if (!p.getUserName().equals(userName)) {
                 return "Email address has already been registered";
@@ -76,7 +74,7 @@ public class RegisterService {
     }
 
     public String verifyCode(String userName, String verificationCode) {
-        Profile profile = profileRepository.findProfileByUserName(userName);
+        Profile profile = profileRepository.findByUserName(userName);
         if (profile == null) {
             return "Username doesn't exist";
         }
@@ -98,7 +96,7 @@ public class RegisterService {
 
     public String registerPreference(String userName, List<String> desiredJobsTitle, List<String> desiredJobsLocation,
             List<String> skills, List<String> companies) {
-        Profile profile = profileRepository.findProfileByUserName(userName);
+        Profile profile = profileRepository.findByUserName(userName);
         if (profile != null) {
             if (profile.getRegisterStage() != 1) {
                 return "Stage incorrect";
