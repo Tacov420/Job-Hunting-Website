@@ -30,6 +30,7 @@ public class Progress {
     private List<String> companyName;
     private List<String> jobsTitle;
     private int progressStage; // 0: Applied, 1: First Interview, 2: Second Interview,3:Offer,4:Rejected
+    private List<String> newProgressStage;
 
     @CreatedDate
     private Date createdDate;
@@ -73,106 +74,14 @@ public class Progress {
         this.createdDate = new Date();
     }
 
-    public void setProgressId(int progressId) {
-        this.progressId = progressId;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setCompanyName(List<String> companyName) {
-        this.companyName = companyName;
-    }
-
-    public void setJobsTitle(List<String> jobsTitle) {
-        this.jobsTitle = jobsTitle;
-    }
-
-    public void setProgressStage(int progressStage) {
+    public void setNewProgressStage(List<String> newProgressStage, int progressStage, int progressId,
+            String userName) {
+        this.newProgressStage = newProgressStage;
         this.progressStage = progressStage;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public void setDateApplied(Date dateApplied) {
-        this.dateApplied = dateApplied;
-    }
-
-    public void setDateFirstInterview(Date dateFirstInterview) {
-        this.dateFirstInterview = dateFirstInterview;
-    }
-
-    public void setDateSecondInterview(Date dateSecondInterview) {
-        this.dateSecondInterview = dateSecondInterview;
-    }
-
-    public void setDateOffer(Date dateOffer) {
-        this.dateOffer = dateOffer;
-    }
-
-    public void setDateRejected(Date dateRejected) {
-        this.dateRejected = dateRejected;
-    }
-
-    // setters
-
-    // getters
-    public void getProgressId(int progressId) {
         this.progressId = progressId;
-    }
+        this.userName = userName;
 
-    public String getUserName() {
-        return userName;
     }
-
-    public List<String> getCompanyName() {
-        return companyName;
-    }
-
-    public List<String> getJobsTitle() {
-        return jobsTitle;
-    }
-
-    public int getProgressStage() {
-        return progressStage;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public Date getDateApplied() {
-        return dateApplied;
-    }
-
-    public Date getDateFirstInterview() {
-        return dateFirstInterview;
-    }
-
-    public Date getDateSecondInterview() {
-        return dateSecondInterview;
-    }
-
-    public Date getDateOffer() {
-        return dateOffer;
-    }
-
-    public Date getDateRejected() {
-        return dateRejected;
-    }
-
-    // add
 
     public void addCompanyName(String companyName) {
         if (this.companyName == null) {
@@ -188,38 +97,6 @@ public class Progress {
         this.jobsTitle.add(jobsTitle);
     }
 
-    public void addProgressStage(int progressStage) {
-        this.progressStage = progressStage;
-    }
-
-    public void addCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public void addLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public void addDateApplied(Date dateApplied) {
-        this.dateApplied = dateApplied;
-    }
-
-    public void addDateFirstInterview(Date dateFirstInterview) {
-        this.dateFirstInterview = dateFirstInterview;
-    }
-
-    public void addDateSecondInterview(Date dateSecondInterview) {
-        this.dateSecondInterview = dateSecondInterview;
-    }
-
-    public void addDateOffer(Date dateOffer) {
-        this.dateOffer = dateOffer;
-    }
-
-    public void addDateRejected(Date dateRejected) {
-        this.dateRejected = dateRejected;
-    }
-
     // remove
 
     public void removeCompanyName(String companyName) {
@@ -232,42 +109,6 @@ public class Progress {
         if (this.jobsTitle != null) {
             this.jobsTitle.remove(jobsTitle);
         }
-    }
-
-    public void removeProgressStage(int progressStage) {
-        this.progressStage = progressStage;
-    }
-
-    public void removeCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public void removeLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public void removeDateApplied(Date dateApplied) {
-        this.dateApplied = dateApplied;
-    }
-
-    public void removeDateFirstInterview(Date dateFirstInterview) {
-        this.dateFirstInterview = dateFirstInterview;
-    }
-
-    public void removeDateSecondInterview(Date dateSecondInterview) {
-        this.dateSecondInterview = dateSecondInterview;
-    }
-
-    public void removeDateOffer(Date dateOffer) {
-        this.dateOffer = dateOffer;
-    }
-
-    public void removeDateRejected(Date dateRejected) {
-        this.dateRejected = dateRejected;
-    }
-
-    public void removeProgressId(int progressId) {
-        this.progressId = progressId;
     }
 
     // update

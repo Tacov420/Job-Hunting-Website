@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import JobHunting.model.*;
 
@@ -14,9 +15,13 @@ public interface ProgressRepository extends MongoRepository<Progress, String> {
 
     Progress findProgressByProgressId(int progressId);
 
+    Optional<Progress> findOptionByUserNameAndProgressId(String userName, int progressId);
+
     List<Progress> findProgressByUserName(String userName);
 
     List<Progress> findByUserNameAndProgressId(String userName, int progressId);
+
+    List<Progress> findNewProgressStateByUserNameAndProgressId(String userName, int progressId);
 
     void deleteProgressByUserNameAndProgressId(String userName, int progressId);
 

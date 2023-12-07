@@ -49,6 +49,24 @@ public class ProgressController {
         }
     }
 
+    @PostMapping("/{userName}/{progressId}")
+    public ResponseEntity<ApiResponse> addProgressStage(@PathVariable String userName,
+            @PathVariable int progressId,
+            @Valid @RequestBody Progress progressDetails) {
+        try {
+            Progress updatedProgress = progressService.addProgressStage(userName, progressId,
+                    progressDetails.getProgressStage());
+            ApiResponse response = new ApiResponse("Progress stage added successfully", updatedProgress);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (ProgressNotFoundException e) {
+            ApiResponse response = new ApiResponse(e.getMessage(), null);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            ApiResponse response = new ApiResponse("An unexpected error occurred: " + e.getMessage(), null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // READ
     @GetMapping("/{userName}")
     public ResponseEntity<ApiResponse> getProgressByUserName(@PathVariable String userName) {

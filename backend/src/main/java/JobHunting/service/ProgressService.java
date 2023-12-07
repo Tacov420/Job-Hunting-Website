@@ -53,6 +53,18 @@ public class ProgressService {
 
     }
 
+    // CREATE new progress stage
+    @Transactional
+    public Progress addProgressStage(String userName, int progressId, int newStage) {
+        Progress progress = progressRepository.findOptionByUserNameAndProgressId(userName, progressId)
+                .orElseThrow(() -> new ProgressNotFoundException(
+                        "Progress not found for userName: " + userName + " and progressId: " + progressId));
+
+        progress.setProgressStage(newStage);
+        progress.setLastModifiedDate(new Date());
+        return progressRepository.save(progress);
+    }
+
     // READ by 一個一個
     public Progress getProgressById(int progressId) {
         return progressRepository.findById(String.valueOf(progressId))
