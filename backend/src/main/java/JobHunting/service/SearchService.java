@@ -16,20 +16,19 @@ public class SearchService {
 
     if (company != null && !company.isEmpty()) {
       List<Search> jobByCompany = searchRepository.findByCompany(company);
-      System.out.println(jobByCompany.toString());
       if (jobTitle != null && !jobTitle.isEmpty()) {
         List<Search> jobByJobTitle = searchRepository.findByJobTitle(jobTitle);
         if (level == 0) {
           List<Search> jobByLevel = searchRepository.findByLevel("Entry level");
           for (Search job : jobByCompany) {
-            if (jobByJobTitle.contains(job) == true && jobByLevel.contains(job)) {
+            if (jobByJobTitle.contains(job) == true && jobByLevel.contains(job) == true) {
               returnJobs.add(job);
             }
           }
         } else if (level == 1) {
           List<Search> jobByLevel = searchRepository.findByLevel("Mid-Senior level");
           for (Search job : jobByCompany) {
-            if (jobByJobTitle.contains(job) == true && jobByLevel.contains(job)) {
+            if (jobByJobTitle.contains(job) == true && jobByLevel.contains(job) == true) {
               returnJobs.add(job);
             }
           }
@@ -44,14 +43,14 @@ public class SearchService {
         if (level == 0) {
           List<Search> jobByLevel = searchRepository.findByLevel("Entry level");
           for (Search job : jobByCompany) {
-            if (jobByLevel.contains(job)) {
+            if (jobByLevel.contains(job) == true) {
               returnJobs.add(job);
             }
           }
         } else if (level == 1) {
           List<Search> jobByLevel = searchRepository.findByLevel("Mid-Senior level");
           for (Search job : jobByCompany) {
-            if (jobByLevel.contains(job)) {
+            if (jobByLevel.contains(job) == true) {
               returnJobs.add(job);
             }
           }
@@ -67,14 +66,14 @@ public class SearchService {
         if (level == 0) {
           List<Search> jobByLevel = searchRepository.findByLevel("Entry level");
           for (Search job : jobByJobTitle) {
-            if (jobByLevel.contains(job)) {
+            if (jobByLevel.contains(job) == true) {
               returnJobs.add(job);
             }
           }
         } else if (level == 1) {
           List<Search> jobByLevel = searchRepository.findByLevel("Mid-Senior level");
           for (Search job : jobByJobTitle) {
-            if (jobByLevel.contains(job)) {
+            if (jobByLevel.contains(job) == true) {
               returnJobs.add(job);
             }
           }
