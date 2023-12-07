@@ -80,7 +80,7 @@ public class CompanyService {
         return true;
     }
 
-    public String addCompany(int userId, String companyName) {
+    public int addCompany(int userId, String companyName) {
         int id;
         Company largestCompany = companyRepository.findFirstByOrderByIdDesc();
         if (largestCompany != null){
@@ -92,7 +92,7 @@ public class CompanyService {
         company.setCompany(userId, companyName, id, 1);
         companyRepository.save(company);
 
-        return "Add company successfully";
+        return id;
     }
 
     public Object getSpecificCompany(int userId) {

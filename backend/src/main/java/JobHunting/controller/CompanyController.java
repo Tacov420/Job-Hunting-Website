@@ -37,8 +37,8 @@ public class CompanyController {
             if (userId == -1) {
                 return new ResponseEntity<>("UserName doesn't exist", HttpStatus.BAD_REQUEST);
             }
-            String res = companyService.addCompany(userId, companyName);
-            return new ResponseEntity<>(res, HttpStatus.CREATED);
+            int id = companyService.addCompany(userId, companyName);
+            return new ResponseEntity<>(id, HttpStatus.CREATED);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
