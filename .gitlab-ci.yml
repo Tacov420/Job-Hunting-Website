@@ -1,27 +1,32 @@
 stages:          # List of stages for jobs and their order of execution
-  - build
+  - build-images
   - frontend
   - backend
   - deploy
 
 
-build-job:
-  stage: build
-  image: python:latest
+build-images:
+  stage: build-images
+  image: docker:latest
+  services:
+    - docker:dind
   script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
-    - python test.py
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --file frontend/Dockerfile -t registry.gitlab.com/software-engineering8932241/job-hunting:frontend_image .
+    - docker build --file backend/Dockerfile -t registry.gitlab.com/software-engineering8932241/job-hunting:backend_image .
+    - docker push registry.gitlab.com/software-engineering8932241/job-hunting:frontend_image
+    - docker push registry.gitlab.com/software-engineering8932241/job-hunting:backend_image
 
-frontend-job:
+frontend:
   stage: frontend
-  image: node:latest
+  image: registry.gitlab.com/software-engineering8932241/job-hunting:frontend_image
   script:
     - echo "Frontend Image"
 
 
-backend-job:
+backend:
   stage: backend
-  image: openjdk:21-jdk
+  image: registry.gitlab.com/software-engineering8932241/job-hunting:backend_image
   script:
     - echo "Backend Image"
 
