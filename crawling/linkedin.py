@@ -7,7 +7,7 @@ from pymongo import MongoClient
 # MongoDB related
 MONGO_URI = "mongodb+srv://JobHunting:jobhunting@cluster0.fwskbmd.mongodb.net/JobHuntingTest"
 PORT = 8005
-DB = "JobHuntingTest"
+DB = "JobHunting"
 COLLECTION = "jobs"
 
 headers = {
@@ -53,7 +53,7 @@ for job_id in job_ids:
     except:
         job_info["level"] = None
 
-    if job_info["company"] or job_info["jobTitle"] or job_info["level"]:
+    if job_info["company"] and job_info["jobTitle"]:
         job_info["time"] = time.time()
         job_infos.append(job_info)
 
