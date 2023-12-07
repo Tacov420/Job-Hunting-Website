@@ -14,7 +14,6 @@ const CompanyTracking = () => {
     const [companyPool, setCompanyPool] = useState(null);
 	const [inputValue, setInputValue] = useState("");
 	const [open, setOpen] = useState(false);
-    const navigate = useNavigate();
     const { Username } = useContext(UsernameContext);
 
     useEffect(() => {    
@@ -27,7 +26,6 @@ const CompanyTracking = () => {
         try{
             //const response = await getCompanies(encodeURIComponent(Username));
             const response = await getCompanies('test0');
-            const res = JSON.stringify(response);
             const keys = Object.keys(response);
             const companyList = keys.map(key => ({
                 id: key,
@@ -68,28 +66,21 @@ const CompanyTracking = () => {
 		return;
 	}
 
-    const handleDeleteCompany = async(id) => {
-        try {
-            const response = await deleteCompany(Username, id);
-            if (response.status === 201) {
-                setCompanies(companies.filter((company) => company.id !== id));
-            }
-            
-        } catch (error) {
-            console.error('Error deleting reply:', error);
-        }
-    };
-
-    const handleAddCompany = async() =>{
+    const handleAddCompany = async(id) =>{
         //setSelect(companyName);
         if(select == '')
             return;
         try{
             console.log(select);
-            const response = await addCompany(Username, select);
+            const response = await addCompany(Username, select); 
             if (response.status === 201){
-                //alert('add successfully');
-                navigate(0);
+                const newCompany = { 
+                    id: response.data,  
+                    companyName: select,
+                    isTrack: true,
+                }
+                setCompanies([...companies, newCompany]);
+                setCompanyPool((preCompanies) => preCompanies.filter((company) => company.companyName !== select));
             }
         } catch (error) {
             if (error.response) {
@@ -102,6 +93,19 @@ const CompanyTracking = () => {
 		setInputValue("");
         return;
     }
+
+    const handleDeleteCompany = async (companyId) => {
+        try {
+            const response = await deleteCompany(Username, companyId);
+            if (response.status === 201) {
+                setCompanies((preCompanies) => preCompanies.filter((company) => company.id !== companyId));
+            }
+            
+        } catch (error) {
+            console.error('Error deleting company:', error);
+        }
+    };
+
 
     return (
         <>
@@ -117,8 +121,8 @@ const CompanyTracking = () => {
                         <CompanyItem 
                             id={company.id} 
                             CompanyName={company.companyName}
-                            email={company.isTrack} 
-                            onDelete={()=>handleDeleteCompany(company.id)} 
+                            email={company.isTrack}  
+                            onDelete = {handleDeleteCompany}
                         />
                     ))} 
                     </div>
@@ -148,7 +152,7 @@ const CompanyTracking = () => {
                                 key={company?.companyName}
                                 className={`p-2 text-sm bg-gray-100 text-gray-500 hover:bg-sky-600 hover:text-white
                                 ${
-                                (company.companyName.toLowerCase().match(inputValue.toLowerCase()))? 
+                                (company.companyName.toLowerCase().match(inputValue.toLowerCase()) && !company.isTrack)? 
                                     "block": "hidden"
                                 }`}
                                 onClick={() => {
@@ -158,12 +162,15 @@ const CompanyTracking = () => {
                             >
                                 {company?.companyName}
                             </li>
+                            
+                            
                             ))}
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+        
         </>
     );
 };

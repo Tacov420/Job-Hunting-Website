@@ -9,6 +9,8 @@ import { Routes, Route, Link , useParams} from "react-router-dom";
 const ProgressTracking = () => {
     const [newDialogOpen, setNewDialogOpen] = useState(false);
 
+
+
     return (
         <>
         <TitleBar display={true} currentPage={'progress tracking'}/>
@@ -58,6 +60,7 @@ const ProgressTracking = () => {
                                 </button>
                             </td>
                         </tr>
+
                         <tr className="bg-white border-b hover:bg-gray-50">
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                 <Link to={"/progress_tracking/view"}>
@@ -76,6 +79,7 @@ const ProgressTracking = () => {
                                 </button>
                             </td>
                         </tr>
+                        
                     </tbody>
                 </table>
             </div>

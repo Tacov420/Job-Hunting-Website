@@ -7,10 +7,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 
 
-export default function NewJobDialog({ open, onClose }) {
+export default function NewJobDialog({ open, onClose , }) {
 
 	const handleAddProgress = async () => {
-		
+		onClose();
 	};
 
   

@@ -175,6 +175,25 @@ export function getAllCompany(username){
 	});
 };
 
+export function changeTracking(username, companyId){
+	return client.put(`/company/${username}/${companyId}`);
+}
+
+//homepage
+export function getSearchResult(username, jobTitle, company, level){
+	return; 
+}
+
+//notification
+export function getNotifications(username){
+	return;
+}
+
+export function DeleteNotification(username , notificationId){
+	return;
+}
+
+//progress Tracking
 
 
 
