@@ -55,11 +55,11 @@ public class ProgressService {
     }
 
     public Object getSpecificProgress(int userId, int progressId) {
-        return progressRepository.findById(progressId);
+        return progressRepository.findByProgressId(progressId);
     }
 
     public boolean checkProgressId(int progressId) {
-        Progress progress = progressRepository.findById(progressId);
+        Progress progress = progressRepository.findByProgressId(progressId);
         if (progress == null) {
             return false;
         }
@@ -70,7 +70,7 @@ public class ProgressService {
         int id;
         Progress largestProgress = progressRepository.findFirstByOrderByIdDesc();
         if (largestProgress != null){
-            id = largestProgress.getId() + 1;
+            id = largestProgress.getProgressId() + 1;
         } else {
             id = 0;
         }
@@ -86,7 +86,7 @@ public class ProgressService {
     }
 
     public boolean checkPermission(int userId, int progressId) {
-        Progress progress = progressRepository.findById(progressId);
+        Progress progress = progressRepository.findByProgressId(progressId);
         if (progress.getUserId() != userId) {
             return false;
         }
@@ -94,7 +94,7 @@ public class ProgressService {
     }
 
     public String createStage(int progressId, String stageName, LocalDate date, int status) {
-        Progress progress = progressRepository.findById(progressId);
+        Progress progress = progressRepository.findByProgressId(progressId);
         progress.addStage(stageName, date, status);
         progressRepository.save(progress);
 
@@ -102,7 +102,7 @@ public class ProgressService {
     }
 
     public String editStage(int progressId, int index, String stageName, LocalDate date, int status) {
-        Progress progress = progressRepository.findById(progressId);
+        Progress progress = progressRepository.findByProgressId(progressId);
         progress.setStage(index, stageName, date, status);
         progressRepository.save(progress);
 

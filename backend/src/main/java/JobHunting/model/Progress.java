@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class Progress {
     @Id
     private ObjectId _id;
-    private int id;
     private int progressId;
     private int userId;
     private String companyName;

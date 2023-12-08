@@ -13,7 +13,7 @@ public interface ProgressRepository extends MongoRepository<Progress, String> {
 
     List<Progress> findByUserId(int userId);
 
-    Progress findById(int progressId);
+    Progress findByProgressId(int progressId);
 
     void deleteById(int progressId);
 }
