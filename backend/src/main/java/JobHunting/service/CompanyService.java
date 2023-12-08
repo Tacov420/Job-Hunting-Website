@@ -23,13 +23,13 @@ public class CompanyService {
     private CompanyRepository companyRepository;
 
     @Autowired
-    private JobRepository jobRepository;
+    private SearchRepository searchRepository;
 
     public Object getAllCompany(int userId) {
-        List<Job> jobs = jobRepository.findAll();
+        List<Search> jobs = searchRepository.findAll();
         Map<String, List<Object>> returnMap = new HashMap<>();
         List<Object> companyName = new ArrayList<>();
-        for (Job job: jobs) {
+        for (Search job: jobs) {
             Object name = job.getCompany();
             if (name != null){
                 companyName.add(name);
