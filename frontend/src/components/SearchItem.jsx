@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { IoBookmarks } from "react-icons/io5";
 import { IoBookmarksOutline } from "react-icons/io5";
 import {addCompany} from '../utils/client';
@@ -8,6 +8,9 @@ const SearchItem = ({id , companyName , jobTitle, level, isTrack}) => {
     const [trackStatus, setTrackStatus] = useState(isTrack);
     const [loading, setLoading] = useState(false);
     const { Username } = useContext(UsernameContext);
+    useEffect(() => {
+        setTrackStatus(isTrack);
+      }, [isTrack]);
 
     const handleClick = async()=>{     
         setLoading(true);
