@@ -3,13 +3,8 @@ package JobHunting.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
-import java.util.Locale;
+import java.time.*;
 
 import JobHunting.repository.*;
 import JobHunting.model.*;
@@ -53,14 +48,14 @@ public class ProgressService {
 
     public Object getProgressList(int userId) {
         List<Progress> progressList = progressRepository.findByUserId(userId);
-        if (progressList.isEmpty()) {
-            throw new ProgressNotFoundException("No progress found for this user.");
-        }
+        // if (progressList.isEmpty()) {
+        //     throw new ProgressNotFoundException("No progress found for this user.");
+        // }
         return progressList;
     }
 
     public Object getSpecificProgress(int userId, int progressId) {
-        return progressRepository.findById(progressId)
+        return progressRepository.findById(progressId);
     }
 
     public boolean checkProgressId(int progressId) {
@@ -71,7 +66,7 @@ public class ProgressService {
         return true;
     }
 
-    public String createProgress(int userId, String companyName, String jobTitle, String stageName, Date date, int status) {
+    public String createProgress(int userId, String companyName, String jobTitle, String stageName, LocalDate date, int status) {
         int id;
         Progress largestProgress = progressRepository.findFirstByOrderByIdDesc();
         if (largestProgress != null){
@@ -98,7 +93,7 @@ public class ProgressService {
         return true;
     }
 
-    public String createStage(int progressId, String stageName, Date date, int status) {
+    public String createStage(int progressId, String stageName, LocalDate date, int status) {
         Progress progress = progressRepository.findById(progressId);
         progress.addStage(stageName, date, status);
         progressRepository.save(progress);
@@ -106,7 +101,7 @@ public class ProgressService {
         return "Edit progress successfully";
     }
 
-    public String editStage(int progressId, int index, String stageName, Date date, int status) {
+    public String editStage(int progressId, int index, String stageName, LocalDate date, int status) {
         Progress progress = progressRepository.findById(progressId);
         progress.setStage(index, stageName, date, status);
         progressRepository.save(progress);

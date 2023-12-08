@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Map;
 
-import java.text.SimpleDateFormat;  
+import java.util.*;
+
+// import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 import JobHunting.service.*;
 
@@ -40,31 +42,31 @@ public class ProgressController {
             if (userId == -1) {
                 return new ResponseEntity<>("This user doesn't exist", HttpStatus.BAD_REQUEST);
             }
-            if (!progressService.checkPermission(username, progressId)) {
+            if (!progressService.checkPermission(userId, progressId)) {
                 return new ResponseEntity<>("The user has no permission for this progress", HttpStatus.FORBIDDEN);
             }
-            Object res = progressService.getSpecificProgress(progressId);
+            Object res = progressService.getSpecificProgress(userId, progressId);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @ProgressMapping(value = "/{username}/add")
+    @PostMapping(value = "/{username}/add")
     public ResponseEntity<Object> addProgress(@PathVariable String username, @RequestBody Map<String, String> body) {
         String companyName = body.get("companyName");
         String jobTitle = body.get("jobTitle");
         String stage = body.get("stage");
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(body.get("date"));
-        String status = body.get("status");
+        LocalDate date = LocalDate.parse(body.get("date"));
+        int status = Integer.parseInt(body.get("status"));
         try {
             int userId = progressService.getUserId(username);
             if (userId == -1) {
                 return new ResponseEntity<>("UserName doesn't exist", HttpStatus.BAD_REQUEST);
             }
-            if (!progressService.checkPermission(userId, progressId)) {
-                return new ResponseEntity<>("User doesn't have permission", HttpStatus.FORBIDDEN);
-            }
+            // if (!progressService.checkPermission(userId, progressId)) {
+            //     return new ResponseEntity<>("User doesn't have permission", HttpStatus.FORBIDDEN);
+            // }
             String res = progressService.createProgress(userId, companyName, jobTitle, stage, date, status);
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (Exception e){
@@ -73,10 +75,10 @@ public class ProgressController {
     }
 
     @PutMapping(value = "/{username}/{progressId}/add")
-    public ResponseEntity<Object> addStage(@PathVariable String username, @RequestBody Map<String, String> body) {
+    public ResponseEntity<Object> addStage(@PathVariable String username, @PathVariable int progressId, @RequestBody Map<String, String> body) {
         String stageName = body.get("stageName");
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(body.get("date"));
-        String status = body.get("status");
+        LocalDate date = LocalDate.parse(body.get("date"));
+        int status = Integer.parseInt(body.get("status"));
         try {
             int userId = progressService.getUserId(username);
             if (userId == -1) {
@@ -93,11 +95,11 @@ public class ProgressController {
     }
 
     @PutMapping(value = "/{username}/{progressId}/edit")
-    public ResponseEntity<Object> editStage(@PathVariable String username, @RequestBody Map<String, String> body) {
+    public ResponseEntity<Object> editStage(@PathVariable String username, @PathVariable int progressId, @RequestBody Map<String, String> body) {
         int index = Integer.parseInt(body.get("index"));
         String stageName = body.get("stageName");
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(body.get("date"));
-        String status = body.get("status");
+        LocalDate date = LocalDate.parse(body.get("date"));
+        int status = Integer.parseInt(body.get("status"));
         try {
             int userId = progressService.getUserId(username);
             if (userId == -1) {
@@ -114,8 +116,8 @@ public class ProgressController {
     }
 
     @DeleteMapping(value = "/{username}/{progressId}")
-    public ResponseEntity<Object> deleteProgress(@PathVariable String username, @PathVariable int progressId, @RequestBody Map<String, String> body) {
-        String username = body.get("username");
+    public ResponseEntity<Object> deleteProgress(@PathVariable String username, @PathVariable int progressId) {
+        // String username = body.get("username");
         if (!progressService.checkProgressId(progressId)) {
             return new ResponseEntity<>("ProgressId is incorrect", HttpStatus.BAD_REQUEST);
         }
