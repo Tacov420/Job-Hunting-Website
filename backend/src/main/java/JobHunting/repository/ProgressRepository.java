@@ -9,11 +9,11 @@ import JobHunting.model.*;
 
 @Repository
 public interface ProgressRepository extends MongoRepository<Progress, String> {
-    Progress findFirstByOrderByProgressIdDesc();
+    Progress findFirstByOrderByIdDesc();
 
     List<Progress> findByUserId(int userId);
 
-    Progress findById(int progressId);
+    Progress findByProgressId(int progressId);
 
-    void deleteById(int progressId);
+    void deleteByProgressId(int progressId);
 }

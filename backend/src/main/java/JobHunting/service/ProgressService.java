@@ -3,13 +3,8 @@ package JobHunting.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
-import java.util.Locale;
+import java.time.*;
 
 import JobHunting.repository.*;
 import JobHunting.model.*;
@@ -53,29 +48,29 @@ public class ProgressService {
 
     public Object getProgressList(int userId) {
         List<Progress> progressList = progressRepository.findByUserId(userId);
-        if (progressList.isEmpty()) {
-            throw new ProgressNotFoundException("No progress found for this user.");
-        }
+        // if (progressList.isEmpty()) {
+        //     throw new ProgressNotFoundException("No progress found for this user.");
+        // }
         return progressList;
     }
 
     public Object getSpecificProgress(int userId, int progressId) {
-        return progressRepository.findById(progressId)
+        return progressRepository.findByProgressId(progressId);
     }
 
     public boolean checkProgressId(int progressId) {
-        Progress progress = progressRepository.findById(progressId);
+        Progress progress = progressRepository.findByProgressId(progressId);
         if (progress == null) {
             return false;
         }
         return true;
     }
 
-    public String createProgress(int userId, String companyName, String jobTitle, String stageName, Date date, int status) {
+    public int createProgress(int userId, String companyName, String jobTitle, String stageName, LocalDate date, int status) {
         int id;
         Progress largestProgress = progressRepository.findFirstByOrderByIdDesc();
         if (largestProgress != null){
-            id = largestProgress.getId() + 1;
+            id = largestProgress.getProgressId() + 1;
         } else {
             id = 0;
         }
@@ -87,27 +82,27 @@ public class ProgressService {
         progress.initStages(stageName, date, status);
         progressRepository.save(progress);
 
-        return "Add progress successfully";
+        return id;
     }
 
     public boolean checkPermission(int userId, int progressId) {
-        Progress progress = progressRepository.findById(progressId);
+        Progress progress = progressRepository.findByProgressId(progressId);
         if (progress.getUserId() != userId) {
             return false;
         }
         return true;
     }
 
-    public String createStage(int progressId, String stageName, Date date, int status) {
-        Progress progress = progressRepository.findById(progressId);
+    public String createStage(int progressId, String stageName, LocalDate date, int status) {
+        Progress progress = progressRepository.findByProgressId(progressId);
         progress.addStage(stageName, date, status);
         progressRepository.save(progress);
 
         return "Edit progress successfully";
     }
 
-    public String editStage(int progressId, int index, String stageName, Date date, int status) {
-        Progress progress = progressRepository.findById(progressId);
+    public String editStage(int progressId, int index, String stageName, LocalDate date, int status) {
+        Progress progress = progressRepository.findByProgressId(progressId);
         progress.setStage(index, stageName, date, status);
         progressRepository.save(progress);
 
@@ -115,7 +110,7 @@ public class ProgressService {
     }
 
     public String deleteProgress(int progressId) {
-        progressRepository.deleteById(progressId);
+        progressRepository.deleteByProgressId(progressId);
 
         return "Delete progress successfully";
     }
