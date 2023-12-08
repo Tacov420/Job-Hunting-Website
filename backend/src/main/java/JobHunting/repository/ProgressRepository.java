@@ -15,5 +15,5 @@ public interface ProgressRepository extends MongoRepository<Progress, String> {
 
     Progress findByProgressId(int progressId);
 
-    void deleteById(int progressId);
+    void deleteByProgressId(int progressId);
 }

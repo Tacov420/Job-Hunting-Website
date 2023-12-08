@@ -66,7 +66,7 @@ public class ProgressService {
         return true;
     }
 
-    public String createProgress(int userId, String companyName, String jobTitle, String stageName, LocalDate date, int status) {
+    public int createProgress(int userId, String companyName, String jobTitle, String stageName, LocalDate date, int status) {
         int id;
         Progress largestProgress = progressRepository.findFirstByOrderByIdDesc();
         if (largestProgress != null){
@@ -82,7 +82,7 @@ public class ProgressService {
         progress.initStages(stageName, date, status);
         progressRepository.save(progress);
 
-        return "Add progress successfully";
+        return id;
     }
 
     public boolean checkPermission(int userId, int progressId) {
@@ -110,7 +110,7 @@ public class ProgressService {
     }
 
     public String deleteProgress(int progressId) {
-        progressRepository.deleteById(progressId);
+        progressRepository.deleteByProgressId(progressId);
 
         return "Delete progress successfully";
     }

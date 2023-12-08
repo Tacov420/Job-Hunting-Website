@@ -67,7 +67,7 @@ public class ProgressController {
             // if (!progressService.checkPermission(userId, progressId)) {
             //     return new ResponseEntity<>("User doesn't have permission", HttpStatus.FORBIDDEN);
             // }
-            String res = progressService.createProgress(userId, companyName, jobTitle, stage, date, status);
+            int res = progressService.createProgress(userId, companyName, jobTitle, stage, date, status);
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -87,7 +87,7 @@ public class ProgressController {
             if (!progressService.checkPermission(userId, progressId)) {
                 return new ResponseEntity<>("User doesn't have permission", HttpStatus.FORBIDDEN);
             }
-            String res = progressService.createStage(userId, stageName, date, status);
+            String res = progressService.createStage(progressId, stageName, date, status);
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -108,7 +108,7 @@ public class ProgressController {
             if (!progressService.checkPermission(userId, progressId)) {
                 return new ResponseEntity<>("User doesn't have permission", HttpStatus.FORBIDDEN);
             }
-            String res = progressService.editStage(userId, index, stageName, date, status);
+            String res = progressService.editStage(progressId, index, stageName, date, status);
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
