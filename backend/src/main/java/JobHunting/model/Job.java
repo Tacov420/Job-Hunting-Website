@@ -25,7 +25,6 @@ public class Job {
     // for notification
     private Date postingDate; // Date the job was posted
     private String location; // Job location
-    private String jobId; // Unique identifier for the job
-    private boolean notificationSent = false; // Flag to check if notification is sent
+    private boolean notificationSent; // Flag to check if notification is sent
 
 }

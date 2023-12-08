@@ -21,12 +21,23 @@ public class Notification {
     private String notificationType;
     private Date date;
     private boolean sent = false;
+    private boolean isRead = false; // Default value is false
 
-    public Notification(String userName, String message, String notificationType, Date date) {
+    public Notification(String userName, String message, String notificationType) {
         this.userName = userName;
         this.message = message;
         this.notificationType = notificationType;
-        this.date = date;
+        this.date = new Date();
+        this.sent = false;
+        this.isRead = false;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
     }
 
 }

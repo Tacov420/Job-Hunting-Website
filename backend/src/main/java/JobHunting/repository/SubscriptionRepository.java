@@ -11,12 +11,14 @@ import JobHunting.model.Subscription;
 @Repository
 public interface SubscriptionRepository extends MongoRepository<Subscription, String> {
 
+    List<Subscription> findAllByUserName(String userName);
+
     Optional<Subscription> findByUserName(String userName);
 
     List<Subscription> findAll();
 
-    void deleteBySubscriptionId(int subscriptionId);
-
     void deleteByUserName(String userName);
+
+    List<Subscription> findByCompanyContains(String company);
 
 }

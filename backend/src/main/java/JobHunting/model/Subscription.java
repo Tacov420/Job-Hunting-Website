@@ -1,5 +1,8 @@
 package JobHunting.model;
 
+import java.util.List;
+import java.util.Set;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,18 +17,14 @@ import lombok.NoArgsConstructor;
 @Document(collection = "subscription")
 public class Subscription {
     @Id
-    private ObjectId _id;
+    private ObjectId id; // Use ObjectId for MongoDB identifiers
     private String userName;
-    private String endpoint; // Subscription endpoint
-    private String publicKey; // Public key for subscription
-    private String auth; // Auth token for subscription
-    private int subscriptionId;
+    private List<String> company; // Stores companies instead of job titles.
+    private List<String> subscribedCompanies;
 
-    public Subscription(String userName, String endpoint, String publicKey, String auth) {
+    public Subscription(String userName, Set<String> subscribedCompanies) {
         this.userName = userName;
-        this.endpoint = endpoint;
-        this.publicKey = publicKey;
-        this.auth = auth;
+        this.subscribedCompanies = List.copyOf(subscribedCompanies);
     }
 
 }
