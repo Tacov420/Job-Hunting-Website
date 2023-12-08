@@ -3,44 +3,70 @@ import { UsernameContext } from '../context/UsernameContext';
 import { Link , useNavigate } from "react-router-dom";
 import  TitleBar  from '../components/TitleBar';
 import SearchItem from '../components/SearchItem';
-import {getSearchResult} from '../utils/client';
+import {getSearchResult, getPreference, getCompanies} from '../utils/client';
 
 
 const HomePage = () => {
-    const { Username, updateUsername } = useContext(UsernameContext);
+    const { Username } = useContext(UsernameContext);
 	const navigate = useNavigate();
-    const [level, setLevel] = useState('');
+    const [level, setLevel] = useState("2");
     const jobTitleRef = useRef(null);
     const CompanyRef = useRef(null);
     const [SearchResult , setSearchResult] = useState([]);
 
 	useEffect(() => {
-        //getRecommendation();
+        getRecommendation();
 	}, []);
+
+    useEffect(() => {
+        console.log('result list', SearchResult);
+	}, [SearchResult]);
 
     const handleChange = (e) => {
         setLevel(e.target.value);
     };
 
     const getRecommendation = async() => {
-        
+        const response = await getPreference(Username);
+        const desiredJobsTitle = response.data.desiredJobsTitle;
+        const companyResponse = await getCompanies(Username);
+        const companyList = Object.values(companyResponse).map(item => item[0].companyName);
+        let combinedList = [];
+        let index = 0;
+        for (const job of desiredJobsTitle) {
+            const recommendResponse = await getSearchResult(job, "" , "2");
+            const data = recommendResponse["data"];
+            const keys = Object.keys(data);
+            const result = keys.map(key => ({
+                id: parseInt(parseInt(key,10)+index,10),
+                company: String(data[key]['company']),
+                jobTitle: String(data[key]['jobTitle']),
+                level: String(data[key]['level']), 
+                isTrack: companyList.includes(data[key]['company'])
+            })); 
+            index = index + parseInt(keys.length, 10);
+            combinedList=combinedList.concat(result);
+            setSearchResult(combinedList); 
+          }
     }
 
     const handleSubmit = async() =>{
         const jobTitle = jobTitleRef.current?.value ?? "";
 		const company = CompanyRef.current?.value ?? "";
-        
+        const companyResponse = await getCompanies(Username);
+        const companyList = Object.values(companyResponse).map(item => item[0].companyName);
         try{
-            console.log(level);
-            //const response = await getSearchResult(Username , jobTitle , company , level)
-            //const keys = Object.keys(response);
-            //const resultList = keys.map(key => ({
-            //    id: key,
-            //    companyName: response[key][0]['companyName'],
-            //    jobTitle: response[key][0]['jobTitle'],
-            //   isTrack: response[key][0]['isTrack']
-            //}));
-            //setSearchResult(resultList);
+            const response = await getSearchResult(jobTitle , company , level);
+            const data = response["data"];
+            const keys = Object.keys(data);
+            const resultList = keys.map(key => ({
+                id: parseInt(key, 10),
+                company: String(data[key]['company']),
+                jobTitle: String(data[key]['jobTitle']),
+                level: String(data[key]['level']), 
+                isTrack: companyList.includes(data[key]['company'])
+            })); 
+            setSearchResult(resultList);
         }catch(error){
             alert(error);
         }
@@ -126,9 +152,11 @@ const HomePage = () => {
                     <div className="grid grid-cols-2 gap-3">
                     {SearchResult.map(result => (
                         <SearchItem 
+                            key={result.id}
                             id={result.id} 
-                            companyName={result.companyName}
+                            companyName={result.company}
                             jobTitle = {result.jobTitle}
+                            level={result.level}
                             isTrack={result.isTrack}
                         />
                     ))} 

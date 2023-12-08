@@ -180,7 +180,14 @@ export function changeTracking(username, companyId){
 }
 
 //homepage
-export function getSearchResult(username, jobTitle, company, level){
+export function getSearchResult(jobTitle, company, level){
+	const levelInt = parseInt(level, 10);
+	return client.get(`/search/company=${company}&jobTitle=${jobTitle}&level=${levelInt}`, {
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+		},
+	})
 	return; 
 }
 
