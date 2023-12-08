@@ -8,7 +8,8 @@ import JobHunting.repository.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.time.LocalDate;
 
 @Service
@@ -53,6 +54,24 @@ public class NotificationService {
         notificationRepository.deleteById(notificationId);
     }
 
+    public void createJobNotificationMessageAndSend(Job job, String userName) {
+        // Assuming job.getJobTitle() and job.getCompany() return non-null values
+        String message = "New job posted: " + job.getJobTitle() + " at " + job.getCompany();
+
+        Notification notification = new Notification();
+        // Set the necessary notification details
+        notification.setUserName(userName);
+        notification.setMessage(message);
+        notification.setNotificationType("Job");
+        notification.setDate(new Date());
+        notification.setSent(false);
+        notification.setRead(false);
+        // notification.setNotificationId(notificationRepository.findFirstByOrderByIdDesc().getNotificationId()
+        // + 1);
+
+        notificationRepository.save(notification); // Save the notification
+    }
+
     // For Jobs posted by companies
 
     @Scheduled(fixedRate = 1000 * 60 * 60 * 24)
@@ -80,20 +99,15 @@ public class NotificationService {
         notification.setUserName(userName); // Link the notification to the user
         notification.setMessage(message);
         notification.setDate(new Date());
-        notification.setSent(false);
         notification.setRead(false);
         notification.setNotificationType("Job"); // Set the type as per your logic
 
-        notificationRepository.save(notification);
+        notificationRepository.save(notification); // Save the notification
+
     }
 
     public List<Notification> getNotificationByUserName(String userName) {
         return notificationRepository.findByUserName(userName);
-    }
-
-    public void createJobNotificationMessageAndSend(Job job, String userName) {
-        String message = "New job posted: " + job.getJobTitle() + " at " + job.getCompany();
-        sendJobNotification(userName, message);
     }
 
     // For progress notifications
@@ -102,55 +116,43 @@ public class NotificationService {
     public void createInterviewNotifications() {
         List<Notification> notifications = getUpcomingInterviewNotifications();
         for (Notification notification : notifications) {
+
             notificationRepository.save(notification);
         }
     }
 
     public List<Notification> getUpcomingInterviewNotifications() {
-        LocalDate threeDaysFromNow = LocalDate.now().plusDays(3);
+        LocalDate today = LocalDate.now();
+        LocalDate threeDaysFromNow = today.plusDays(3);
         List<Progress> allProgresses = progressRepository.findAll();
-        List<Notification> notifications = new ArrayList<>();
 
-        for (Progress progress : allProgresses) {
-            // Assuming stageStatus of 1 means 'Interview Scheduled'
-            for (int i = 0; i < progress.getStages().size(); i++) {
-                if (progress.getStageStatus().get(i) == 1 && progress.getDates().get(i).equals(threeDaysFromNow)) {
-                    int userId = progress.getUserId();
-                    String username = getUserName(userId);
+        return allProgresses.stream()
+                .flatMap(progress -> IntStream.range(0, progress.getStages().size())
+                        .filter(i -> progress.getStageStatus().get(i) == 1 &&
+                                (progress.getDates().get(i).equals(today)
+                                        || progress.getDates().get(i).equals(threeDaysFromNow)))
+                        .mapToObj(i -> createNotification(progress, i)))
+                .collect(Collectors.toList());
+    }
 
-                    Notification newNotification = new Notification();
-                    newNotification.setUserName(username);
-                    newNotification.setMessage("You have an interview for " + progress.getJobTitle() + " at " +
-                            progress.getCompanyName() + " in 3 days.");
-                    newNotification.setNotificationType("Interview");
-                    newNotification.setDate(java.sql.Date.valueOf(progress.getDates().get(i))); // Set the interview
-                                                                                                // date
-                    newNotification.setSent(false);
-                    newNotification.setRead(false);
+    private Notification createNotification(Progress progress, int index) {
+        LocalDate date = progress.getDates().get(index);
+        LocalDate today = LocalDate.now(); // Declare and initialize the 'today' variable with the current date
 
-                    notifications.add(newNotification); // Add the notification to the list
-                } else if (progress.getStageStatus().get(i) == 1
-                        && progress.getDates().get(i).equals(LocalDate.now())) {
-                    int userId = progress.getUserId();
-                    String username = getUserName(userId);
+        String username = getUserName(progress.getUserId()); // Make sure this method is efficient
 
-                    Notification newNotification = new Notification();
-                    newNotification.setUserName(username);
-                    newNotification.setMessage("You have an interview for " + progress.getJobTitle() + " at " +
-                            progress.getCompanyName() + " today.");
-                    newNotification.setNotificationType("Interview");
-                    newNotification.setDate(java.sql.Date.valueOf(progress.getDates().get(i))); // Set the interview
-                                                                                                // date
-                    newNotification.setSent(false);
-                    newNotification.setRead(false);
+        String timingMessage = date.equals(today) ? " today." : " in 3 days.";
+        String message = "You have an interview for " + progress.getJobTitle() + " at " +
+                progress.getCompanyName() + timingMessage;
 
-                    notifications.add(newNotification); // Add the notification to the list
-                }
-            }
+        Notification notifications = new Notification();
+        notifications.setUserName(username);
+        notifications.setMessage(message);
+        notifications.setNotificationType("Interview");
+        notifications.setDate(java.sql.Date.valueOf(date));
+        notifications.setRead(false);
 
-        }
-
-        return notifications; // Return the list of notifications
+        return notifications;
     }
 
     public String getUserName(int userId) {

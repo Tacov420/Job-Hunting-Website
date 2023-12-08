@@ -38,6 +38,17 @@ public class Notification {
         this.companyName = companyName;
     }
 
+    // Field to store the job ID
+    private ObjectId jobId;
+
+    public ObjectId getJobId() {
+        return this.jobId;
+    }
+
+    public void setJobId(ObjectId jobId) {
+        this.jobId = jobId;
+    }
+
     public void setDate(Date date) {
         this.date = date;
     }
@@ -54,14 +65,8 @@ public class Notification {
         return this.notificationId;
     }
 
-    // Field to store the job ID
-    private ObjectId jobId;
-
-    public ObjectId getJobId() {
-        return this.jobId;
+    public void setId(int notificationId) {
+        this.notificationId = notificationId;
     }
 
-    public void setJobId(ObjectId jobId) {
-        this.jobId = jobId;
-    }
 }

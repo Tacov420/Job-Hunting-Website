@@ -45,7 +45,7 @@ public class NotificationController {
 
             // Save all notifications after updating their read status
             notificationService.saveNotification(notifications);
-            return ResponseEntity.ok(notifications);
+            return ResponseEntity.ok(notification);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Internal Server Error: " + e.getMessage());
@@ -66,16 +66,17 @@ public class NotificationController {
 
     @PostMapping("/{userName}/{companyName}/{jobTitle}")
     public ResponseEntity<?> createNotification(@PathVariable String userName, @PathVariable String companyName,
-            @PathVariable String jobTitle, @RequestBody Notification notification) {
+            @PathVariable String jobTitle, @RequestBody Notification notifications) {
         try {
-            // Create a new Job object with the company name
+            // Create a new Job object with the company name and job title
             Job job = new Job();
             job.setCompany(companyName);
             job.setJobTitle(jobTitle);
 
-            // Call a method to create and send the notification with the correct user name
+            // Call the service method to create and send the notification
             notificationService.createJobNotificationMessageAndSend(job, userName);
-            return ResponseEntity.ok(notification);
+
+            return ResponseEntity.ok("Notification created successfully.");
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Internal Server Error: " + e.getMessage());
         }
