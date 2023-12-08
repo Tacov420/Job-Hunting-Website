@@ -38,6 +38,10 @@ public class Notification {
         this.companyName = companyName;
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public void getUserName(String userName) {
         this.userName = userName;
     }

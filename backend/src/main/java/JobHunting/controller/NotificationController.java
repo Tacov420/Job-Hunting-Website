@@ -34,7 +34,8 @@ public class NotificationController {
             List<Notification> notifications = notificationService.getNotificationByUserName(userName);
 
             if (notifications.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No notifications found for user: " + userName);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No Job notifications found for user: " + userName);
             }
 
             // Mark each notification as read and collect IDs
@@ -44,7 +45,6 @@ public class NotificationController {
 
             // Save all notifications after updating their read status
             notificationService.saveNotification(notifications);
-
             return ResponseEntity.ok(notifications);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
