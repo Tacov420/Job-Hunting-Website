@@ -7,8 +7,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 @Document(collection = "company")
 @Data
 @AllArgsConstructor
@@ -29,11 +27,5 @@ public class Company {
     }
 
     // for notification
-
-    private List<String> interestedUsers;
-
-    public List<String> getInterestedUsers() {
-        return interestedUsers;
-    }
 
 }

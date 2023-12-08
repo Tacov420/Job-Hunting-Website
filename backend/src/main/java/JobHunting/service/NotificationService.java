@@ -1,6 +1,5 @@
 package JobHunting.service;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,95 +15,94 @@ public class NotificationService {
     private JobRepository jobRepository;
     private NotificationRepository notificationRepository;
     private CompanyRepository companyRepository;
+    private ProfileRepository profileRepository;
 
     @Autowired
     public NotificationService(
             JobRepository jobRepository,
             NotificationRepository notificationRepository,
-            CompanyRepository companyRepository) { // Autowired companyRepository
+            CompanyRepository companyRepository) {
         this.jobRepository = jobRepository;
         this.notificationRepository = notificationRepository;
         this.companyRepository = companyRepository;
     }
 
-    @Scheduled(fixedRate = 1000 * 60 * 60 * 24) // Once a day
+    @Scheduled(fixedRate = 1000 * 60 * 60 * 24)
     public void checkAndNotifyNewJobs() {
         List<Job> newJobs = jobRepository.findByNotificationSentFalse();
 
-        newJobs.forEach(job -> {
-            Company company = companyRepository.findById(job.getCompanyId());
+        for (Job job : newJobs) {
+            Optional<Company> companyOptional = companyRepository.findOptionalById(job.getCompanyId());
+            if (companyOptional.isPresent()) {
+                Company company = companyOptional.get();
+                List<Profile> profiles = profileRepository.findByCompanyId(company.getId());
 
-            if (company != null) {
-                List<String> interestedUserNames = getAllInterestedUserNamesForCompany(company);
-
-                interestedUserNames.forEach(userName -> {
-                    String message = createJobNotificationMessage(job);
-                    sendNotification(userName, message);
-                });
+                for (Profile profile : profiles) {
+                    String message = "New job posted: " + job.getJobTitle() + " at " + company.getName();
+                    sendNotification(profile.getUserName(), message);
+                }
 
                 job.setNotificationSent(true);
                 jobRepository.save(job);
             }
-        });
+        }
     }
 
-    private List<String> getAllInterestedUserNamesForCompany(Company company) {
-
-        return company.getInterestedUsers();
-    }
-
-    public void createJobNotificationMessageAndSend(Job job) {
-        String message = createJobNotificationMessage(job);
-        sendNotification(job.getCompany(), message);
-    }
-
-    private String createJobNotificationMessage(Job job) {
-        return "New job posted: " + job.getJobTitle() + " at " + job.getCompany();
-    }
-
-    private String determineNotificationType(String message) {
-        return message.contains("interview") ? "Interview" : "Job";
-    }
-
-    private void fillNotificationDetails(Notification notification, String userName, String message) {
-        notification.setUserName(userName);
+    private void sendNotification(String userName, String message) {
+        Notification notification = new Notification();
+        notification.setUserName(userName); // Link the notification to the user
         notification.setMessage(message);
         notification.setDate(new Date());
         notification.setSent(false);
         notification.setRead(false);
-        notification.setNotificationType(determineNotificationType(message));
+        notification.setNotificationType("Job"); // Set the type as per your logic
+
+        notificationRepository.save(notification);
     }
 
-    public List<Notification> getNotificationsByUserName(String userName) {
+    public List<Notification> getNotificationByUserName(String userName) {
         return notificationRepository.findByUserName(userName);
     }
 
-    public void CreateNotification(String userName, Job job) {
+    public int createNotification(String userName, Job job, String companyName, String message, String notificationType,
+            Date date, boolean sent, boolean isRead) {
         // Create a new Notification instance
+        Notification largestNotification = notificationRepository.findFirstByOrderByIdDesc();
+        int id;
+        if (largestNotification != null) {
+            id = largestNotification.getNotificationId() + 1;
+        } else {
+            id = 0;
+        }
         Notification newNotification = new Notification();
-
         newNotification.setUserName(userName);
         newNotification.setMessage("New job posted: " + job.getJobTitle());
-        newNotification.setJobId(job.get_id()); // Assuming you have a get_id method in Job class
+        newNotification.setJobId(job.get_id()); // Link the notification to the job
         newNotification.setDate(new Date());
         newNotification.setSent(false);
         newNotification.setRead(false);
         newNotification.setNotificationType("Job"); // Set the type as per your logic
 
-        createNotification(newNotification);
+        // Save the notification to the repository
+        notificationRepository.save(newNotification);
+        return id;
+    }
+
+    public void createJobNotificationMessageAndSend(Job job, String userName) {
+        String message = "New job posted: " + job.getJobTitle() + " at " + job.getCompany();
+        sendNotification(userName, message);
+    }
+
+    public void saveNotification(List<Notification> notification) {
+
+        notificationRepository.saveAll(notification);
     }
 
     public void createNotification(Notification notification) {
         notificationRepository.save(notification);
     }
 
-    public void sendNotification(String userName, String message) {
-        Notification notification = new Notification();
-        fillNotificationDetails(notification, userName, message);
-        notificationRepository.save(notification);
-    }
-
-    public void markAsRead(ObjectId notificationId) {
+    public void markAsRead(int notificationId) {
         Optional<Notification> notificationOpt = notificationRepository.findById(notificationId);
         notificationOpt.ifPresent(notification -> {
             notification.setRead(true);
@@ -112,7 +110,7 @@ public class NotificationService {
         });
     }
 
-    public void deleteNotification(ObjectId notificationId) {
+    public void deleteNotification(int notificationId) {
         notificationRepository.deleteById(notificationId);
     }
 

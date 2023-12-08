@@ -142,16 +142,18 @@ public class CompanyService {
             newJobs.addAll(latestJobs);
         }
 
-        List<Notification> existingNotifications = notificationService.getNotificationsByUserName(userName);
+        List<Notification> existingNotification = notificationService.getNotificationByUserName(userName);
         for (Job job : newJobs) {
-            boolean alreadyNotified = existingNotifications.stream()
+            boolean alreadyNotified = existingNotification.stream()
                     .anyMatch(notification -> notification.getJobId().equals(job.get_id()));
             if (!alreadyNotified) {
-                String message = "New job posted: " + job.getJobTitle();
+                String message = "New job posted: " + job.getCompanyName();
                 Notification newNotification = new Notification();
                 newNotification.setUserName(userName);
                 newNotification.setMessage(message);
                 newNotification.setJobId(job.get_id()); // Link the notification to the job
+                newNotification.setSent(false);
+                newNotification.setRead(false);
                 notificationService.createNotification(newNotification);
             }
         }

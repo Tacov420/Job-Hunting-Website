@@ -21,6 +21,7 @@ public class Job {
     private String jobTitle;
     private String level;
     private int jobId;
+    private String userName;
 
     // for notification
     private boolean notificationSent = false;
@@ -32,6 +33,7 @@ public class Job {
     }
 
     private int companyId;
+    private String companyName;
 
     public int getCompanyId() {
         return this.companyId;

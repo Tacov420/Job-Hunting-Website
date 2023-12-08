@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import JobHunting.model.Profile;
+import java.util.List;
 
 @Repository
 public interface ProfileRepository extends MongoRepository<Profile, String> {
@@ -32,8 +33,9 @@ public interface ProfileRepository extends MongoRepository<Profile, String> {
 
     Profile findProfileBySkills(String[] skills);
 
-    Profile findProfileByCompanies(String[] companies);
-
     Profile findPreferenceByUserName(String userName);
+
+    // for notification
+    List<Profile> findByCompanyId(int companyId);
 
 }

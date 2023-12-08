@@ -25,6 +25,7 @@ public class Profile {
     private List<String> desiredJobsLocation;
     private List<String> skills;
     private List<String> companies;
+    private int companyId;
 
     private int registerStage; // 0: hasn't verified; 1: verify; 2: complete
     private String verificationCode;
