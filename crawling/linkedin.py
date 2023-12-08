@@ -1,4 +1,5 @@
 import requests
+import time
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
 
@@ -43,16 +44,18 @@ for job_id in job_ids:
         job_info["company"] = None
 
     try:
-        job_info["job-title"] = soup.find("div",{"class":"top-card-layout__entity-info"}).find("a").text.strip()
+        job_info["jobTitle"] = soup.find("div",{"class":"top-card-layout__entity-info"}).find("a").text.strip()
     except:
-        job_info["job-title"] = None
+        job_info["jobTitle"] = None
 
     try:
         job_info["level"] = soup.find("ul",{"class":"description__job-criteria-list"}).find("li").text.replace("Seniority level","").strip()
     except:
         job_info["level"] = None
 
-    job_infos.append(job_info)
+    if job_info["company"] and job_info["jobTitle"]:
+        job_info["time"] = time.time()
+        job_infos.append(job_info)
 
 print(job_infos)
 
