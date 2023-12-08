@@ -92,7 +92,7 @@ public class ProgressService {
 
     public int createProgress(int userId, String companyName, String jobTitle, String stageName, LocalDate date, int status) {
         int id;
-        Progress largestProgress = progressRepository.findFirstByOrderByIdDesc();
+        Progress largestProgress = progressRepository.findFirstByOrderByProgressIdDesc();
         if (largestProgress != null){
             id = largestProgress.getProgressId() + 1;
         } else {
