@@ -24,6 +24,9 @@ public class CompanyService {
     @Autowired
     private JobRepository jobRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
     public Object getAllCompany(int userId) {
         List<Job> jobs = jobRepository.findAll();
         Map<String, List<Object>> returnMap = new HashMap<>();
@@ -125,4 +128,33 @@ public class CompanyService {
 
         return "Delete company successfully";
     }
+
+    // for notification
+
+    public void checkForNewJobPostings(String userName) {
+        int userId = getUserId(userName);
+        List<Company> companies = companyRepository.findByUserId(userId);
+        List<Job> newJobs = new ArrayList<>();
+
+        for (Company company : companies) {
+            String companyIdAsString = String.valueOf(company.getId());
+            List<Job> latestJobs = jobRepository.findLatestJobsByCompany(companyIdAsString);
+            newJobs.addAll(latestJobs);
+        }
+
+        List<Notification> existingNotifications = notificationService.getNotificationsByUserName(userName);
+        for (Job job : newJobs) {
+            boolean alreadyNotified = existingNotifications.stream()
+                    .anyMatch(notification -> notification.getJobId().equals(job.get_id()));
+            if (!alreadyNotified) {
+                String message = "New job posted: " + job.getJobTitle();
+                Notification newNotification = new Notification();
+                newNotification.setUserName(userName);
+                newNotification.setMessage(message);
+                newNotification.setJobId(job.get_id()); // Link the notification to the job
+                notificationService.createNotification(newNotification);
+            }
+        }
+    }
+
 }

@@ -4,40 +4,38 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
+@Document(collection = "notification")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "notification")
 public class Notification {
-    @Id
-    private ObjectId id; // Use ObjectId for MongoDB IDs
     private String userName;
     private String message;
     private String notificationType;
     private Date date;
     private boolean sent = false;
-    private boolean isRead = false; // Default value is false
+    private boolean isRead = false;
 
-    public Notification(String userName, String message, String notificationType) {
-        this.userName = userName;
-        this.message = message;
-        this.notificationType = notificationType;
-        this.date = new Date();
-        this.sent = false;
-        this.isRead = false;
+    @Id
+    private ObjectId notificationId;
+
+    public ObjectId getId() {
+        return this.notificationId;
     }
 
-    public boolean isRead() {
-        return isRead;
+    // Field to store the job ID
+    private ObjectId jobId;
+
+    // Getter and setter for jobId
+    public ObjectId getJobId() {
+        return jobId;
     }
 
-    public void setRead(boolean read) {
-        isRead = read;
+    public void setJobId(ObjectId jobId) {
+        this.jobId = jobId;
     }
-
 }

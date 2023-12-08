@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 // import java.time.LocalDateTime;
 import org.springframework.data.mongodb.core.mapping.Field;
-import java.util.Date;
 
 @Document(collection = "jobs")
 @Data
@@ -21,10 +20,21 @@ public class Job {
     @Field("job-title")
     private String jobTitle;
     private String level;
+    private int jobId;
 
     // for notification
-    private Date postingDate; // Date the job was posted
-    private String location; // Job location
-    private boolean notificationSent; // Flag to check if notification is sent
+    private boolean notificationSent = false;
+
+    private int id;
+
+    public int getId() {
+        return this.id;
+    }
+
+    private int companyId;
+
+    public int getCompanyId() {
+        return this.companyId;
+    }
 
 }

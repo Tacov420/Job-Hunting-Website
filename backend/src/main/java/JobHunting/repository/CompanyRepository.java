@@ -15,4 +15,5 @@ public interface CompanyRepository extends MongoRepository<Company, String> {
     Company findById(int id);
 
     void deleteById(int id);
+
 }

@@ -15,8 +15,14 @@ public interface JobRepository extends MongoRepository<Job, String> {
 
     List<Job> findByJobTitle(String jobTitle);
 
+    List<Job> findByCompany(String company);
+
     List<Job> findByNotificationSentFalse();
 
     List<Job> findByCompanyAndNotificationSentFalse(String company, boolean notificationSent);
+
+    List<Job> findByCompanyAndNotificationSentFalse(String company);
+
+    List<Job> findLatestJobsByCompany(String company);
 
 }
