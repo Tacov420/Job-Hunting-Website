@@ -18,9 +18,9 @@ const HomePage = () => {
         getRecommendation();
 	}, []);
 
-    useEffect(() => {
+/*     useEffect(() => {
         console.log('result list', SearchResult);
-	}, [SearchResult]);
+	}, [SearchResult]); */
 
     const handleChange = (e) => {
         setLevel(e.target.value);
