@@ -3,8 +3,14 @@ package JobHunting.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
-import java.time.*;
+import java.util.Locale;
 
 import JobHunting.repository.*;
 import JobHunting.model.*;
@@ -48,14 +54,32 @@ public class ProgressService {
 
     public Object getProgressList(int userId) {
         List<Progress> progressList = progressRepository.findByUserId(userId);
-        // if (progressList.isEmpty()) {
-        //     throw new ProgressNotFoundException("No progress found for this user.");
-        // }
-        return progressList;
+        Map<String, List<Object>> returnMap = new HashMap<>();
+        for (Progress progress: progressList) {
+            List<Object> progressData = new ArrayList<>();
+            progressData.add(progress.getCompanyName());
+            progressData.add(progress.getJobTitle());
+            progressData.add(progress.getStages());
+            progressData.add(progress.getDates());
+            progressData.add(progress.getStageStatus());
+            returnMap.put(String.valueOf(progress.getProgressId()), progressData);
+        }
+
+        return returnMap;
     }
 
     public Object getSpecificProgress(int userId, int progressId) {
-        return progressRepository.findByProgressId(progressId);
+        Progress progress = progressRepository.findByProgressId(progressId);
+        Map<String, List<Object>> returnMap = new HashMap<>();
+        List<Object> progressData = new ArrayList<>();
+        progressData.add(progress.getCompanyName());
+        progressData.add(progress.getJobTitle());
+        progressData.add(progress.getStages());
+        progressData.add(progress.getDates());
+        progressData.add(progress.getStageStatus());
+        returnMap.put(String.valueOf(progress.getProgressId()), progressData);
+
+        return returnMap;
     }
 
     public boolean checkProgressId(int progressId) {
