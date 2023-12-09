@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-// import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 import JobHunting.service.*;

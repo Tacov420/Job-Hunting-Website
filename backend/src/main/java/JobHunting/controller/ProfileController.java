@@ -21,8 +21,6 @@ import JobHunting.service.ProfileService.UserNotFoundException;
 
 @RestController
 @RequestMapping("/api/profile")
-@CrossOrigin(origins = "http://localhost:3000") // 允许来自前端的请求
-
 public class ProfileController {
     @Autowired
     private ProfileService profileService;

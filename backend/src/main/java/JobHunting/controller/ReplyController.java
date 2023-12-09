@@ -10,7 +10,6 @@ import JobHunting.service.*;
 
 @RestController
 @RequestMapping("/api/reply")
-
 public class ReplyController {
     @Autowired
     private ReplyService replyService;

@@ -13,7 +13,6 @@ import JobHunting.service.*;
 
 @RestController
 @RequestMapping("/api/register")
-
 public class RegisterController {
     @Autowired
     private RegisterService registerService;

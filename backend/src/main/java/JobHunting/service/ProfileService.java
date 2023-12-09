@@ -16,13 +16,11 @@ public class ProfileService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    // Method to get profile
     public ProfileDTO getProfileByUserName(String userName) {
         Profile profile = profileRepository.findByUserName(userName);
         if (profile == null) {
             throw new UserNotFoundException("User not found for username: " + userName);
         }
-        // Convert the Profile entity to ProfileDTO before returning
         return new ProfileDTO(profile.getUserName(), profile.getEmail());
     }
 
@@ -34,7 +32,6 @@ public class ProfileService {
         return new PreferenceDTO(profile.getDesiredJobsTitle(), profile.getDesiredJobsLocation(), profile.getSkills());
     }
 
-    // Method to update password
     public String updatePassword(String userName, String newPassword, String confirmPassword) {
         Profile profile = profileRepository.findByUserName(userName);
         if (profile == null) {
@@ -56,9 +53,8 @@ public class ProfileService {
 
         Profile preference = profileRepository.findByUserName(userName);
         if (preference == null) {
-            // Handle the case where no preference exists for the user
             preference = new Profile();
-            preference.setUserName(userName); // Set the username for the new preference
+            preference.setUserName(userName);
         }
         if (updatedPreference.getDesiredJobsTitle() == null || updatedPreference.getDesiredJobsLocation() == null
                 || updatedPreference.getSkills() == null) {
