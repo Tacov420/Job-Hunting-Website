@@ -64,7 +64,7 @@ public class ProfileServiceTest {
     public void testGetPreference() {
         when(profileRepository.findByUserName("test0")).thenReturn(null);
         Exception exception = assertThrows(Exception.class, () -> {
-            profileService.getProfileByUserName("test0");
+            profileService.getPreferenceByUserName("test0");
         });
         assertTrue(exception instanceof UserNotFoundException);
         if (exception instanceof UserNotFoundException) {
@@ -77,4 +77,37 @@ public class ProfileServiceTest {
         assertEquals(Arrays.asList("Q", "W"), result.getDesiredJobsTitle());
         assertEquals(Arrays.asList("D", "F"), result.getSkills());
     }
+
+    @Test
+    public void testUpdateProfile() {
+        when(profileRepository.findByUserName("test0")).thenReturn(null);
+        Exception exception = assertThrows(Exception.class, () -> {
+            profileService.updatePassword("test0", "88", "88");
+        });
+        assertTrue(exception instanceof UserNotFoundException);
+        if (exception instanceof UserNotFoundException) {
+            assertEquals("Username hasn't been registered: test0", exception.getMessage());
+        }
+        Profile profile = setProfile("test0", "test0@gmail.com");
+        when(profileRepository.findByUserName("test0")).thenReturn(profile);
+        String result = profileService.updatePassword("test0", "88", "88");
+        assertEquals("Password updated successfully", result);
+    }
+    
+    @Test
+    public void testUpdatePreference() {
+        when(profileRepository.findByUserName("test0")).thenReturn(null);
+        Profile profile = setPreference(Arrays.asList("Q", "W"), Arrays.asList("E", "R"), Arrays.asList("D", "F"));
+        Exception exception = assertThrows(Exception.class, () -> {
+            profileService.updatePreference("test0", profile);
+        });
+        assertTrue(exception instanceof UserNotFoundException);
+        if (exception instanceof UserNotFoundException) {
+            assertEquals("Username hasn't been registered: test0", exception.getMessage());
+        }
+        Profile profile1 = setPreference(Arrays.asList("D", "F"), Arrays.asList("Q", "W"), Arrays.asList("E", "R"));
+        when(profileRepository.findByUserName("test0")).thenReturn(profile);
+        String result = profileService.updatePreference("test0",profile1);
+        assertEquals("Update preference successfully", result);
+    }   
 }
