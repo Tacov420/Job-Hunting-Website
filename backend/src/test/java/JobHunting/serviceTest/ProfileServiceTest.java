@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import JobHunting.dto.*;
 import JobHunting.model.*;
@@ -25,8 +24,6 @@ public class ProfileServiceTest {
 
     @InjectMocks
     private ProfileService profileService;
-
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public Profile setProfile(String userName, String Email) {
         Profile profile = new Profile();
