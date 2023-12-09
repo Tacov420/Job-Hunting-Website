@@ -56,14 +56,13 @@ public class NotificationController {
 
     @PostMapping(value = "/{username}/add")
     public ResponseEntity<Object> addNotification(@PathVariable String username, @RequestBody Map<String, String> body) {
-        LocalDate date = LocalDate.parse(body.get("date"));
         String content = body.get("content");
         try {
             int userId = notificationService.getUserId(username);
             if (userId == -1) {
                 return new ResponseEntity<>("User doesn't exist", HttpStatus.BAD_REQUEST);
             }
-            int res = notificationService.createNotification(userId, date, content);
+            int res = notificationService.createNotification(userId, content);
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
