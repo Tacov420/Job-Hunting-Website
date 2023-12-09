@@ -59,7 +59,7 @@ public class NotificationService {
         return true;
     }
 
-    public int createNotification(int userId, LocalDate date, String content) {
+    public int createNotification(int userId, String content) {
         int id;
         Notification largestNotification = notificationRepository.findFirstByOrderByNotificationIdDesc();
         if (largestNotification != null){
@@ -68,7 +68,7 @@ public class NotificationService {
             id = 0;
         }
         Notification notification = new Notification();
-        notification.setNotification(id, userId, date, content);
+        notification.setNotification(id, userId, content);
         notificationRepository.save(notification);
 
         return id;
