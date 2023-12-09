@@ -37,10 +37,6 @@ deploy-prod:
   before_script:
     - apt-get -yq update
     - apt-get -yqq install ssh
-    - chmod 400 "$SSH_PRIVATE_KEY"
-    - ssh-add "$SSH_PRIVATE_KEY"
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
     - install -m 600 -D /dev/null ~/.ssh/id_rsa
     - echo "$SSH_PRIVATE_KEY"
     - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
