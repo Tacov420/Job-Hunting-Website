@@ -2,7 +2,7 @@ FROM node:latest
 
 WORKDIR /app
 
-COPY . ./
+COPY ./frontend ./
 RUN yarn
 
 EXPOSE 5173
