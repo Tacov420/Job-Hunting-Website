@@ -46,8 +46,8 @@ const HomePage = () => {
             })); 
             index = index + parseInt(keys.length, 10);
             combinedList=combinedList.concat(result);
-            setSearchResult(combinedList); 
           }
+        setSearchResult(combinedList); 
     }
 
     const handleSubmit = async() =>{

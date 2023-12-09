@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
+import React, { useContext, useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { UsernameContext } from '../context/UsernameContext';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -15,23 +15,21 @@ export default function NotificationIcon() {
     const [Notifications , setNotifications] = useState([]);
     const { Username } = useContext(UsernameContext);
 
-
-    useEffect(() => {
-        //getNotification();
-	}, []);
-
     const getNotification = async() => {
-        //const response = await getNotifications(Username)
-        //const keys = Object.keys(response);
-        //const notificationList = keys.map(key => ({
-        //    id: key,
-        //    content: response[key][0]['content'],  //check 回傳名字
-        //    read: response[key][0]'['read'],       //check 回傳名字
-        //}));
-        //setNotifications(notificationList);
+        const response = await getNotifications(Username);
+        const data = response["data"];
+        const keys = Object.keys(data);
+        let notificationList = keys.map(key => ({
+            id: key,
+            content: data[key][0], 
+            isRead: data[key][1]
+        }));
+        notificationList.reverse(); //讓新通知在上方
+        setNotifications(notificationList);
     }
 
     const handleClick = (event) => {
+        getNotification();
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
@@ -44,7 +42,6 @@ export default function NotificationIcon() {
             if (response.status === 201) {
                 setNotifications((preNotifications) => preNotifications.filter((notification) => notification.id !== notificationId));
             }
-            
         } catch (error) {
             console.error('Error deleting notification:', error);
         }
@@ -69,9 +66,10 @@ export default function NotificationIcon() {
             <p className="font-bold pl-3">Notifications</p>
 
             {Notifications.map(notification => (
-                notification.read ? 
-                <><MenuItem sx={{ bgcolor: 'white' , borderRadius: 2, m:1, p:0.5}}> 
-                <ListItem
+                notification.isRead ? 
+                <><MenuItem key={notification.id}  sx={{ bgcolor: 'white' , borderRadius: 2, m:1, p:0.5}}> 
+                <ListItem 
+                        key={notification.id}
                         secondaryAction={
                         <IconButton edge="end" onClick={() => handleDelete(notification.id)}>
                             <CloseIcon/>
@@ -83,8 +81,9 @@ export default function NotificationIcon() {
                 </MenuItem>
                 </>
                 : 
-                <><MenuItem sx={{ bgcolor: 'lightgrey' , borderRadius: 2, m:1, p:0.5}}>
+                <><MenuItem key={notification.id}  sx={{ bgcolor: 'lightgrey' , borderRadius: 2, m:1, p:0.5}}>
                     <ListItem
+                        key={notification.id}
                         secondaryAction={
                         <IconButton edge="end" onClick={() => handleDelete(notification.id)}>
                             <CloseIcon/>
@@ -96,20 +95,6 @@ export default function NotificationIcon() {
                 </MenuItem>
                 </>
             ))}
-
-            {/*測完notification刪掉此段*/}
-            <MenuItem sx={{bgcolor:'white' , borderRadius: 2,m:1 , p:0.5}}>
-                <ListItem
-                    secondaryAction={
-                    <IconButton edge="end" onClick={() => handleDelete('789')}>
-                        <CloseIcon/>
-                    </IconButton>
-                    }
-                >
-                <ListItemText primary={`notification 3 : ((((((((`} />
-                </ListItem>
-            </MenuItem>
-            {/*測完notification刪掉此段*/}
         
         </Menu>
         </React.Fragment>

@@ -188,16 +188,21 @@ export function getSearchResult(jobTitle, company, level){
 			'Content-Type': 'application/json',
 		},
 	})
-	return; 
 }
 
 //notification
 export function getNotifications(username){
-	return;
+	return client.get(`/notification/${username}`, {
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+		},
+	})
 }
 
 export function DeleteNotification(username , notificationId){
-	return;
+	return client.delete(`/notification/${username}/${notificationId}`);
+	
 }
 
 //progress Tracking
