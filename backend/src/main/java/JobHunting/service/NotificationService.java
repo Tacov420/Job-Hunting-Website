@@ -59,6 +59,21 @@ public class NotificationService {
         return true;
     }
 
+    public int createNotification(int userId, LocalDate date, String content) {
+        int id;
+        Notification largestNotification = notificationRepository.findFirstByOrderByNotificationIdDesc();
+        if (largestNotification != null){
+            id = largestNotification.getNotificationId() + 1;
+        } else {
+            id = 0;
+        }
+        Notification notification = new Notification();
+        notification.setNotification(id, userId, date, content);
+        notificationRepository.save(notification);
+
+        return id;
+    }
+
     public boolean checkPermission(int userId, int notificationId) {
         Notification notification = notificationRepository.findByNotificationId(notificationId);
         if (notification.getUserId() != userId) {
