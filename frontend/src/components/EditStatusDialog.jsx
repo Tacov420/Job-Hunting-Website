@@ -1,16 +1,64 @@
-import { useRef } from "react";
-import Button from "@mui/material/Button";
+import React, {useState , useRef , useContext , useEffect} from "react";
+import { UsernameContext } from '../context/UsernameContext';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import TextField from "@mui/material/TextField";
+import { updateStage, getColorHover  } from "../utils/client";
+import {useParams} from "react-router-dom";
 
 
-export default function EditStatusDialog({ open, onClose }) {
+export default function EditStatusDialog({open, onClose  , Stages , setNewStages ,  index , status}) {
+    const { progress_id } = useParams(); 
+	const StageRef = useRef(null);
+    const DateRef = useRef(null);
+    const statusTable = ['Unknown', 'Accepted' , 'Rejected' , 'Quit'];
+
+    const [StatusSelection , setStatusSelect] = useState(statusTable.indexOf(status));
+    const { Username } = useContext(UsernameContext);
+
+
+    useEffect(() => {    
+        setStatusSelect(statusTable.indexOf(status));
+    }, [status]); 
+
+    const handleChange = (e) => {
+        setStatusSelect(e.target.value);
+    };
+
+    
 
 	const handleSubmit = async () => {
-		
+        const Stage = StageRef.current?.value ?? "";
+        const date = DateRef.current?.value ?? "";
+
+        if(Stage == "" || date == ""){
+            alert('表單未填寫完全');
+            return;
+        }
+        try{
+            const response = await updateStage(Username, progress_id , index , Stage , date , Number(StatusSelection) ); 
+            if (response.status === 201){
+                const newStage = { 
+                    Stage: Stage, 
+                    date:  date,
+                    status: statusTable[Number(StatusSelection)],
+                    color: getColorHover(Number(StatusSelection)),
+                }
+                let newStages = [...Stages]; // copying the old array
+                newStages[index] = newStage; 
+                setNewStages(newStages);
+            }        
+        } catch (error) {
+            if (error.response) {
+                console.error('error:', error.response.data);
+                console.error('Status code:', error.response.status);
+                alert(`${error.response.data}`);
+            } 
+        }
+		onClose();
+        return;
+
 	};
 
   
@@ -24,22 +72,28 @@ export default function EditStatusDialog({ open, onClose }) {
                     <label className="block text-medium font-medium text-gray-900">Stage</label>
                     <input 
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-1.5"
-                        //defaultValue = 
+                        defaultValue = {Stages[index]?.Stage}
+                        ref = {StageRef}
                     />
                 </div>
                 <div>
                     <label className="block text-medium font-medium text-gray-900">Date</label>
                     <input type="date"
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-1.5"
-                        //defaultValue = 
+                        defaultValue = {Stages[index]?.date}
+                        ref = {DateRef}
                     />
                 </div>
                 <div>
                     <label className="block text-medium font-medium text-gray-900">Status</label>
-                    <select id="countries" className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-1.5">
-                        <option selected>stage 1</option>
-                        <option value="stage2">stage 2</option>
-                        <option value="stage3">stage 3</option>
+                    <select 
+                        className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-1.5"
+                        defaultValue={statusTable.indexOf(status)} onChange={handleChange}
+                    >
+                        <option key ="0" value="0">Unknown</option>
+                        <option key ="1" value="1">Accepted</option>
+                        <option key ="2" value="2">Rejected</option>
+                        <option key ="3" value="3">Quit</option>
                     </select>
                 </div>
             </div>

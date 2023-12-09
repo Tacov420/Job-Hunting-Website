@@ -4,9 +4,7 @@ import  TitleBar  from '../components/TitleBar';
 import  CompanyItem  from '../components/Company';
 import { BiChevronDown } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
-
 import {getCompanies ,  deleteCompany , addCompany , getAllCompany} from '../utils/client';
-import { useNavigate } from "react-router-dom";
 
 const CompanyTracking = () => {
     const [companies, setCompanies] = useState([]);
@@ -24,8 +22,7 @@ const CompanyTracking = () => {
 
     const getCompanyList = async () => {
         try{
-            //const response = await getCompanies(encodeURIComponent(Username));
-            const response = await getCompanies('test0');
+            const response = await getCompanies(Username);
             const keys = Object.keys(response);
             const companyList = keys.map(key => ({
                 id: key,
@@ -43,8 +40,7 @@ const CompanyTracking = () => {
 
     const getCompanyPool = async() => {
 		try{
-			//const response = await getAllCompany(encodeURIComponent(Username));
-			const response = await getAllCompany('test0');
+			const response = await getAllCompany(Username);
 			const companies = response['companies'].map(company => ({
                 companyName: company[0],
                 isTrack: company[1],

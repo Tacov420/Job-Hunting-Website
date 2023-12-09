@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { IoBookmarks } from "react-icons/io5";
 import { IoBookmarksOutline } from "react-icons/io5";
-import {changeTracking} from '../utils/client';
+import {addCompany} from '../utils/client';
+import { UsernameContext } from '../context/UsernameContext';
 
-
-const SearchItem = ({id , companyName , jobTitle,  isTrack}) => {
-    const [track, setTrack] = useState(isTrack);
+const SearchItem = ({id , companyName , jobTitle, level, isTrack}) => {
+    const [trackStatus, setTrackStatus] = useState(isTrack);
     const [loading, setLoading] = useState(false);
+    const { Username } = useContext(UsernameContext);
+    useEffect(() => {
+        setTrackStatus(isTrack);
+      }, [isTrack]);
 
     const handleClick = async()=>{     
         setLoading(true);
-        setTrack(!track);
+        setTrackStatus(!trackStatus);
+
         try{
-            await changeTracking(Username , id);  //跟company tracking 一樣??
+            await addCompany(Username , companyName); 
         }catch (error) {
             console.error('Error deleting reply:', error);
         }
@@ -26,8 +31,8 @@ const SearchItem = ({id , companyName , jobTitle,  isTrack}) => {
             <h5 className="mb-2 text-lg font-semibold text-gray-900">{companyName}</h5>
             <h5 className="mb-2 text-2xl font-semibold text-gray-900">{jobTitle}</h5>
             
-            <p className="mb-3 font-normal text-gray-500">{location}</p>
-            { track? (
+            <p className="mb-3 font-normal text-gray-500">{level}</p>
+            { trackStatus? (
                 <>
                 <button
                     className="text-gray-600 absolute end-3 bottom-12 hover:text-gray-900 font-medium rounded-lg text-sm px-3 py-2"

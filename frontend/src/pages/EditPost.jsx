@@ -52,7 +52,7 @@ const EditPost = () => {
         try {
             const response = await editPost(Username, post_id, postTitleRef.current.value, postContentRef.current.value);
             if (response.status === 201) {
-                await navigate(`/discuss_forum?category=${categoryId}`);
+                navigate(`/discuss_forum?category=${categoryId}`);
             }
         }catch (error) {
             console.error('Error editing reply:', error);

@@ -1,5 +1,4 @@
 import React, {useState , useRef , useContext, useEffect} from "react";
-import { Routes, Route, Link , useParams , useNavigate} from "react-router-dom";
 import { UsernameContext } from '../context/UsernameContext';
 import { MdEmail } from "react-icons/md";
 import { RiDeleteBin5Fill } from "react-icons/ri";
@@ -16,10 +15,7 @@ const CompanyItem = ({id , CompanyName , email , onDelete  }) => {
     const [loading, setLoading] = useState(false);
     const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
-    useEffect(() => {
-		console.log('Username:', Username);
-	}, [Username]);
-
+   
     const handleEmail = async()=>{     
         setLoading(true);
         setNotify(!notify);

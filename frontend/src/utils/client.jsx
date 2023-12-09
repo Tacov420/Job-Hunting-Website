@@ -160,7 +160,7 @@ export function addCompany(userName, companyName){
 }
 
 export function getAllCompany(username){
-		
+	
 	return client.get(`/company/all/${username}`,  {
 		headers: {
 			'Accept': 'application/json',
@@ -180,7 +180,14 @@ export function changeTracking(username, companyId){
 }
 
 //homepage
-export function getSearchResult(username, jobTitle, company, level){
+export function getSearchResult(jobTitle, company, level){
+	const levelInt = parseInt(level, 10);
+	return client.get(`/search/company=${company}&jobTitle=${jobTitle}&level=${levelInt}`, {
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+		},
+	})
 	return; 
 }
 
@@ -194,6 +201,95 @@ export function DeleteNotification(username , notificationId){
 }
 
 //progress Tracking
+export function getColor(status){
+	switch (status){
+		case 0: return "bg-amber-200 text-amber-800";
+		case 1: return "bg-green-400 text-green-800";
+		case 2: return "bg-red-300 text-red-800";
+		case 3: return "bg-slate-500 text-slate-200";
+		default: return "bg-green-400 text-green-800";
+	}
+}
+
+export function getColorHover(status){
+	switch (status){
+		case 0: return "bg-amber-200 text-amber-800 hover:bg-amber-300";
+		case 1: return "bg-green-400 text-green-800 hover:bg-green-500";
+		case 2: return "bg-red-300 text-red-800 hover:bg-red-400";
+		case 3: return "bg-slate-500 text-slate-200 hover:bg-slate-400";
+		default: return "bg-green-400 text-green-800 hover:bg-green-500";
+	}
+}
+
+export function getProgresses(username){
+	return client.get(`/progress/${username}`,  {
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+		},
+	})
+	.then(response => {
+		return response.data;
+	})
+	.catch(error => {
+		throw error.response.data;
+	});
+}
+
+export function addProgress(username , companyName , jobTitle , stage, date , status){
+	const data = { 
+		companyName : companyName,   
+		jobTitle: jobTitle, 
+		stage: stage,
+		date: date,
+		status: status,
+	};
+	return client.post(`/progress/${username}/add`, data);
+}
+
+export function getProgress(username , progressId ){
+	const progressIdInt = parseInt(progressId, 10);
+	return client.get(`/progress/${username}/${progressIdInt}`,  {
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+		},
+	})
+	.then(response => {
+		return response.data;
+	})
+	.catch(error => {
+		throw error.response.data;
+	});
+}
+
+export function addStage(username , progressId, stageName , date , status){
+	const data = { 
+		stageName: stageName,
+		date: date,
+		status: status,
+	};
+	return client.put(`/progress/${username}/${progressId}/add`, data);
+}
+
+export function updateStage(username , progressId, index , stageName , date , status){
+	const data = { 
+		index: index,
+		stageName: stageName,
+		date: date,
+		status: status,
+	};
+	return client.put(`/progress/${username}/${progressId}/edit`, data);
+}
+
+export function deleteProgress(username, progressId){
+	return client.delete(`/progress/${username}/${progressId}`);
+};
+
+
+
+
+
 
 
 

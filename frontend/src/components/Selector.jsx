@@ -19,8 +19,7 @@ const Selector = (onAdd , onSelect ) => {
 
 	const getCompanyPool = async() => {
 		try{
-			//const response = await getAllCompany(encodeURIComponent(Username));
-			const response = await getAllCompany('test0');
+			const response = await getAllCompany(encodeURIComponent(Username));
 			const companies = response['companies'].map(company => ({
                 companyName: company[0],
                 isTrack: company[1],

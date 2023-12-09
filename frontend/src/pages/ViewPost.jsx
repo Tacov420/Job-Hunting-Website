@@ -1,10 +1,6 @@
 import  TitleBar  from '../components/TitleBar';
 import  ReplyItem  from '../components/Reply';
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
 import { useState, useEffect, useRef, useContext } from 'react';
 import { addReply, getpost, deleteReply } from "../utils/client";
 import { MdOutlinePostAdd } from "react-icons/md";

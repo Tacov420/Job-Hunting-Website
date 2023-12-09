@@ -1,8 +1,10 @@
-import React, {useState} from "react";
+import React, {useState , useEffect , useContext , useRef} from "react";
+import { UsernameContext } from '../context/UsernameContext';
+
 import  TitleBar  from '../components/TitleBar';
 import NewStatusDialog from '../components/NewStatusDialog';
 import EditStatusDialog from '../components/EditStatusDialog';
-
+import { getProgress, addStage, updateStage, getColorHover  } from "../utils/client";
 import { MdAddCircle } from "react-icons/md";
 import { Routes, Route, Link , useParams} from "react-router-dom";
 
@@ -10,9 +12,55 @@ import { Routes, Route, Link , useParams} from "react-router-dom";
 const ProgressTracking = () => {
     const [newStatusDialogOpen, setNewStatusDialogOpen] = useState(false);
     const [editStatusDialogOpen, setEditStatusDialogOpen] = useState(false);
-    
-    const handleClick = () =>{
+    const { progress_id } = useParams(); 
+    const [companyName , setCompanyName] = useState('');
+    const [jobTitle , setJobTitle] = useState('');
+    const [stages , setStages] = useState([]);
+    const [EditIndex , setEditIndex] = useState(null);
+    const [EditStatus , setEditStatus] = useState(null);
+
+    const statusTable = ['Unknown', 'Accepted' , 'Rejected' , 'Quit'];
+    const { Username } = useContext(UsernameContext);
+
+
+    useEffect(() => {    
+        getProgressData();
+    }, []); 
+
+
+    const handleClick = (index ,  status) =>{
+        setEditIndex(index);
+        setEditStatus(status);
         setEditStatusDialogOpen(true);
+    }
+
+    const getProgressData = async() => {
+        try {
+            const response = await getProgress(Username, progress_id);
+            const res = response[progress_id];
+            setCompanyName(res[0]);
+            setJobTitle(res[1]);
+            var stagesTmp = [];
+            for (var i = 0, l = res[2].length; i < l; i++) {
+                stagesTmp.push({
+                    Stage: res[2][i], 
+                    date: res[3][i],
+                    status: statusTable[res[4][i]],
+                    color: getColorHover(res[4][i])
+                })
+            }
+           
+            setStages(stagesTmp);
+
+        } catch (error) {
+            if (error.response) {
+                console.error('error:', error.response.data);
+                console.error('Status code:', error.response.status);
+                alert(`${error.response.data}`);
+            } 
+        }
+        return;
+
     }
 
     return (
@@ -44,32 +92,39 @@ const ProgressTracking = () => {
                     <tbody>
                         <tr className="bg-white">
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                McDonald's
+                                {companyName}
                             </th>
                             <td className="px-6 py-3">
-                                Fries Quality Control Engineer
+                                {jobTitle}
                             </td>
                             <td className="flex">
-                                <div className="inline px-6 py-3 bg-green-300 text-green-800 hover:bg-green-400"
-                                    onClick={handleClick}>
-                                    7/29 Send Resume
-                                </div>
-                                <div className="inline px-6 py-3 bg-green-300 text-green-800 hover:bg-green-400"
-                                    onClick={handleClick}>
-                                    8/3 First Interview
-                                </div>
-                                <div className="inline px-6 py-3 bg-red-300 text-red-800 hover:bg-red-400"
-                                    onClick={handleClick}>
-                                    8/7 Rejected
-                                </div>
+                                {stages.map((stage, index) => (
+                                    <div key={index}
+                                        className={`px-6 py-3 ${stage.color}`}
+                                        onClick={() => handleClick(index , stage.status)}>
+                                        {stage.date} {stage.Stage}
+                                        <span className="text-xs"> ({stage.status})</span>
+                                    </div>
+                                ))}
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <NewStatusDialog open={newStatusDialogOpen} onClose={() => setNewStatusDialogOpen(false)}/>
-        <EditStatusDialog open={editStatusDialogOpen} onClose={() => setEditStatusDialogOpen(false)}/>
+        <NewStatusDialog 
+            open={newStatusDialogOpen} 
+            onClose={() => setNewStatusDialogOpen(false)} 
+            Stages={stages} setNewStages={setStages}
+        />
+        <EditStatusDialog 
+            open={editStatusDialogOpen} 
+            onClose={() => setEditStatusDialogOpen(false)} 
+            Stages={stages} 
+            setNewStages={setStages}
+            index={EditIndex}
+            status = {EditStatus}
+        />
         </>
     );
 };

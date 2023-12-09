@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import { useState, useEffect, useContext } from 'react';
 import { getposts, getUser } from "../utils/client";
 import { MdOutlinePostAdd } from "react-icons/md";
-import { Routes, Route, Link , useParams, useNavigate, useLocation} from "react-router-dom";
+import { Routes, Route, Link ,  useNavigate} from "react-router-dom";
 import ViewPost from './ViewPost';
 import AddPost from './AddPost';
 import { UsernameContext } from '../context/UsernameContext';

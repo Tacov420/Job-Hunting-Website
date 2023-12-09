@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { FaPencil } from "react-icons/fa6";
-import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { editReply } from "../utils/client";
 import { UsernameContext } from '../context/UsernameContext';
 
@@ -12,9 +12,7 @@ const ReplyItem = ({ replyId, postId, content, edit, onDelete, setReplies }) => 
     const handleCancel = () => {
         setEditMode(false);
     }
-    /*useEffect(() => {
-        console.log('Username changed:', Username);
-    }, [Username]);*/
+    
 
     const handleSubmit = async (replyId) => {
         const content = contentRef.current.value;

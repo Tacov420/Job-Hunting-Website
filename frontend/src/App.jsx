@@ -32,7 +32,7 @@ const App = () => {
           <Route path="/profile/*" element={<ProfilePage />} />
           <Route path="/company_tracking" element={<CompanyTracking />} />
           <Route strict path="/progress_tracking" element={<ProgressTracking />} />
-          <Route path="/progress_tracking/view" element={<ViewProgress />} />
+          <Route path="/progress_tracking/:progress_id" element={<ViewProgress />} />
           <Route strict path="/discuss_forum/*" element={<DiscussForum />} />
           <Route path="/discuss_forum/add" element={<AddPost />} />
           <Route path="/discuss_forum/edit/:post_id" element={<EditPost />} />
