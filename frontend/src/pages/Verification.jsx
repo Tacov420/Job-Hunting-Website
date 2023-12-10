@@ -14,7 +14,6 @@ const Verification = () => {
 	const handleContinue = async () => {
 		const email = emailRef.current?.value ?? "";
 		const verificationCode = vericodeRef.current?.value ?? "";
-		console.log('email: ', email , 'verificationCode:' , verificationCode);  
 		if (email == '' || verificationCode == '') {
 			alert('Please fill in all fields correctly.');
 			return;
@@ -35,14 +34,12 @@ const Verification = () => {
   
 	const handleSendVerification = async () => {
 		const email = emailRef.current?.value ?? "";
-		console.log('email: ', email);  
 		if (email == '') {
 			alert('Please fill in all fields correctly.');
 			return;
 		}
 		try {
 			const response = await createVerify(Username , email);
-			console.log(response.data);
 			alert('Sent verification code successfully.');
 		} catch (error) {
 			if (error.response) {

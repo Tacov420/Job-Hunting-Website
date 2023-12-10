@@ -5,6 +5,32 @@ import  TitleBar  from '../components/TitleBar';
 import SearchItem from '../components/SearchItem';
 import {getSearchResult, getPreference, getCompanies} from '../utils/client';
 
+const getJobListFromResponseDataForRecommendation = (data, index, companyList) => {
+    const keys = Object.keys(data);
+    const result = keys.map(key => ({
+        id: parseInt(parseInt(key,10)+index,10),
+        company: String(data[key]['company']),
+        jobTitle: String(data[key]['jobTitle']),
+        level: String(data[key]['level']), 
+        isTrack: companyList.includes(data[key]['company'])
+    })); 
+    return [result, keys.length];
+}
+const getJobListFromResponseDataForSearch = (data, companyList) => {
+    const keys = Object.keys(data);
+    const resultList = keys.map(key => ({
+        id: parseInt(key, 10),
+        company: String(data[key]['company']),
+        jobTitle: String(data[key]['jobTitle']),
+        level: String(data[key]['level']), 
+        isTrack: companyList.includes(data[key]['company'])
+    }));  
+    return resultList
+}
+
+const getCompanyListFromResponse = (companyResponse) => {
+    return Object.values(companyResponse).map(item => item[0].companyName);
+}
 
 const HomePage = () => {
     const { Username } = useContext(UsernameContext);
@@ -30,21 +56,24 @@ const HomePage = () => {
         const response = await getPreference(Username);
         const desiredJobsTitle = response.data.desiredJobsTitle;
         const companyResponse = await getCompanies(Username);
-        const companyList = Object.values(companyResponse).map(item => item[0].companyName);
+        //const companyList = Object.values(companyResponse).map(item => item[0].companyName);
+        const companyList = getCompanyListFromResponse(companyResponse);
         let combinedList = [];
         let index = 0;
         for (const job of desiredJobsTitle) {
             const recommendResponse = await getSearchResult(job, "" , "2");
             const data = recommendResponse["data"];
-            const keys = Object.keys(data);
+            /*const keys = Object.keys(data);
             const result = keys.map(key => ({
                 id: parseInt(parseInt(key,10)+index,10),
                 company: String(data[key]['company']),
                 jobTitle: String(data[key]['jobTitle']),
                 level: String(data[key]['level']), 
                 isTrack: companyList.includes(data[key]['company'])
-            })); 
-            index = index + parseInt(keys.length, 10);
+            }));  */
+            const [result, len] = getJobListFromResponseDataForRecommendation(data, index, companyList);
+            index = index + parseInt(len, 10);
+            //index = index + parseInt(keys.length, 10);
             combinedList=combinedList.concat(result);
           }
         setSearchResult(combinedList); 
@@ -58,6 +87,7 @@ const HomePage = () => {
         try{
             const response = await getSearchResult(jobTitle , company , level);
             const data = response["data"];
+            /*
             const keys = Object.keys(data);
             const resultList = keys.map(key => ({
                 id: parseInt(key, 10),
@@ -65,7 +95,9 @@ const HomePage = () => {
                 jobTitle: String(data[key]['jobTitle']),
                 level: String(data[key]['level']), 
                 isTrack: companyList.includes(data[key]['company'])
-            })); 
+            }));  
+            */
+            const resultList = getJobListFromResponseDataForSearch(data, companyList);
             setSearchResult(resultList);
         }catch(error){
             alert(error);
@@ -171,3 +203,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+export {getCompanyListFromResponse, getJobListFromResponseDataForRecommendation, getJobListFromResponseDataForSearch};

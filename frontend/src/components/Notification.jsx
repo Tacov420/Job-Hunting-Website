@@ -9,6 +9,17 @@ import ListItemText from "@mui/material/ListItemText";
 import CloseIcon from '@mui/icons-material/Close';
 import {getNotifications , DeleteNotification} from '../utils/client';
 
+const getNotificationListFromResponseData = (data) => {
+    const keys = Object.keys(data);
+    let notificationList = keys.map(key => ({
+        id: key,
+        content: data[key][0], 
+        isRead: data[key][1]
+    }));
+    notificationList.reverse(); //讓新通知在上方
+    return notificationList;
+}
+
 export default function NotificationIcon() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -18,13 +29,15 @@ export default function NotificationIcon() {
     const getNotification = async() => {
         const response = await getNotifications(Username);
         const data = response["data"];
+        const notificationList = getNotificationListFromResponseData(data);
+/*         const data = response["data"];
         const keys = Object.keys(data);
         let notificationList = keys.map(key => ({
             id: key,
             content: data[key][0], 
             isRead: data[key][1]
         }));
-        notificationList.reverse(); //讓新通知在上方
+        notificationList.reverse(); //讓新通知在上方 */
         setNotifications(notificationList);
     }
 
@@ -100,3 +113,4 @@ export default function NotificationIcon() {
         </React.Fragment>
   );
 }
+export {getNotificationListFromResponseData};

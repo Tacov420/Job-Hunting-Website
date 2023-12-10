@@ -6,13 +6,24 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdOutlinePostAdd } from "react-icons/md";
 import { Routes, Route, Link , useParams} from "react-router-dom";
 import {getColor , getProgresses ,  deleteProgress} from '../utils/client';
-
-
+const statusTable = ['Unknown', 'Accepted' , 'Rejected' , 'Quit'];
+const getProgressListFromResponse = (response) => {
+    const keys = Object.keys(response);
+    const ProgressList = keys.map(key => ({
+        id: key,
+        companyName: response[key][0],
+        jobTitle: response[key][1],
+        latestStage: response[key][2][response[key][2].length - 1],
+        latestDate: response[key][3][response[key][3].length - 1],  
+        latestStatus: statusTable[response[key][4][response[key][4].length - 1]],
+        color: getColor(response[key][4][response[key][4].length - 1]),
+    }));
+    return ProgressList;
+}
 const ProgressTracking = () => {
     const [newDialogOpen, setNewDialogOpen] = useState(false);
     const [progresses, setProgresses] = useState([]);
     const { Username } = useContext(UsernameContext);
-    const statusTable = ['Unknown', 'Accepted' , 'Rejected' , 'Quit'];
 
     useEffect(() => {    
         getProgressList();
@@ -21,16 +32,7 @@ const ProgressTracking = () => {
     const getProgressList = async () => {
         try{
             const response = await getProgresses(Username);
-            const keys = Object.keys(response);
-            const ProgressList = keys.map(key => ({
-                id: key,
-                companyName: response[key][0],
-                jobTitle: response[key][1],
-                latestStage: response[key][2][response[key][2].length - 1],
-                latestDate: response[key][3][response[key][3].length - 1],  
-                latestStatus: statusTable[response[key][4][response[key][4].length - 1]],
-                color: getColor(response[key][4][response[key][4].length - 1]),
-            }));
+            const ProgressList = getProgressListFromResponse(response);
             setProgresses(ProgressList);
             
         }catch (error) {
@@ -118,3 +120,4 @@ const ProgressTracking = () => {
 };
  
 export default ProgressTracking;
+export {getProgressListFromResponse};

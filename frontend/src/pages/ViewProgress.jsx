@@ -8,6 +8,19 @@ import { getProgress, addStage, updateStage, getColorHover  } from "../utils/cli
 import { MdAddCircle } from "react-icons/md";
 import { Routes, Route, Link , useParams} from "react-router-dom";
 
+const statusTable = ['Unknown', 'Accepted' , 'Rejected' , 'Quit'];
+const getProgressFromResponse = (res) => {
+    var stagesTmp = [];
+    for (var i = 0, l = res[2].length; i < l; i++) {
+        stagesTmp.push({
+            Stage: res[2][i], 
+            date: res[3][i],
+            status: statusTable[res[4][i]],
+            color: getColorHover(res[4][i])
+        })
+    }
+    return stagesTmp;
+}
 
 const ProgressTracking = () => {
     const [newStatusDialogOpen, setNewStatusDialogOpen] = useState(false);
@@ -19,7 +32,7 @@ const ProgressTracking = () => {
     const [EditIndex , setEditIndex] = useState(null);
     const [EditStatus , setEditStatus] = useState(null);
 
-    const statusTable = ['Unknown', 'Accepted' , 'Rejected' , 'Quit'];
+    
     const { Username } = useContext(UsernameContext);
 
 
@@ -40,7 +53,7 @@ const ProgressTracking = () => {
             const res = response[progress_id];
             setCompanyName(res[0]);
             setJobTitle(res[1]);
-            var stagesTmp = [];
+/*             var stagesTmp = [];
             for (var i = 0, l = res[2].length; i < l; i++) {
                 stagesTmp.push({
                     Stage: res[2][i], 
@@ -49,7 +62,8 @@ const ProgressTracking = () => {
                     color: getColorHover(res[4][i])
                 })
             }
-           
+            */
+            const stagesTmp = getProgressFromResponse(res);
             setStages(stagesTmp);
 
         } catch (error) {
@@ -130,3 +144,4 @@ const ProgressTracking = () => {
 };
  
 export default ProgressTracking;
+export {getProgressFromResponse};

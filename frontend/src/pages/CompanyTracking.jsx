@@ -6,6 +6,30 @@ import { BiChevronDown } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import {getCompanies ,  deleteCompany , addCompany , getAllCompany} from '../utils/client';
 
+const getCompanyListFromResponse = (response) => {
+    const keys = Object.keys(response);
+    const companyList = keys.map(key => ({
+        id: key,
+        companyName: response[key][0]['companyName'],
+        isTrack: response[key][0]['receiveEmail'],
+    }));        
+    return companyList;
+}
+const getCompanyPoolFromResponse = (response) => {
+    const companies = response['companies'].map(company => ({
+        companyName: company[0],
+        isTrack: company[1],
+    }));
+    // sort by name
+    companies.sort((a, b) => {
+        const nameA = a.companyName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.companyName.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB)	return -1;
+        if (nameA > nameB) 	return 1;
+        return 0;  // names must be equal
+    });
+    return companies;
+}
 const CompanyTracking = () => {
     const [companies, setCompanies] = useState([]);
     const [select , setSelect] = useState('');
@@ -19,16 +43,10 @@ const CompanyTracking = () => {
         getCompanyPool();
     }, []); 
 
-
     const getCompanyList = async () => {
         try{
             const response = await getCompanies(Username);
-            const keys = Object.keys(response);
-            const companyList = keys.map(key => ({
-                id: key,
-                companyName: response[key][0]['companyName'],
-                isTrack: response[key][0]['receiveEmail'],
-            }));
+            const companyList = getCompanyListFromResponse(response);
             setCompanies(companyList);
         }catch (error) {
             if (error.response) {
@@ -41,18 +59,7 @@ const CompanyTracking = () => {
     const getCompanyPool = async() => {
 		try{
 			const response = await getAllCompany(Username);
-			const companies = response['companies'].map(company => ({
-                companyName: company[0],
-                isTrack: company[1],
-            }));
-			// sort by name
-			companies.sort((a, b) => {
-				const nameA = a.companyName.toUpperCase(); // ignore upper and lowercase
-				const nameB = b.companyName.toUpperCase(); // ignore upper and lowercase
-				if (nameA < nameB)	return -1;
-				if (nameA > nameB) 	return 1;
-				return 0;  // names must be equal
-			});
+            const companies = getCompanyPoolFromResponse(response);
 			setCompanyPool(companies);
 		}catch (error) {
 			if (error.response) {
@@ -172,3 +179,4 @@ const CompanyTracking = () => {
 };
  
 export default CompanyTracking;
+export { getCompanyListFromResponse, getCompanyPoolFromResponse }; 
