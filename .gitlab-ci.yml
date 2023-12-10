@@ -1,7 +1,5 @@
 stages:          # List of stages for jobs and their order of execution
   - build-images
-  - frontend
-  - backend
   - deploy
 
 
@@ -17,21 +15,7 @@ build-images:
     - docker push registry.gitlab.com/software-engineering8932241/job-hunting:frontend_image_$CI_COMMIT_SHORT_SHA
     - docker push registry.gitlab.com/software-engineering8932241/job-hunting:backend_image_$CI_COMMIT_SHORT_SHA
 
-frontend:
-  stage: frontend
-  image: registry.gitlab.com/software-engineering8932241/job-hunting:frontend_image_$CI_COMMIT_SHORT_SHA
-  script:
-    - echo "Frontend Image"
-
-
-backend:
-  stage: backend
-  image: registry.gitlab.com/software-engineering8932241/job-hunting:backend_image_$CI_COMMIT_SHORT_SHA
-  script:
-    - echo "Backend Image"
-
-
-deploy-prod:
+deploy:
   variables:
     CONTAINER_REGISTRY: registry.gitlab.com/software-engineering8932241/job-hunting
   image: ubuntu:latest
@@ -44,6 +28,6 @@ deploy-prod:
     - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
     - ssh-keyscan -H 35.221.223.176 > ~/.ssh/known_hosts
   script:
-    - ssh group4@35.221.223.176 "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker pull $CONTAINER_REGISTRY:frontend_image_$CI_COMMIT_SHORT_SHA && docker run -d -t --name frontend_$CI_COMMIT_SHORT_SHA -p 5173:5173 $CONTAINER_REGISTRY:frontend_image_$CI_COMMIT_SHORT_SHA && docker pull $CONTAINER_REGISTRY:backend_image_$CI_COMMIT_SHORT_SHA && docker run -d -t --name backend_$CI_COMMIT_SHORT_SHA $CONTAINER_REGISTRY:backend_image_$CI_COMMIT_SHORT_SHA && docker exec -d backend_$CI_COMMIT_SHORT_SHA mvn spring-boot:run && docker exec -d frontend_$CI_COMMIT_SHORT_SHA yarn dev --host && exit"
+    - ssh group4@35.221.223.176 "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker pull $CONTAINER_REGISTRY:frontend_image_$CI_COMMIT_SHORT_SHA && docker run -d -t --name frontend_$CI_COMMIT_SHORT_SHA -p 5173:5173 $CONTAINER_REGISTRY:frontend_image_$CI_COMMIT_SHORT_SHA && docker pull $CONTAINER_REGISTRY:backend_image_$CI_COMMIT_SHORT_SHA && docker run -d -t --name backend_$CI_COMMIT_SHORT_SHA -p 8005:8005 $CONTAINER_REGISTRY:backend_image_$CI_COMMIT_SHORT_SHA && docker exec -d backend_$CI_COMMIT_SHORT_SHA mvn spring-boot:run && docker exec -d frontend_$CI_COMMIT_SHORT_SHA yarn dev --host && exit"
   after_script:
     - rm -rf ~/.ssh
