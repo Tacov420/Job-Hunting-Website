@@ -1,10 +1,15 @@
 stages:          # List of stages for jobs and their order of execution
+<<<<<<< HEAD
   - build
+=======
+  - build-images
+>>>>>>> ee6aca3 (login-register-search-profile)
   - frontend
   - backend
   - deploy
 
 
+<<<<<<< HEAD
 build-job:
   stage: build
   image: python:latest
@@ -15,13 +20,36 @@ build-job:
 frontend-job:
   stage: frontend
   image: node:latest
+=======
+build-images:
+  stage: build-images
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --file frontend/Dockerfile -t registry.gitlab.com/software-engineering8932241/job-hunting:frontend_image_$CI_COMMIT_SHORT_SHA .
+    - docker build --file backend/Dockerfile -t registry.gitlab.com/software-engineering8932241/job-hunting:backend_image_$CI_COMMIT_SHORT_SHA .
+    - docker push registry.gitlab.com/software-engineering8932241/job-hunting:frontend_image_$CI_COMMIT_SHORT_SHA
+    - docker push registry.gitlab.com/software-engineering8932241/job-hunting:backend_image_$CI_COMMIT_SHORT_SHA
+
+frontend:
+  stage: frontend
+  image: registry.gitlab.com/software-engineering8932241/job-hunting:frontend_image_$CI_COMMIT_SHORT_SHA
+>>>>>>> ee6aca3 (login-register-search-profile)
   script:
     - echo "Frontend Image"
 
 
+<<<<<<< HEAD
 backend-job:
   stage: backend
   image: openjdk:21-jdk
+=======
+backend:
+  stage: backend
+  image: registry.gitlab.com/software-engineering8932241/job-hunting:backend_image_$CI_COMMIT_SHORT_SHA
+>>>>>>> ee6aca3 (login-register-search-profile)
   script:
     - echo "Backend Image"
 

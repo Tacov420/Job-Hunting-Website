@@ -1,6 +1,7 @@
 # job hunting
 
 
+<<<<<<< HEAD
 ## Backend
 Install jdk-21 then
 ```
@@ -25,6 +26,8 @@ The only thing you need to configure is `.pre-commit-config.yaml`
 
 
 
+=======
+>>>>>>> ee6aca3 (login-register-search-profile)
 
 ## Getting started
 
