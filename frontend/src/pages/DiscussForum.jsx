@@ -25,11 +25,12 @@ const DiscussForum = () => {
     const [posts, setPosts] = useState([]);
     const [categoryId, setCategoryId] = useState(0);
     const navigate = useNavigate()
-    const { Username } = useContext(UsernameContext);
-
+    //const { Username } = useContext(UsernameContext);
+    const Username = 'test0';
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
         const initialCategoryId = parseInt(searchParams.get('category'), 10);
+        //console.log('category', initialCategoryId);
         chooseCategories(id_to_categories[initialCategoryId]);
         setCategoryId(initialCategoryId);
     }, []);
@@ -49,12 +50,13 @@ const DiscussForum = () => {
                 edit: response[key][2]
             }));
             setPosts(posts);
+            //console.log('posts', posts);
         } catch (error) {
-            if (error.response) {
+/*             if (error.response) {
                 console.error('error:', error.response.data);
                 console.error('Status code:', error.response.status);
                 alert(`${error.response.data}`);
-            } 
+            }  */
         }
         return;
     }

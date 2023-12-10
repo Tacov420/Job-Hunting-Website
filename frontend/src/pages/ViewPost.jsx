@@ -12,13 +12,15 @@ import { UsernameContext } from '../context/UsernameContext';
 
 const ViewPost = () => {
     const [displayInput , setDisplayInput] = useState(false);
-    const { post_id } = useParams(); 
+    //const { post_id } = useParams(); 
     const [postTitle, setPostTitle] = useState(''); 
     const [postContent, setPostContent] = useState('');
     const [replies, setReplies] = useState([]);
     const contentRef = useRef(null);
-    const { Username } = useContext(UsernameContext);
-
+    //const { Username } = useContext(UsernameContext);
+    const Username = 'test0';
+    const post_id = 0;
+    //console.log('post id', post_id);
     const getPost = async (post_id) => {
         try {
             const response = await getpost(Username, post_id);
@@ -32,17 +34,19 @@ const ViewPost = () => {
                 edit: reply[key][2]
             }));
             setReplies(replies);
-        } catch (error) {
-            if (error.response) {
+        } 
+         catch (error) { 
+            //console.log(error)
+/*             if (error.response) {
                 console.error('error:', error.response.data);
                 console.error('Status code:', error.response.status);
                 alert(`${error.response.data}`);
-            } 
-        }
+            }  */
+        } 
         return;
     }
     useEffect(() => {
-        console.log(post_id)
+        //console.log(post_id)
         getPost(post_id);
     }, [post_id]); 
 
@@ -86,7 +90,8 @@ const ViewPost = () => {
         <>
         <TitleBar display={true} currentPage={'discuss forum'}/>
         <div className='items-center mx-24 px-10 mt-6 overflow-y-auto'>
-            <input  
+            <label htmlFor="postTitle">postTitle</label>
+            <input id="postTitle"
 				className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5"
 				defaultValue={postTitle} readOnly
 			/>

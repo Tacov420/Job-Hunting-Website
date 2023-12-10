@@ -9,7 +9,8 @@ const AddPost = () => {
     const [categoryId, setCategoryId] = useState('');
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-    const { Username } = useContext(UsernameContext);
+    //const { Username } = useContext(UsernameContext);
+    const Username = 'test0'
     const navigate = useNavigate();
     const titleRef = useRef(null);
     const contentRef = useRef(null);
@@ -59,12 +60,17 @@ const AddPost = () => {
                 >Internal Referral</button>
             </div>
             <h2 className='font-bold text-2xl py-4'>Add Post</h2>
+            <label htmlFor="title" >Title</label>
             <input  
+                id="title"
                 className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5"
                 placeholder='Write post title...'
                 ref = {titleRef}
             />
-            <textarea rows="10"
+            <label htmlFor="content" >Content</label>
+            <textarea 
+                id="content"
+                rows="10"
                 className="mt-5 bg-gray-100 text-gray-900 lg:text-lg rounded-lg w-full p-2.5"
                 placeholder='Write post content...'
                 ref = {contentRef}

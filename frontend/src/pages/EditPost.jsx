@@ -34,11 +34,11 @@ const EditPost = () => {
             setPostTitle(title);
             setPostContent(content);
         } catch (error) {
-            if (error.response) {
+           /*  if (error.response) {
                 console.error('error:', error.response.data);
                 console.error('Status code:', error.response.status);
                 alert(`${error.response.data}`);
-            } 
+            }  */
         }
         return;
     }
@@ -107,14 +107,14 @@ const EditPost = () => {
                 defaultValue={postContent}
             />
             <div className='relative'>
-            <button 
+            <button
                 className="px-9 py-1 bg-green-500 rounded-lg font-sm text-white hover:bg-green-600"
                 onClick={handleEditPost}
             >
             Submit
             </button>
             <Link to={{ pathname: "/discuss_forum", search: `?category=${categoryId}` }}>
-                <button 
+                <button  
                     className="ml-3 px-9 py-1 bg-gray-600 rounded-lg font-sm text-white hover:bg-gray-700"
                 >
                 Cancel

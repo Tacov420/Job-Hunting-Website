@@ -9,9 +9,9 @@ const Login = () => {
     const { Username, updateUsername } = useContext(UsernameContext);
 	const navigate = useNavigate()
 
-	useEffect(() => {
+/* 	useEffect(() => {
 		console.log('Username changed:', Username);
-	}, [Username]);
+	}, [Username]); */
 
 	const handleLogin = async () => {
 		const username = usernameRef.current.value;
@@ -25,13 +25,13 @@ const Login = () => {
 			const response = await getUser(username, password);
 		
 			if (response.status === 201) {
-				console.log(response.data);
+				//console.log(response.data);
 				navigate('/home');
 			} 
 		} catch (error) {
 			if (error.response) {
-				console.error('Login error:', error.response.data);
-				console.error('Status code:', error.response.status);
+				//console.error('Login error:', error.response.data);
+				//console.error('Status code:', error.response.status);
 				if (error.response.status === 403){
 					alert(`Login failed: ${error.response.data}`);
 					return;
@@ -66,15 +66,17 @@ const Login = () => {
 						</h1>
 						<div className="space-y-4 md:space-y-6">
 							<div>
-								<label className="block mb-1 text-sm font-medium text-gray-900">Username</label>
+								<label htmlFor="username" className="block mb-1 text-sm font-medium text-gray-900">Username</label>
 								<input name="username" 
+									id="username"
 									className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-1.5"
 									ref = {usernameRef}
 								/>
 							</div>
 							<div>
-								<label className="block mb-1 text-sm font-medium text-gray-900 ">Password</label>
+								<label htmlFor="password" className="block mb-1 text-sm font-medium text-gray-900 ">Password</label>
 								<input type="password" 
+									id="password"
 									className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-1.5"
 									ref = {passwordRef}
 								/>

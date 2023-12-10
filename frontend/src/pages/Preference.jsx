@@ -5,7 +5,7 @@ import { Link , useNavigate } from "react-router-dom";
 import { IoMdAddCircle } from "react-icons/io";
 
 const Preference = () => {
-	const { Username } = useContext(UsernameContext);
+	//const { Username } = useContext(UsernameContext);
 	const [desiredJobsTitle, setDesiredJobsTitle] = useState([]);
 	const [desiredJobsLocation, setDesiredJobsLocation] = useState([]);
 	const [companies, setCompanies] = useState([]);
@@ -16,8 +16,8 @@ const Preference = () => {
 	const CompanyRef = useRef(null);
 	const SkillRef = useRef(null);
 	const navigate = useNavigate();
-	console.log(Username);
-
+	//console.log(Username);
+	const Username = "test0";
 	const handleDialogConfirm = (selectedBox) => {
 		let updatedList = [];
 
@@ -115,8 +115,8 @@ const Preference = () => {
 						<h1 className="text-left text-xl font-bold text-gray-900 md:text-2xl ">Personal Information</h1>
 						<div className="space-y-4 md:space-y-6">
 							<div>
-								<label className="block mb-1 text-lg font-medium text-gray-900">Name</label>
-								<input name="username" 
+								<label htmlFor="name" className="block mb-1 text-lg font-medium text-gray-900">Name</label>
+								<input id="name" name="username" 
 								className="bg-gray-200 text-gray-700 lg:text-lg rounded-lg w-full p-2.5" 
 								defaultValue={Username} readOnly/>              
 							</div>
@@ -125,13 +125,13 @@ const Preference = () => {
 						<h1 className="text-left text-xl font-bold text-gray-900 md:text-2xl ">Preferences</h1>
 						<div className="space-y-4 md:space-y-6">
 							<div>
-								<label className="block mb-1 text-lg font-medium text-gray-900">Desired Job Title</label>	
+								<label htmlFor="job" className="block mb-1 text-lg font-medium text-gray-900">Desired Job Title</label>	
 								<div className="relative w-full">
-									<input 
+									<input id="job"
 										className="block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full py-2.5 pl-2.5 pr-8 mb-2"
 										ref = {jobTitleRef}
 									/>	
-									<button
+									<button  data-testid="jobButton"
 										className="absolute items-center top-0 end-0 p-1.5 h-full text-sm font-medium text-gray-500 rounded-e-lg" 
 										onClick={() => handleDialogConfirm('desiredJobsTitle')} >
 										<IoMdAddCircle size={23} className=''/>
@@ -147,13 +147,13 @@ const Preference = () => {
 								
 							</div>
 							<div>
-								<label className="block mb-1 text-lg font-medium text-gray-900">Desired Job Location</label>	
+								<label htmlFor="location" className="block mb-1 text-lg font-medium text-gray-900">Desired Job Location</label>	
 								<div className="relative w-full">
-									<input 
+									<input id="location" 
 										className="block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full py-2.5 pl-2.5 pr-8 mb-2"
 										ref = {LocationRef}
 									/>	
-									<button
+									<button data-testid="locationButton"
 										className="absolute items-center top-0 end-0 p-1.5 h-full text-sm font-medium text-gray-500 rounded-e-lg" 
 										onClick={() => handleDialogConfirm('desiredJobsLocation')} >
 										<IoMdAddCircle size={23} className=''/>
@@ -169,13 +169,13 @@ const Preference = () => {
 							</div>
 
 							<div>
-								<label className="block mb-1 text-lg font-medium text-gray-900">Focus Companies</label>	
+								<label htmlFor='company' className="block mb-1 text-lg font-medium text-gray-900">Focus Companies</label>	
 								<div className="relative w-full">
-									<input 
+									<input id="company"
 										className="block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full py-2.5 pl-2.5 pr-8 mb-2"
 										ref = {CompanyRef}
 									/>	
-									<button
+									<button data-testid="companyButton"
 										className="absolute items-center top-0 end-0 p-1.5 h-full text-sm font-medium text-gray-500 rounded-e-lg" 
 										onClick={() => handleDialogConfirm('companies')} >
 										<IoMdAddCircle size={23} className=''/>
@@ -190,13 +190,13 @@ const Preference = () => {
 								))}									
 							</div>
 							<div>
-								<label className="block mb-1 text-lg font-medium text-gray-900">Skills</label>	
+								<label htmlFor="skills" className="block mb-1 text-lg font-medium text-gray-900">Skills</label>	
 								<div className="relative w-full">
-									<input 
+									<input id="skills"
 										className="block bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full py-2.5 pl-2.5 pr-8 mb-2"
 										ref = {SkillRef}
 									/>	
-									<button
+									<button data-testid="skillsButton"
 										className="absolute items-center top-0 end-0 p-1.5 h-full text-sm font-medium text-gray-500 rounded-e-lg" 
 										onClick={() => handleDialogConfirm('skills')} >
 										<IoMdAddCircle size={23} className=''/>

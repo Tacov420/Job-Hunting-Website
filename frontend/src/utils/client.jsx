@@ -9,6 +9,7 @@ const client = axios.create({
 //login
 export function getUser(username, password){
 	const data = {userName: username, password: password};
+	return axios.post("/login", data);
 	return client.post("/login", data);
 };
 
@@ -16,16 +17,19 @@ export function getUser(username, password){
 //register
 export function createUser(username, password){
 	const data = {userName: username, password: password};
+	return axios.post("/register/personalInfo", data);
 	return client.post("/register/personalInfo", data);
 };
 
 export function Verify(username, verificationCode){
 	const data = {userName: username, verificationCode: verificationCode};
+	return axios.post("/register/verify", data);
 	return client.post("/register/verify", data);
 };
 
 export function createVerify(username, email){
 	const data = {userName: username, email: email};
+	return axios.post("/register/sendVerification", data);
 	return client.post("/register/sendVerification", data);
 };
 
@@ -37,6 +41,7 @@ export function createPreferences(username, desiredJobsTitle, desiredJobsLocatio
 		skills: skills, 
 		companies: companies,
 	};
+	return axios.post("/register/preference", data);
 	return client.post("/register/preference", data);
 };
 
@@ -48,7 +53,7 @@ export function getposts(username , categoryId){
 	if (typeof categoryIdInt !== 'number' && !Number.isInteger(categoryIdInt) && categoryIdInt <= 0) {
 		console.log('categoryId must be a int');
 	}		
-	return client.get(`/post/list/${username}/${categoryIdInt}`,  {
+	return axios.get(`/post/list/${username}/${categoryIdInt}`,  {
 		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json',
@@ -64,7 +69,7 @@ export function getposts(username , categoryId){
 
 export function getpost(username , postId){
 	const postIdInt = parseInt(postId, 10);
-	return client.get(`/post/specific/${username}/${postIdInt}`,  {
+	return axios.get(`/post/specific/${username}/${postIdInt}`,  {
 		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json',
@@ -80,53 +85,53 @@ export function getpost(username , postId){
 
 export function addPost(username, categoryId, postTitle, postContent){
 	const data = {userName: username , categoryId: categoryId, postTitle: postTitle, postContent: postContent};
-	return client.post("/post/add", data);
+	return axios.post("/post/add", data);
 };
 export function editPost(username, postId, postTitle, postContent){
 	const postIdInt = parseInt(postId, 10);
 	const data = {userName: username , postTitle: postTitle, postContent: postContent};
-	return client.put(`/post/${postIdInt}`, data);
+	return axios.put(`/post/${postIdInt}`, data);
 };
 export function deletePost(userName, postId){
 	const postIdInt = parseInt(postId, 10);
     const config = {
         data: { userName: userName }, 
-    };	return client.delete(`/post/${postIdInt}`, config);
+    };	return axios.delete(`/post/${postIdInt}`, config);
 };
 
 
 export function addReply(username, postId, replyContent){
 	const data = {userName: username , postId: postId, replyContent: replyContent};
-	return client.post("/reply/add", data);
+	return axios.post("/reply/add", data);
 };
 export function deleteReply(userName, replyId){
     const config = {
         data: { userName: userName }, 
-    };	return client.delete(`/reply/${replyId}`, config);
+    };	return axios.delete(`/reply/${replyId}`, config);
 };
 export function editReply(username, replyId, replyContent){
 	const data = {userName: username, replyContent: replyContent};
-	return client.put(`/reply/${replyId}`, data);
+	return axios.put(`/reply/${replyId}`, data);
 };
 
 
 // Profile
 export function getPersonalInfo(username){
-	return client.get(`/profile/${username}`);
+	return axios.get(`/profile/${username}`);
 };
 
 export function updatePassword(username, newPassword){
 	const data = {newPassword: newPassword, confirmPassword: newPassword};
-	return client.put(`/profile/${username}`, data);
+	return axios.put(`/profile/${username}`, data);
 };
 
 export function getPreference(username){
-	return client.get(`/profile/preference/${username}`);
+	return axios.get(`/profile/preference/${username}`);
 };
 
 export function updatePreference(username, skills, desiredJobs, desiredLocations){
 	const data = {userName: username, desiredJobsTitle: desiredJobs, desiredJobsLocation: desiredLocations, skills: skills};
-	return client.put(`/profile/preference/${username}`, data);
+	return axios.put(`/profile/preference/${username}`, data);
 };
 
 

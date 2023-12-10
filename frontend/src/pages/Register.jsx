@@ -12,21 +12,20 @@ const Register = () => {
 	const confirmRef = useRef(null);
 	const navigate = useNavigate();
 
-
 	//const [confirmPassword, setConfirmPassword] = useState('');
 	const [checkColor, setCheckColor] = useState('black');
 	const { Username, updateUsername } = useContext(UsernameContext);
 	
-	useEffect(() => {
+/* 	useEffect(() => {
 		console.log('Username changed:', Username);
-	}, [Username]);
+	}, [Username]); */
 
 	const handleConfirmPasswordChange = () => {
 		//const newPassword = event.target.value;
 		const currentPassword = passwordRef.current?.value ?? "";
 		const currentConfirm = confirmRef.current?.value ?? "";
-		console.log(currentConfirm);
-		console.log(currentPassword);
+		//console.log(currentConfirm);
+		//console.log(currentPassword);
 
 		if (currentConfirm === currentPassword) {
 			setCheckColor('green');
@@ -49,7 +48,7 @@ const Register = () => {
 			if (username !== '' && password !== '' && confirmPassword !== '' && confirmPassword === password) {
 				
 				const response = await createUser(username, password);
-				console.log(response.data);
+				//console.log(response.data);
 				if (response.status === 201) {
 					updateUsername(username);
 					navigate('/verification'); //跳到驗證信
@@ -86,22 +85,28 @@ const Register = () => {
 						</h1>
 						<div className="space-y-4 md:space-y-6">
 							<div>
-								<label className="block mb-1 text-sm font-medium text-gray-900">Username</label>
-								<input name="username" 
+								<label htmlFor="username" className="block mb-1 text-sm font-medium text-gray-900">Username</label>
+								<input 
+									id="username"
+									name="username" 
 									className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5" 
 									ref={usernameRef}
 								/>
 							</div>
 							<div>
-								<label className="block mb-1 text-sm font-medium text-gray-900 ">Password</label>
-								<input type="password" 
+								<label htmlFor="password" className="block mb-1 text-sm font-medium text-gray-900 ">Password</label>
+								<input 
+									id="password"
+									type="password" 
 									className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5"
 									ref = {passwordRef}
 								/>
 							</div>
 							<div>
-								<label className="block mb-1 text-sm font-medium text-gray-900 ">Confirm Password</label>
-								<input type="password" 
+								<label htmlFor="confirmpassword" className="block mb-1 text-sm font-medium text-gray-900 ">Confirm Password</label>
+								<input 
+									id="confirmpassword"
+									type="password" 
 									className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5"
 									ref = {confirmRef}
 									onChange={handleConfirmPasswordChange}
