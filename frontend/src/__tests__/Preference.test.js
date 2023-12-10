@@ -67,50 +67,7 @@ describe('test Preference', () => {
             expect(mockNavigate).toHaveBeenCalledWith('/home');
         }); */
     });
-    /*
-    it('should link to register page when "Sign up" is clicked', async () => {
-        render(<UsernameProvider><BrowserRouter><Preference /></BrowserRouter></UsernameProvider>);
-        await act(async () => {
-            fireEvent.click(screen.getByText('Sign up'));
-            expect(document.querySelector("a").getAttribute("href")).toBe("/register")})        
-        });
-    it("should navigate to verification if hasn't verified", async () => {
-        mock.reset();
-        const mockedError = { response: { status: 400, data: "Hasn't verified" } };
-        mock.onPost('/Preference').reply(400, mockedError.response.data);
-        render(
-            <UsernameProvider><BrowserRouter><Preference /></BrowserRouter></UsernameProvider>
-        );
-        await act(async () => {
-            fireEvent.change(screen.getByLabelText('Username'), { target: { value: 'test' } });
-            fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'test' } });
-            fireEvent.click(screen.getByRole('button', { name: 'Preference' }));
-            expect(screen.getByLabelText('Username').value).toBe('test');
-            expect(screen.getByLabelText('Password').value).toBe('test'); 
-        })
-        await waitFor(() => {
-            expect(mockNavigate).toHaveBeenCalledTimes(1);
-            expect(mockNavigate).toHaveBeenCalledWith('/verification');
-        });
-    });
-    it("should navigate to preference if hasn't filled in preference", async () => {
-        mock.reset();
-        const mockedError = { response: { status: 400, data: "Hasn't filled in preference" } };
-        mock.onPost('/Preference').reply(400, mockedError.response.data);
-        render(
-            <UsernameProvider><BrowserRouter><Preference /></BrowserRouter></UsernameProvider>
-        );
-        await act(async () => {
-            fireEvent.change(screen.getByLabelText('Username'), { target: { value: 'test' } });
-            fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'test' } });
-            fireEvent.click(screen.getByRole('button', { name: 'Preference' }));
-            expect(screen.getByLabelText('Username').value).toBe('test');
-            expect(screen.getByLabelText('Password').value).toBe('test'); 
-        })
-        await waitFor(() => {
-            expect(mockNavigate).toHaveBeenCalledTimes(1);
-            expect(mockNavigate).toHaveBeenCalledWith('/preference');
-        });
-    });*/
+
+
 });
 
