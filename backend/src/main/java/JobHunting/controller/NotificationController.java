@@ -62,7 +62,17 @@ public class NotificationController {
             if (userId == -1) {
                 return new ResponseEntity<>("User doesn't exist", HttpStatus.BAD_REQUEST);
             }
-            int res = notificationService.createNotification(userId, content);
+            String res = notificationService.createNotification(userId, content);
+            return new ResponseEntity<>(res, HttpStatus.CREATED);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(value = "/progress/add")
+    public ResponseEntity<Object> updateProgressNotification() {
+        try {
+            String res = notificationService.addProgressNotification();
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

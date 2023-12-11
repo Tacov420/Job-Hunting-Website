@@ -12,7 +12,4 @@ if (process.env.VITE_API_URL === undefined) {
 export default defineConfig({
   plugins: [react()],
 
-  server: {
-    host: '0.0.0.0'
-  }
 })

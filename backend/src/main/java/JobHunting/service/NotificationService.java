@@ -20,6 +20,9 @@ public class NotificationService {
     @Autowired
     private NotificationRepository notificationRepository;
 
+    @Autowired
+    private ProgressRepository progressRepository;
+
     public int getUserId(String userName) {
         Profile profile = profileRepository.findByUserName(userName);
         if (profile == null) {
@@ -59,7 +62,7 @@ public class NotificationService {
         return true;
     }
 
-    public int createNotification(int userId, String content) {
+    public String createNotification(int userId, String content) {
         int id;
         Notification largestNotification = notificationRepository.findFirstByOrderByNotificationIdDesc();
         if (largestNotification != null){
@@ -71,7 +74,7 @@ public class NotificationService {
         notification.setNotification(id, userId, content);
         notificationRepository.save(notification);
 
-        return id;
+        return "Notification was created successfully";
     }
 
     public boolean checkPermission(int userId, int notificationId) {
@@ -86,6 +89,24 @@ public class NotificationService {
         notificationRepository.deleteByNotificationId(notificationId);
 
         return "Delete notification successfully";
+    }
+
+
+    public String addProgressNotification() {
+        List<Progress> progressList = progressRepository.findAll();
+        LocalDate threeDaysLater = LocalDate.now().plusDays(3);
+        LocalDate oneDayLater = LocalDate.now().plusDays(1);
+        for(Progress progress: progressList) {
+            LocalDate date = progress.getDates().getLast();
+            if(date.isEqual(threeDaysLater)) {
+                createNotification(progress.getUserId(), String.format("%s of %s %s is in 3 days!", progress.getStages().getLast(), progress.getCompanyName(), progress.getJobTitle()));
+            }
+            else if(date.isEqual(oneDayLater)) {
+                createNotification(progress.getUserId(), String.format("%s of %s %s is on tomorrow!", progress.getStages().getLast(), progress.getCompanyName(), progress.getJobTitle()));
+            }
+        }
+
+        return "Notifications of upcoming stages was created successfully";
     }
 }
 
