@@ -7,10 +7,11 @@ stages:          # List of stages for jobs and their order of execution
 
 test:
   stage: test
-  script: cd backend; ./mvnw -Dtest=NotificationServiceTest test
+  script:
+    - cd backend; ./mvnw -Dtest=NotificationServiceTest test
 
 
-build-images:
+build-images
   stage: build-images
   image: docker:latest
   services:
