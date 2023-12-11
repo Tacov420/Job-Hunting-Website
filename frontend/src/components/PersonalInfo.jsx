@@ -73,7 +73,8 @@ const PersonalInfo = () => {
                 <div className="space-y-4 md:space-y-6">
                     <div>
                         <label className="block mb-1 text-lg font-medium text-gray-900">Email Address</label>
-                        <input type="text" name="email" id="email"
+                        <input type="text" name="email" 
+                        id="email"
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5 mb-5" 
                         value={infoEmailAddr} readOnly />              
                     </div>
@@ -81,7 +82,8 @@ const PersonalInfo = () => {
                 <div className="space-y-4 md:space-y-6">
                     <div>
                         <label className="block mb-1 text-lg font-medium text-gray-900">New Password</label>
-                        <input type="password" name="password" id="password"
+                        <input type="password" name="password" 
+                        id="password"
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5 mb-5" 
                         readOnly={!editMode}
                         ref={newPassword}/>              
@@ -90,7 +92,8 @@ const PersonalInfo = () => {
                 <div className="space-y-4 md:space-y-6">
                     <div>
                         <label className="block mb-1 text-lg font-medium text-gray-900">Confirm Password</label>
-                        <input type="password" name="confirm-password" id="confirm-password"
+                        <input type="password" name="confirm-password" 
+                        id="confirm-password"
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5 mb-5" 
                         readOnly={!editMode}
                         ref={confirmPassword}/>              
@@ -98,8 +101,9 @@ const PersonalInfo = () => {
 				</div>
                 
                 <div className="Buttons">
-                    <button id="edit-button" 
+                    <button  
                         className="px-7 bg-gray-500 rounded-md font-sm text-white hover:bg-gray-400"
+                        id="edit-button"
                         onClick={() => startEditing()} style={{display: editMode ? "none" : "inline-block" }}>Edit</button>
                     <button id="save-button" 
                         className="px-7 bg-green-300 rounded-md font-sm text-gray-800 hover:bg-green-400"

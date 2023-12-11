@@ -28,10 +28,10 @@ const SearchItem = ({id , companyName , jobTitle, level, isTrack}) => {
     return (
         <>
         <div className="inline-block relative bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight">
-            <h5 className="mb-2 text-lg font-semibold text-gray-900">{companyName}</h5>
-            <h5 className="mb-2 text-2xl font-semibold text-gray-900">{jobTitle}</h5>
+            <h5 id="companyName" className="mb-2 text-lg font-semibold text-gray-900">{companyName}</h5>
+            <h5 id="jobTitle" className="mb-2 text-2xl font-semibold text-gray-900">{jobTitle}</h5>
             
-            <p className="mb-3 font-normal text-gray-500">{level}</p>
+            <p id="level" className="mb-3 font-normal text-gray-500">{level}</p>
             { trackStatus? (
                 <>
                 <button

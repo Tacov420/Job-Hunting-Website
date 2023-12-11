@@ -14,7 +14,7 @@ const TitleBar = ({display , currentPage}) => {
                 <span className="self-center text-2xl font-bold whitespace-nowrap text-blue-700">Job Hunting</span>
             <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                 <Link to="/profile">
-                <button type="button" className="flex text-sm bg-gray-200 hover:bg-gray-300 rounded-full mx-3">
+                <button type="button" id="profileBtn" className="flex text-sm bg-gray-200 hover:bg-gray-300 rounded-full mx-3">
                     <IoPersonCircle size={30}/>
                 </button>
                 </Link>
@@ -30,22 +30,22 @@ const TitleBar = ({display , currentPage}) => {
                 <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white 0">
                     <li>
                         <Link to="/home">
-                        <span className={`${currentPage=='home' && "font-extrabold"} block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0`}>Jobs</span>
+                        <span id="homeBtn" className={`${currentPage=='home' && "font-extrabold"} block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0`}>Jobs</span>
                         </Link>
                     </li>
                     <li>
                         <Link to={{ pathname: "/discuss_forum", search: `?category=${0}` }}>
-                        <span className={`${currentPage=='discuss forum' && "font-extrabold"} block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0`}>Discuss Forum</span>
+                        <span id="discussBtn" className={`${currentPage=='discuss forum' && "font-extrabold"} block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0`}>Discuss Forum</span>
                         </Link>
                     </li>
                     <li>
                         <Link to="/company_tracking">
-                        <span className={`${currentPage=='company tracking' && "font-extrabold"} block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0`}>Company Tracking</span>
+                        <span id="companyBtn" className={`${currentPage=='company tracking' && "font-extrabold"} block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0`}>Company Tracking</span>
                         </Link>
                     </li>
                     <li>
                         <Link to="/progress_tracking">
-                        <span className={`${currentPage=='progress tracking' && "font-extrabold"} block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0`}>Progress Tracking</span>
+                        <span id="progressBtn" className={`${currentPage=='progress tracking' && "font-extrabold"} block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0`}>Progress Tracking</span>
                         </Link>
                     </li>
                 </ul>

@@ -57,8 +57,8 @@ const ProfilePreference = () => {
             <form onSubmit={e => { e.preventDefault(); }}>
                 <div className="space-y-4 md:space-y-6">
                     <div>
-                        <label className="block mb-1 text-lg font-medium text-gray-900">Skills</label>
-                        <input name="username" 
+                        <label  className="block mb-1 text-lg font-medium text-gray-900">Skills</label>
+                        <input id="skills" name="username" 
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5 mb-5" 
                         defaultValue={skills} readOnly={!editMode} 
                         ref={inputSkills} />              
@@ -68,6 +68,7 @@ const ProfilePreference = () => {
                     <div>
                         <label className="block mb-1 text-lg font-medium text-gray-900">Desired Job Titles</label>
                         <input  
+                        id="desiredJobs"
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5 mb-5" 
                         defaultValue={desiredJobs} readOnly={!editMode} 
                         ref={inputDesiredJobs} />              
@@ -77,6 +78,7 @@ const ProfilePreference = () => {
                     <div>
                         <label className="block mb-1 text-lg font-medium text-gray-900">Desired Job Locations</label>
                         <input 
+                        id="desiredLocations"
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-2.5 mb-5" 
                         defaultValue={desiredLocations} readOnly={!editMode} 
                         ref={inputDesiredLocations} />              

@@ -77,19 +77,18 @@ const HomePage = () => {
     return (
         <>
         <TitleBar display={true} currentPage={'home'}/>
-        <div className="max-w-screen-lg mx-auto">
-            <div className="md:col-span-8 pt-5">
-                <div className="flex flex-wrap -mx-3 mb-5">
-                    <div className="w-full md:w-3/5 px-3 mb-6 md:mb-0">
-                        <div className="relative">
+        <div className="max-w-screen-lg mx-auto divvy">
+            <div className="md:col-span-8 pt-5 divvy2">
+                <div className="flex flex-wrap -mx-3 mb-5 divvy3">
+                    <div className="w-full md:w-3/5 px-3 mb-6 md:mb-0 divvy4">
+                        <div className="relative divvy5">
                             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                 <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
                             </div>
                             <input type="search" id="default-search" 
-                                class="searchJobTitle"
-                                className="block w-full p-2 ps-10 text-lg text-gray-900 rounded-lg bg-gray-200 " 
+                                className="block w-full p-2 ps-10 text-lg text-gray-900 rounded-lg bg-gray-200 divvy6" 
                                 placeholder="Search Job's Title..."
                                 ref = {jobTitleRef}/>
                         </div>
@@ -102,7 +101,7 @@ const HomePage = () => {
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg>
                         </div>
-                        <select id="small" 
+                        <select id="select-level" 
                             className="block w-full p-3 ps-10 text-lg text-gray-500 rounded-lg bg-gray-200"
                             defaultValue = {'DEFAULT'} onChange={handleChange}
                         >

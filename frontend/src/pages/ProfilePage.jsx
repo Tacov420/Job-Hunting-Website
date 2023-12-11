@@ -18,7 +18,7 @@ const ProfilePage = () => {
                             <Link to="/profile/personal_info">
                                 <div className="flex items-center p-2 text-green-800 rounded-lg hover:bg-green-50">
                                 <BsFillPersonVcardFill size={30} className="text-green-800"/>
-                                <span className="ms-3">
+                                <span id="toPersonalInfo" className="ms-3">
                                     Personal Information
                                 </span>
                                 </div>
@@ -28,7 +28,7 @@ const ProfilePage = () => {
                             <Link to="/profile/profilepreference">
                                 <div className="flex items-center p-2 text-green-800 rounded-lg hover:bg-green-50">
                                 <VscSmiley size={30} className="text-green-800"/>
-                                <span className="ms-3">
+                                <span id="toPreference" className="ms-3">
                                     Preference
                                 </span>
                                 </div>
