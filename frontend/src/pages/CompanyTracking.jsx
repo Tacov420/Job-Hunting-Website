@@ -66,7 +66,9 @@ const CompanyTracking = () => {
         //setSelect(companyName);
         if(select == '')
             return;
+         /*
         try{
+           
             console.log(select);
             const response = await addCompany(Username, select); 
             if (response.status === 201){
@@ -77,6 +79,7 @@ const CompanyTracking = () => {
                 }
                 setCompanies([...companies, newCompany]);
                 setCompanyPool((preCompanies) => preCompanies.filter((company) => company.companyName !== select));
+            
             }
         } catch (error) {
             if (error.response) {
@@ -84,13 +87,24 @@ const CompanyTracking = () => {
                 console.error('Status code:', error.response.status);
                 alert(`${error.response.data}`);
             } 
+        }*/
+
+        const newCompany = { 
+            id: 10,  
+            companyName: select,
+            isTrack: true,
         }
+        setCompanies([...companies, newCompany]);
+        setCompanyPool((preCompanies) => preCompanies.filter((company) => company.companyName !== select));
+
         setOpen(false);
 		setInputValue("");
         return;
     }
 
     const handleDeleteCompany = async (companyId) => {
+        setCompanies((preCompanies) => preCompanies.filter((company) => company.id !== companyId));
+        /*
         try {
             const response = await deleteCompany(Username, companyId);
             if (response.status === 201) {
@@ -99,7 +113,7 @@ const CompanyTracking = () => {
             
         } catch (error) {
             console.error('Error deleting company:', error);
-        }
+        }*/
     };
 
 
@@ -127,6 +141,7 @@ const CompanyTracking = () => {
                     <div className="w-full font-medium h-10">
                         <div
                             onClick={() => setOpen(!open)}
+                            id="dropdown"
                             className="bg-blue-100 w-full p-2 flex items-center justify-between rounded-xl"
                         >
                             Select and Add To Company Tracking 
@@ -136,7 +151,7 @@ const CompanyTracking = () => {
                             <div className="flex items-center px-2 m-1.5 sticky top-0 bg-white rounded-lg">
                             <AiOutlineSearch size={18} className="text-gray-700" />
                             <input
-                                type="text"
+                                type="text" id = 'searchInput'
                                 value={inputValue}
                                 placeholder="Enter company name"
                                 className="w-full placeholder:text-gray-400 p-2 outline-none"
@@ -145,7 +160,7 @@ const CompanyTracking = () => {
                             </div>
                             {companyPool?.map((company) => (
                             <li
-                                key={company?.companyName}
+                                key={company?.companyName} id = {company?.companyName}
                                 className={`p-2 text-sm bg-gray-100 text-gray-500 hover:bg-sky-600 hover:text-white
                                 ${
                                 (company.companyName.toLowerCase().match(inputValue.toLowerCase()) && !company.isTrack)? 

@@ -108,6 +108,7 @@ export default function EditStatusDialog({open, onClose  , Stages , setNewStages
             <button 
                 className="ml-1 px-5 bg-red-300 rounded-md font-sm text-gray-800 hover:bg-red-600"
                 onClick={onClose}
+                id="cancel"
             >
             Cancel
             </button>

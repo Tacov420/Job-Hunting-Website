@@ -132,7 +132,7 @@ export function updatePreference(username, skills, desiredJobs, desiredLocations
 
 //company tracking
 export function getCompanies(username){
-		
+	/*		
 	return client.get(`/company/specific/${username}`,  {
 		headers: {
 			'Accept': 'application/json',
@@ -145,6 +145,35 @@ export function getCompanies(username){
 	.catch(error => {
 		throw error.response.data;
 	});
+	*/
+	const data = {
+		"0": [
+			{
+				"companyName": "Google",
+				"receiveEmail": 1
+			}
+		],
+		"1": [
+			{
+				"companyName": "Microsoft",
+				"receiveEmail": 1
+			}
+		],
+		"2": [
+			{
+				"companyName": "ASUS",
+				"receiveEmail": 1
+			}
+		],
+		"3": [
+			{
+				"companyName": "Appier",
+				"receiveEmail": 1
+			}
+		]
+	}
+	return data;
+	
 };
 
 export function deleteCompany(userName, companyId){
@@ -160,7 +189,7 @@ export function addCompany(userName, companyName){
 }
 
 export function getAllCompany(username){
-	
+	/*
 	return client.get(`/company/all/${username}`,  {
 		headers: {
 			'Accept': 'application/json',
@@ -173,6 +202,152 @@ export function getAllCompany(username){
 	.catch(error => {
 		throw error.response.data;
 	});
+	*/
+	const data = {
+		"companies": [
+			[
+				"Synpulse8",
+				false
+			],
+			[
+				"Synology",
+				false
+			],
+			[
+				"Cisco",
+				false
+			],
+			[
+				"Ticketmaster",
+				false
+			],
+			[
+				"ASUS",
+				true
+			],
+			[
+				"GoGoX",
+				false
+			],
+			[
+				"Keywords Studios",
+				false
+			],
+			[
+				"Intel Corporation",
+				false
+			],
+			[
+				"Stellar Cyber",
+				false
+			],
+			[
+				"Robert Walters",
+				false
+			],
+			[
+				"TSMC",
+				false
+			],
+			[
+				"Appier",
+				true
+			],
+			[
+				"Wipro",
+				false
+			],
+			[
+				"Polymer Capital",
+				false
+			],
+			[
+				"Swif",
+				false
+			],
+			[
+				"foodpanda",
+				false
+			],
+			[
+				"Bjak",
+				false
+			],
+			[
+				"Botrista Technology, Inc.",
+				false
+			],
+			[
+				"CTW Inc",
+				false
+			],
+			[
+				"Faria Education Group",
+				false
+			],
+			[
+				"Critical Manufacturing",
+				false
+			],
+			[
+				"Live Nation Entertainment",
+				false
+			],
+			[
+				"Crypto.com",
+				false
+			],
+			[
+				"Microsoft",
+				true
+			],
+			[
+				"PicCollage",
+				false
+			],
+			[
+				"Google",
+				true
+			],
+			[
+				"Zealogics Inc",
+				false
+			],
+			[
+				"HackerPulse",
+				false
+			],
+			[
+				"ASML",
+				false
+			],
+			[
+				"HCLTech",
+				false
+			],
+			[
+				"Rêve Preparatory Charter School",
+				false
+			],
+			[
+				"TEKEVER",
+				false
+			],
+			[
+				"Kronos Research",
+				false
+			],
+			[
+				"Qualcomm",
+				false
+			],
+			[
+				"SHOPLINE",
+				false
+			]
+		]
+	}
+	return data;	
 };
 
 export function changeTracking(username, companyId){
@@ -227,6 +402,7 @@ export function getColorHover(status){
 }
 
 export function getProgresses(username){
+	/*
 	return client.get(`/progress/${username}`,  {
 		headers: {
 			'Accept': 'application/json',
@@ -239,6 +415,36 @@ export function getProgresses(username){
 	.catch(error => {
 		throw error.response.data;
 	});
+	*/
+	const data = {
+		"0": [
+			"Line",
+			"frontend Engineer ",
+			[
+				"寄履歷"
+			],
+			[
+				"2022-01-16"
+			],
+			[
+				0
+			]
+		],
+		"1": [
+			"Google",
+			"Backend Engineer",
+			[
+				"一面"
+			],
+			[
+				"2106-01-16"
+			],
+			[
+				1
+			]
+		]
+	}
+	return data;	
 }
 
 export function addProgress(username , companyName , jobTitle , stage, date , status){
@@ -253,6 +459,7 @@ export function addProgress(username , companyName , jobTitle , stage, date , st
 }
 
 export function getProgress(username , progressId ){
+	/*
 	const progressIdInt = parseInt(progressId, 10);
 	return client.get(`/progress/${username}/${progressIdInt}`,  {
 		headers: {
@@ -266,6 +473,23 @@ export function getProgress(username , progressId ){
 	.catch(error => {
 		throw error.response.data;
 	});
+	*/
+	const data ={
+		"0": [
+			"Line",
+			"frontend Engineer ",
+			[
+				"寄履歷"
+			],
+			[
+				"2022-01-16"
+			],
+			[
+				0
+			]
+		],
+	}
+	return data;
 }
 
 export function addStage(username , progressId, stageName , date , status){

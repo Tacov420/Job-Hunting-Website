@@ -29,7 +29,7 @@ export default function NewJobDialog({ open, onClose , progresses, setNewProgres
         }
 
         try{
-            
+            /*
             const response = await addProgress(Username, companyName , jobTitle , Stage , date , Number(StatusSelection) ); 
             if (response.status === 201){
                 const newProgress = { 
@@ -42,7 +42,18 @@ export default function NewJobDialog({ open, onClose , progresses, setNewProgres
                     color: getColor(Number(StatusSelection)),
                 }
                 setNewProgress([...progresses, newProgress]);
-            }        
+            }*/        
+            
+            const newProgress = { 
+                id: 3,  
+                companyName: companyName,
+                jobTitle: jobTitle,
+                latestStage: Stage,
+                latestDate: date,
+                latestStatus: statusTable[Number(StatusSelection)],
+                color: getColor(Number(StatusSelection)),
+            }
+            setNewProgress([...progresses, newProgress]);
         } catch (error) {
             if (error.response) {
                 console.error('error:', error.response.data);
@@ -75,7 +86,7 @@ export default function NewJobDialog({ open, onClose , progresses, setNewProgres
 
   
 	return (
-		<Dialog open={open} onClose={onClose} fullWidth="true" maxWidth= "xs" >
+		<Dialog open={open} onClose={onClose} fullWidth="true" maxWidth= "xs" id ="NewJobDialog">
 		<DialogTitle sx={{fontWeight: 'bold' , fontSize: 22}}>Add Progress Tracking</DialogTitle>
 		<DialogContent>
             <div className="space-y-4 md:space-y-6">
@@ -85,6 +96,7 @@ export default function NewJobDialog({ open, onClose , progresses, setNewProgres
                     <input 
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-1.5"
                         ref = {CompanyRef}
+                        id = "companyInput"
                     />
                 </div>
                 <div>
@@ -92,6 +104,7 @@ export default function NewJobDialog({ open, onClose , progresses, setNewProgres
                     <input 
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-1.5"
                         ref = {JobTitleRef}
+                        id = "jobtitleInput"
                     />
                 </div>
                 <div>
@@ -99,6 +112,7 @@ export default function NewJobDialog({ open, onClose , progresses, setNewProgres
                     <input 
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-1.5"
                         ref = {StageRef} 
+                        id = "stageInput"
                     />
                 </div>
                 <div>
@@ -106,6 +120,7 @@ export default function NewJobDialog({ open, onClose , progresses, setNewProgres
                     <input type="date"
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-1.5"
                         ref = {DateRef} 
+                        id = "DateInput"
                     />
                 </div>
                 <div>
@@ -113,6 +128,7 @@ export default function NewJobDialog({ open, onClose , progresses, setNewProgres
                     <select 
                         className="bg-gray-200 text-gray-900 lg:text-lg rounded-lg w-full p-1.5"
                         defaultValue={StatusSelection} onChange={handleChange}
+                        id="select"
                     >
                         <option key ="0" value="0" selected>Unknown</option>
                         <option key ="1" value="1">Accepted</option>
@@ -135,6 +151,7 @@ export default function NewJobDialog({ open, onClose , progresses, setNewProgres
             <button 
                 className="ml-1 px-5 bg-red-300 rounded-md font-sm text-gray-800 hover:bg-red-600"
                 onClick={handleCancel}
+                id = "cancel"
             >
             Cancel
             </button>

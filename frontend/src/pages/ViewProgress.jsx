@@ -70,6 +70,7 @@ const ProgressTracking = () => {
             <button 
                 className="px-3 py-1.5 bg-gray-800 rounded-lg font-semibold text-white mt-3 mb-4 hover:bg-gray-600"
                 onClick={()=>setNewStatusDialogOpen(true)}
+                id = "newStatus"
             >
                 <MdAddCircle className='inline mr-3' size={21}/>
                 Add Status
@@ -99,7 +100,7 @@ const ProgressTracking = () => {
                             </td>
                             <td className="flex">
                                 {stages.map((stage, index) => (
-                                    <div key={index}
+                                    <div key={index} id={index}
                                         className={`px-6 py-3 ${stage.color}`}
                                         onClick={() => handleClick(index , stage.status)}>
                                         {stage.date} {stage.Stage}
