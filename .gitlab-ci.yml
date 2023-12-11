@@ -26,9 +26,9 @@ deploy:
     - install -m 600 -D /dev/null ~/.ssh/id_rsa
     - echo "$SSH_PRIVATE_KEY"
     - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
-    - ssh-keyscan -H 35.221.223.176 > ~/.ssh/known_hosts
+    - ssh-keyscan -H $HOST_ADDR > ~/.ssh/known_hosts
   script:
-    - ssh group4@35.221.223.176 "./cleanup.sh && docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker pull $CONTAINER_REGISTRY:frontend_image_$CI_COMMIT_SHORT_SHA && docker run -d -t --name frontend_$CI_COMMIT_SHORT_SHA -p 5173:5173 $CONTAINER_REGISTRY:frontend_image_$CI_COMMIT_SHORT_SHA && docker pull $CONTAINER_REGISTRY:backend_image_$CI_COMMIT_SHORT_SHA && docker run -d -t --name backend_$CI_COMMIT_SHORT_SHA -p 8005:8005 $CONTAINER_REGISTRY:backend_image_$CI_COMMIT_SHORT_SHA && docker exec -d backend_$CI_COMMIT_SHORT_SHA mvn spring-boot:run && docker exec -d frontend_$CI_COMMIT_SHORT_SHA yarn dev --host && exit"
+    - ssh group4@$HOST_ADDR "./cleanup.sh && docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker pull $CONTAINER_REGISTRY:frontend_image_$CI_COMMIT_SHORT_SHA && docker run -d -t --name frontend_$CI_COMMIT_SHORT_SHA -p 5173:5173 $CONTAINER_REGISTRY:frontend_image_$CI_COMMIT_SHORT_SHA && docker pull $CONTAINER_REGISTRY:backend_image_$CI_COMMIT_SHORT_SHA && docker run -d -t --name backend_$CI_COMMIT_SHORT_SHA -p 8005:8005 $CONTAINER_REGISTRY:backend_image_$CI_COMMIT_SHORT_SHA && docker exec -d backend_$CI_COMMIT_SHORT_SHA mvn spring-boot:run && docker exec -d frontend_$CI_COMMIT_SHORT_SHA yarn dev --host && exit"
   after_script:
     - rm -rf ~/.ssh
     
