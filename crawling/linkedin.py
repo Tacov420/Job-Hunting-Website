@@ -11,10 +11,10 @@ DB = "JobHunting"
 COLLECTION = "jobs"
 
 headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"  # noqa
 }
 
-url = "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Software%20Engineer&location=Taiwan"
+url = "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Software%20Engineer&location=Taiwan"  # noqa
 
 job_ids = []
 job_infos = []
@@ -26,12 +26,13 @@ for pages in range(10):
     soup = BeautifulSoup(res.text, "html.parser")
     jobs_on_this_page = soup.find_all("li")
     for i in range(len(jobs_on_this_page)):
-        tmp = jobs_on_this_page[i].find("div",{"class":"base-card"})
+        tmp = jobs_on_this_page[i].find("div", {"class": "base-card"})
         if tmp:
             job_id = tmp.get('data-entity-urn').split(":")[3]
             job_ids.append(job_id)
 
 
+# test
 for job_id in job_ids:
     target_url = f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{job_id}"
     res = requests.get(target_url, headers=headers)
@@ -39,18 +40,18 @@ for job_id in job_ids:
     job_info = {}
 
     try:
-        job_info["company"] = soup.find("div",{"class":"top-card-layout__card"}).find("a").find("img").get('alt')
-    except:
+        job_info["company"] = soup.find("div", {"class": "top-card-layout__card"}).find("a").find("img").get('alt')
+    except Exception:
         job_info["company"] = None
 
     try:
-        job_info["jobTitle"] = soup.find("div",{"class":"top-card-layout__entity-info"}).find("a").text.strip()
-    except:
+        job_info["jobTitle"] = soup.find("div", {"class": "top-card-layout__entity-info"}).find("a").text.strip()
+    except Exception:
         job_info["jobTitle"] = None
 
     try:
-        job_info["level"] = soup.find("ul",{"class":"description__job-criteria-list"}).find("li").text.replace("Seniority level","").strip()
-    except:
+        job_info["level"] = soup.find("ul", {"class": "description__job-criteria-list"}).find("li").text.replace("Seniority level", "").strip()  # noqa
+    except Exception:
         job_info["level"] = None
 
     if job_info["company"] and job_info["jobTitle"]:
