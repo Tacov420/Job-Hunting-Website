@@ -8,8 +8,8 @@ stages:          # List of stages for jobs and their order of execution
 test:
   stage: test
   script:
-    - cd backend; ./mvnw -Dtest=NotificationServiceTest test
-    - cd backend; ./mvnw -Dtest=ProfileServiceTest test
+    - cd backend; chmod 777 mvnw; ./mvnw -Dtest=NotificationServiceTest test
+    - cd backend; chmod 777 mvnw; ./mvnw -Dtest=ProfileServiceTest test
 
 build-images:
   stage: build-images
