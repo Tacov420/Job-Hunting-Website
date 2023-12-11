@@ -9,9 +9,9 @@ test:
   stage: test
   script:
     - cd backend; ./mvnw -Dtest=NotificationServiceTest test
+    - cd backend; ./mvnw -Dtest=ProfileServiceTest test
 
-
-build-images
+build-images:
   stage: build-images
   image: docker:latest
   services:
