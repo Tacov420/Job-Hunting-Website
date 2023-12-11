@@ -1,8 +1,13 @@
 stages:          # List of stages for jobs and their order of execution
+  - test
   - build-images
   - frontend
   - backend
   - deploy
+
+test:
+  stage: test
+  script: cd backend; ./mvnw -Dtest=NotificationServiceTest test
 
 
 build-images:
