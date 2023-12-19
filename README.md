@@ -6,13 +6,17 @@
 
 ### Frontend
 
+Before you execute our codes, please install yarn.
+Example:
 ```bash
 # install npm if you don't have it
 sudo apt install npm
 
 # install Yarn with npm
 sudo npm install -g yarn
+```
 
+```bash
 # currently you should be at the project root
 cd frontend
 yarn
@@ -23,10 +27,14 @@ yarn dev --host
 
 ### Backend
 
+Before you execute our codes, please install open-jdk21 and maven.
+Example:
 ```bash
 # install maven if you don't have it
 sudo apt-get install maven
+```
 
+```bash
 # currently you should be at the project root
 cd backend
 mvn spring-boot:run
