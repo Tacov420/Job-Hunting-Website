@@ -1,33 +1,34 @@
 stages:          # List of stages for jobs and their order of execution
-  - build
-  - frontend
-  - backend
+  - build-images
   - deploy
 
 
-build-job:
-  stage: build
-  image: python:latest
+build-images:
+  stage: build-images
+  image: docker:latest
+  services:
+    - docker:dind
   script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
-    - python test.py
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --file frontend/Dockerfile -t registry.gitlab.com/software-engineering8932241/job-hunting:frontend_image_$CI_COMMIT_SHORT_SHA .
+    - docker build --file backend/Dockerfile -t registry.gitlab.com/software-engineering8932241/job-hunting:backend_image_$CI_COMMIT_SHORT_SHA .
+    - docker push registry.gitlab.com/software-engineering8932241/job-hunting:frontend_image_$CI_COMMIT_SHORT_SHA
+    - docker push registry.gitlab.com/software-engineering8932241/job-hunting:backend_image_$CI_COMMIT_SHORT_SHA
 
-frontend-job:
-  stage: frontend
-  image: node:latest
-  script:
-    - echo "Frontend Image"
-
-
-backend-job:
-  stage: backend
-  image: openjdk:21-jdk
-  script:
-    - echo "Backend Image"
-
-
-deploy-prod:
+deploy:
+  variables:
+    CONTAINER_REGISTRY: registry.gitlab.com/software-engineering8932241/job-hunting
+  image: ubuntu:latest
   stage: deploy
+  before_script:
+    - apt-get -yq update
+    - apt-get -yqq install ssh
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY"
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - ssh-keyscan -H $HOST_ADDR > ~/.ssh/known_hosts
   script:
-    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
-  environment: production
+    - ssh group4@$HOST_ADDR "./cleanup.sh && docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY && docker pull $CONTAINER_REGISTRY:frontend_image_$CI_COMMIT_SHORT_SHA && docker run -d -t --name frontend_$CI_COMMIT_SHORT_SHA -p 5173:5173 $CONTAINER_REGISTRY:frontend_image_$CI_COMMIT_SHORT_SHA && docker pull $CONTAINER_REGISTRY:backend_image_$CI_COMMIT_SHORT_SHA && docker run -d -t --name backend_$CI_COMMIT_SHORT_SHA -p 8005:8005 $CONTAINER_REGISTRY:backend_image_$CI_COMMIT_SHORT_SHA && docker exec -d backend_$CI_COMMIT_SHORT_SHA mvn spring-boot:run && docker exec -d frontend_$CI_COMMIT_SHORT_SHA yarn dev --host && exit"
+  after_script:
+    - rm -rf ~/.ssh
+    
